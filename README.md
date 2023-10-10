@@ -12,7 +12,7 @@ Production process management service for agriculture and aquaculture.
 ```java
 {YOUR-WORKDIR}/ppm-service/
 ```
-1. Build project.
+1. Build the project.
 ```java
 mvn clean install
 ```
