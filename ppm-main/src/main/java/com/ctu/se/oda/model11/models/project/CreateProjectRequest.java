@@ -1,13 +1,14 @@
 package com.ctu.se.oda.model11.models.project;
 
-import com.ctu.se.oda.model11.models.IModel;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+import java.util.UUID;
+
 @Data
-public class CreateProjectRequest implements IModel {
-    private String name;
-    private Double duration;
-    private String creatorId;
+@Builder
+public class CreateProjectRequest {
+    private String projectName;
+    private Double projectDuration;
+    private String projectCreatorId;
 }

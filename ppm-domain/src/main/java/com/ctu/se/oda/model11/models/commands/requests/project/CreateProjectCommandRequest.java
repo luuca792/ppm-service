@@ -1,21 +1,20 @@
 package com.ctu.se.oda.model11.models.commands.requests.project;
 
-import com.ctu.se.oda.model11.models.IDomainModel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @RequiredArgsConstructor
-public class CreateProjectCommandRequest implements IDomainModel{
+@Builder
+public class CreateProjectCommandRequest {
     private String projectName;
     private Double projectDuration;
-    private String projectCreatorId;
+    private UUID projectCreatorId;
 
-    public static CreateProjectCommandRequest createInstance(String projectName, Double projectDuration, String projectCreatorId) {
-        return new CreateProjectCommandRequest(projectName, projectDuration, projectCreatorId);
-    }
-
-    public CreateProjectCommandRequest(String projectName, Double projectDuration, String projectCreatorId) {
+    public CreateProjectCommandRequest(String projectName, Double projectDuration, UUID projectCreatorId) {
         this.projectName = projectName;
         this.projectDuration = projectDuration;
         this.projectCreatorId = projectCreatorId;

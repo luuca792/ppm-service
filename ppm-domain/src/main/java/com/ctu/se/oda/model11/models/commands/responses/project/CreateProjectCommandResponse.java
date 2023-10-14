@@ -1,22 +1,24 @@
 package com.ctu.se.oda.model11.models.commands.responses.project;
 
-import com.ctu.se.oda.model11.models.IDomainModel;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
-public class CreateProjectCommandResponse implements IDomainModel{
-    private String projectId;
+@Builder
+public class CreateProjectCommandResponse {
+    private UUID projectId;
     private String projectName;
     private Double projectDuration;
-    private String projectCreatorId;
-    public CreateProjectCommandResponse(String projectId, String projectName, Double projectDuration, String projectCreatorId) {
+    private UUID projectCreatorId;
+
+    public CreateProjectCommandResponse(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDuration = projectDuration;
         this.projectCreatorId = projectCreatorId;
     }
-
 }

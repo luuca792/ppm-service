@@ -1,20 +1,31 @@
 package com.ctu.se.oda.model11.mappers.project;
 
 import com.ctu.se.oda.model11.mappers.IMainMapper;
-import com.ctu.se.oda.model11.models.IDomainModel;
-import com.ctu.se.oda.model11.models.IModel;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @NoArgsConstructor
-public class CreateProjectRequestMapper implements IMainMapper {
+public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> {
     @Override
-    public IDomainModel convert(IModel requestModel) {
-        var request = (CreateProjectRequest) requestModel;
-        return CreateProjectCommandRequest.createInstance(request.getName(),
-                request.getDuration(), request.getCreatorId());
+    public CreateProjectCommandRequest convert(CreateProjectRequest source) {
+        return CreateProjectCommandRequest.builder()
+                .projectName(source.getProjectName())
+                .projectDuration(source.getProjectDuration())
+                .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
+                .build();
+    }
+
+    @Override
+    public CreateProjectRequest reverse(CreateProjectCommandRequest destination) {
+        return CreateProjectRequest.builder()
+                .projectName(destination.getProjectName())
+                .projectDuration(destination.getProjectDuration())
+                .projectCreatorId(destination.getProjectCreatorId().toString())
+                .build();
     }
 }
