@@ -17,6 +17,7 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
     @Override
     public Task convert(UpdateTaskCommandRequest source) {
         return new Task(
+                source.getTaskId(),
                 source.getTaskName(),
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
