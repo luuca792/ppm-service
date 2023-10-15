@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -20,5 +21,18 @@ public class CreateProjectCommandResponse {
         this.projectName = projectName;
         this.projectDuration = projectDuration;
         this.projectCreatorId = projectCreatorId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateProjectCommandResponse that = (CreateProjectCommandResponse) o;
+        return projectName.equals(that.projectName) && projectDuration.equals(that.projectDuration) && projectCreatorId.equals(that.projectCreatorId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectName, projectDuration, projectCreatorId);
     }
 }

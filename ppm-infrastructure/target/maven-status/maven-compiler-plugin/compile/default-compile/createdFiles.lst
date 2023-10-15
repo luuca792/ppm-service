@@ -1,7 +1,0 @@
-com\ctu\se\oda\model11\mappers\project\UpdateProjectMapper.class
-com\ctu\se\oda\model11\mappers\daos\ProjectDAO.class
-com\ctu\se\oda\model11\mappers\IInfrastructureMapper.class
-com\ctu\se\oda\model11\entities\Project.class
-com\ctu\se\oda\model11\entities\IEntity.class
-com\ctu\se\oda\model11\mappers\project\CreateProjectEntityMapper.class
-com\ctu\se\oda\model11\repositories\IProjectRepository.class

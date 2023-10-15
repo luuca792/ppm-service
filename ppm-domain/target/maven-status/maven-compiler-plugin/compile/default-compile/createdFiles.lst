@@ -1,4 +1,0 @@
-com\ctu\se\oda\model11\models\IDomainModel.class
-com\ctu\se\oda\model11\models\commands\requests\project\CreateProjectCommandRequest.class
-com\ctu\se\oda\model11\daos\IProjectService.class
-com\ctu\se\oda\model11\models\commands\responses\project\CreateProjectCommandResponse.class
