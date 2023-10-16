@@ -1,8 +1,11 @@
 package com.ctu.se.oda.model11.errors.exceptions;
 
 import com.ctu.se.oda.model11.errors.responses.ErrorDetails;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -15,5 +18,9 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) throws Exception {
         return new ResponseEntity(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return new ResponseEntity(ErrorDetails.builder().detail(request.getDescription(false)).message(ex.getMessage()).localDateTime(LocalDateTime.now()).build(), HttpStatus.BAD_REQUEST);
     }
 }

@@ -6,14 +6,15 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ITaskService {
-    CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest);
+    CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest);
 
-    UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
+    UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
 
     List<RetrieveTaskQueryResponse> listTask();
 

@@ -5,14 +5,15 @@ import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectComm
 import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface IProjectService {
-    CreateProjectCommandResponse createProject(CreateProjectCommandRequest createProjectCommandRequest);
+    CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest);
 
-    UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId);
+    UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId);
 
     List<RetrieveProjectQueryResponse> listProject();
 
