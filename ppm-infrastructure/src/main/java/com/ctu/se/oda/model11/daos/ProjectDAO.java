@@ -9,9 +9,12 @@ import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCom
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
+import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
+import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
+@Validated
 public class ProjectDAO implements IProjectService {
     @Autowired
     private IProjectRepository projectRepository;
@@ -28,13 +32,13 @@ public class ProjectDAO implements IProjectService {
     private IInfrastructureMapper<UpdateProjectCommandRequest, Project, UpdateProjectCommandResponse> updateProjectEntityMapper;
 
     @Override
-    public CreateProjectCommandResponse createProject(CreateProjectCommandRequest createProjectCommandRequest) {
+    public CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
         return this.createProjectEntityMapper.reverse(
                 this.projectRepository.save(this.createProjectEntityMapper.convert(createProjectCommandRequest))
         );
     }
     @Override
-    public UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId) {
+    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId) {
         updateProjectCommandRequest.setProjectId(projectId);
         return this.updateProjectEntityMapper.reverse(
                 this.projectRepository.save(this.updateProjectEntityMapper.convert(updateProjectCommandRequest))
@@ -48,11 +52,7 @@ public class ProjectDAO implements IProjectService {
     }
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        var optionalRetrievedProject = this.projectRepository.findById(projectId);
-        if (optionalRetrievedProject.isEmpty()) {
-            throw new NullPointerException();
-        }
-        var retrievedProject = optionalRetrievedProject.get();
+        var retrievedProject = this.projectRepository.findById(projectId).get();
         return RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())

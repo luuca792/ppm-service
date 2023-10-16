@@ -4,6 +4,7 @@ import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
+import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 

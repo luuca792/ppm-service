@@ -5,6 +5,7 @@ import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectComm
 import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
+import jakarta.validation.Valid;
 
 import java.util.Arrays;
 import java.util.List;
