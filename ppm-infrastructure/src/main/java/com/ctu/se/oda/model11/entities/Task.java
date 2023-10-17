@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "tasks")
 @NoArgsConstructor
 public class Task implements IEntity{
     @Id

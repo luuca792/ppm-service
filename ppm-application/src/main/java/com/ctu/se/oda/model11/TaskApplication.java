@@ -42,6 +42,6 @@ public class TaskApplication implements ITaskApplication {
 
     @Override
     public void deleteTask(UUID taskId) {
-
+        this.taskService.deleteTask(taskId);
     }
 }
