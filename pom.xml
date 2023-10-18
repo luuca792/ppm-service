@@ -20,7 +20,8 @@
 		<module>ppm-infrastructure</module>
         <module>ppm-application</module>
 		<module>ppm-main</module>
-	</modules>
+        <module>ppm-tests</module>
+    </modules>
     <properties>
 		<java.version>17</java.version>
 	</properties>

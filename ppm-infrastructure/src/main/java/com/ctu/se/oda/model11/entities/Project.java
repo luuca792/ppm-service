@@ -20,4 +20,17 @@ public class Project implements IEntity{
     private Double duration;
     @Column(name = "creator_id")
     private UUID creatorId;
+
+    public Project(String name, Double duration, UUID creatorId) {
+        this.name = name;
+        this.duration = duration;
+        this.creatorId = creatorId;
+    }
+
+    public Project(UUID id, String name, Double duration, UUID creatorId) {
+        this.id = id;
+        this.name = name;
+        this.duration = duration;
+        this.creatorId = creatorId;
+    }
 }

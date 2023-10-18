@@ -8,15 +8,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Data
-@RequiredArgsConstructor
 @Builder
-public class CreateProjectCommandResponse {
+@RequiredArgsConstructor
+public class UpdateProjectCommandResponse {
     private UUID projectId;
     private String projectName;
     private Double projectDuration;
     private UUID projectCreatorId;
 
-    public CreateProjectCommandResponse(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
+    public UpdateProjectCommandResponse(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDuration = projectDuration;
@@ -27,12 +27,12 @@ public class CreateProjectCommandResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CreateProjectCommandResponse that = (CreateProjectCommandResponse) o;
-        return projectName.equals(that.projectName) && projectDuration.equals(that.projectDuration) && projectCreatorId.equals(that.projectCreatorId);
+        UpdateProjectCommandResponse that = (UpdateProjectCommandResponse) o;
+        return Objects.equals(projectId, that.projectId) && Objects.equals(projectName, that.projectName) && Objects.equals(projectDuration, that.projectDuration) && Objects.equals(projectCreatorId, that.projectCreatorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectName, projectDuration, projectCreatorId);
+        return Objects.hash(projectId, projectName, projectDuration, projectCreatorId);
     }
 }

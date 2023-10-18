@@ -1,8 +1,8 @@
 package com.ctu.se.oda.model11.mappers.project;
 
 import com.ctu.se.oda.model11.mappers.IMainMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
+import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
+import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +10,10 @@ import java.util.UUID;
 
 @Component
 @NoArgsConstructor
-public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> {
+public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequest, UpdateProjectCommandRequest> {
     @Override
-    public CreateProjectCommandRequest convert(CreateProjectRequest source) {
-        return CreateProjectCommandRequest.builder()
+    public UpdateProjectCommandRequest convert(UpdateProjectRequest source) {
+        return UpdateProjectCommandRequest.builder()
                 .projectName(source.getProjectName())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
@@ -21,8 +21,9 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
     }
 
     @Override
-    public CreateProjectRequest reverse(CreateProjectCommandRequest destination) {
-        return CreateProjectRequest.builder()
+    public UpdateProjectRequest reverse(UpdateProjectCommandRequest destination) {
+        return UpdateProjectRequest.builder()
+                .projectId(destination.getProjectId().toString())
                 .projectName(destination.getProjectName())
                 .projectDuration(destination.getProjectDuration())
                 .projectCreatorId(destination.getProjectCreatorId().toString())

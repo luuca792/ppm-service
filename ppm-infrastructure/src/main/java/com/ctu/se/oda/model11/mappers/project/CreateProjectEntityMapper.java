@@ -1,37 +1,33 @@
 package com.ctu.se.oda.model11.mappers.project;
 
-import com.ctu.se.oda.model11.entities.IEntity;
 import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
-import com.ctu.se.oda.model11.models.IDomainModel;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
+import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 @NoArgsConstructor
-public class CreateProjectEntityMapper implements IInfrastructureMapper {
+public class CreateProjectEntityMapper implements IInfrastructureMapper<CreateProjectCommandRequest, Project, CreateProjectCommandResponse>{
+
     @Override
-    public IEntity mapping(IDomainModel request) {
-        var createProjectCommandRequest = (CreateProjectCommandRequest) request;
-        var project = new Project();
-        project.setName(createProjectCommandRequest.getProjectName());
-        project.setDuration(createProjectCommandRequest.getProjectDuration());
-        project.setCreatorId(UUID.fromString(createProjectCommandRequest.getProjectCreatorId()));
-        return project;
+    public Project convert(CreateProjectCommandRequest source) {
+        return new Project(
+                source.getProjectName(),
+                source.getProjectDuration(),
+                source.getProjectCreatorId()
+        );
     }
 
     @Override
-    public IDomainModel reverse(IEntity object) {
-        var project = (Project) object;
+    public CreateProjectCommandResponse reverse(Project destination) {
         return new CreateProjectCommandResponse(
-                project.getId().toString(),
-                project.getName(),
-                project.getDuration(),
-                project.getCreatorId().toString()
+                destination.getId(),
+                destination.getName(),
+                destination.getDuration(),
+                destination.getCreatorId()
         );
     }
 }

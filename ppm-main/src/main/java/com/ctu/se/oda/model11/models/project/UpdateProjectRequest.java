@@ -7,7 +7,8 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class CreateProjectRequest {
+public class UpdateProjectRequest {
+    private String projectId;
     private String projectName;
     private Double projectDuration;
     private String projectCreatorId;

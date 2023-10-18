@@ -1,21 +1,27 @@
 package com.ctu.se.oda.model11.models.commands.requests.project;
 
-import com.ctu.se.oda.model11.models.IDomainModel;
+import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
-public class CreateProjectCommandRequest implements IDomainModel{
+@Builder
+public class CreateProjectCommandRequest {
+    @NotBlank
+    @Size(max = 250)
     private String projectName;
+    @NotNull
+    @Positive
     private Double projectDuration;
-    private String projectCreatorId;
+    @NotNull
+    private UUID projectCreatorId;
 
-    public static CreateProjectCommandRequest createInstance(String projectName, Double projectDuration, String projectCreatorId) {
-        return new CreateProjectCommandRequest(projectName, projectDuration, projectCreatorId);
-    }
-
-    public CreateProjectCommandRequest(String projectName, Double projectDuration, String projectCreatorId) {
+    public CreateProjectCommandRequest(String projectName, Double projectDuration, UUID projectCreatorId) {
         this.projectName = projectName;
         this.projectDuration = projectDuration;
         this.projectCreatorId = projectCreatorId;
@@ -29,4 +35,5 @@ public class CreateProjectCommandRequest implements IDomainModel{
                 ", projectCreatorId=" + this.projectCreatorId +
                 '}';
     }
+
 }
