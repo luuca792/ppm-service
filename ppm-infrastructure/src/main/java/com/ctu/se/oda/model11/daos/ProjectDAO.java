@@ -2,6 +2,7 @@ package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.daos.IProjectService;
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
@@ -52,7 +53,11 @@ public class ProjectDAO implements IProjectService {
     }
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        var retrievedProject = this.projectRepository.findById(projectId).get();
+        var retrievedProjectOptional = this.projectRepository.findById(projectId);
+        if (retrievedProjectOptional.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+        }
+        var retrievedProject = retrievedProjectOptional.get();
         return RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())

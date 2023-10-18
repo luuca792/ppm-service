@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
@@ -55,13 +56,17 @@ public class TaskDAO implements ITaskService{
     }
     @Override
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
-        var foundTask = this.taskRepository.findById(taskId).get();
+        var retrievedTaskOptional = this.taskRepository.findById(taskId);
+        if (retrievedTaskOptional.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+        }
+        var retrievedTask =  retrievedTaskOptional.get();
         return RetrieveTaskQueryResponse.builder()
-                .taskId(foundTask.getId())
-                .taskName(foundTask.getName())
-                .taskDescription(foundTask.getDescription())
-                .taskStartAt(foundTask.getStartAt())
-                .taskEndAt(foundTask.getEndAt())
+                .taskId(retrievedTask.getId())
+                .taskName(retrievedTask.getName())
+                .taskDescription(retrievedTask.getDescription())
+                .taskStartAt(retrievedTask.getStartAt())
+                .taskEndAt(retrievedTask.getEndAt())
                 .build();
     }
 

@@ -2,7 +2,7 @@ package ctu.cit.se.oda.model11.services;
 
 import com.ctu.se.oda.model11.Main;
 import com.ctu.se.oda.model11.daos.ITaskService;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
 
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
@@ -10,12 +10,15 @@ import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandRe
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 @SpringBootTest(classes = Main.class)
+@DirtiesContext
 public class TaskServiceTest {
     private static final String TASK_NAME = "job_001";
     private static String TASK_DESCRIPTION = "job_to_easy";
@@ -29,20 +32,35 @@ public class TaskServiceTest {
     private ITaskService taskService;
     @Test
     public void createTask_fullField() {
-        assertNotNull(this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()));
+        var createdTask = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build());
+        Assertions.assertNotNull(createdTask);
+        this.taskService.deleteTask(createdTask.getTaskId());
     }
     @Test
     public void updateTask_fullField() {
-        var createdProjectId = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()).getTaskId();
-        assertEquals(this.taskService.updateTask(UpdateTaskCommandRequest.builder().taskName(TASK_NAME_CHANGED).taskDescription(TASK_DESCRIPTION_CHANGED).taskStartAt(TASK_START_AT_CHANGED).taskEndAt(TASK_END_AT_CHANGED).build(), createdProjectId), UpdateTaskCommandResponse.builder().taskId(createdProjectId).taskName(TASK_NAME_CHANGED).taskDescription(TASK_DESCRIPTION_CHANGED).taskStartAt(TASK_START_AT_CHANGED).taskEndAt(TASK_END_AT_CHANGED).build());
+        var createdTaskId = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()).getTaskId();
+        Assertions.assertEquals(this.taskService.updateTask(UpdateTaskCommandRequest.builder().taskName(TASK_NAME_CHANGED).taskDescription(TASK_DESCRIPTION_CHANGED).taskStartAt(TASK_START_AT_CHANGED).taskEndAt(TASK_END_AT_CHANGED).build(), createdTaskId), UpdateTaskCommandResponse.builder().taskId(createdTaskId).taskName(TASK_NAME_CHANGED).taskDescription(TASK_DESCRIPTION_CHANGED).taskStartAt(TASK_START_AT_CHANGED).taskEndAt(TASK_END_AT_CHANGED).build());
+        this.taskService.deleteTask(createdTaskId);
     }
     @Test
     public void detailTask_success() {
-        var createdProjectId = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()).getTaskId();
-        assertNotNull(this.taskService.detailTask(createdProjectId));
+        var createdTaskId = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()).getTaskId();
+        Assertions.assertNotNull(this.taskService.detailTask(createdTaskId));
+        this.taskService.deleteTask(createdTaskId);
     }
     @Test
     public void listTask_success() {
-        assertNotNull(this.taskService.listTask());
+        Assertions.assertNotNull(this.taskService.listTask());
+    }
+    @Test
+    public void deleteTask() {
+        var createdTaskId = this.taskService.createTask(CreateTaskCommandRequest.builder().taskName(TASK_NAME).taskDescription(TASK_DESCRIPTION).taskStartAt(TASK_START_AT).taskEndAt(TASK_END_AT).build()).getTaskId();
+        this.taskService.deleteTask(createdTaskId);
+        try {
+            this.taskService.detailTask(createdTaskId);
+            Assertions.assertFalse(true);
+        }catch (IllegalArgumentException ex) {
+            Assertions.assertTrue(true);
+        }
     }
 }

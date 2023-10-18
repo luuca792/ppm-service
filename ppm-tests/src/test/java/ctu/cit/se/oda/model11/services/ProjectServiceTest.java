@@ -10,10 +10,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.UUID;
 
 @SpringBootTest(classes = Main.class)
+@DirtiesContext
 public class ProjectServiceTest {
     private static final String PROJECT_NAME = "project_001";
     private static final String PROJECT_NAME_CHANGED = "project_002";
@@ -25,21 +27,25 @@ public class ProjectServiceTest {
     @Autowired
     private IProjectService projectService;
     @Test
+    @DirtiesContext
     public void createProject_fullField() {
+        var createdProject = this.projectService.createProject(CreateProjectCommandRequest.builder()
+                .projectName(PROJECT_NAME)
+                .projectDuration(PROJECT_DURATION)
+                .projectCreatorId(PROJECT_CREATOR_ID)
+                .build());
         Assertions.assertEquals(
-                this.projectService.createProject(CreateProjectCommandRequest.builder()
-                        .projectName(PROJECT_NAME)
-                        .projectDuration(PROJECT_DURATION)
-                        .projectCreatorId(PROJECT_CREATOR_ID)
-                        .build()),
+                createdProject,
                 CreateProjectCommandResponse.builder()
                         .projectName(PROJECT_NAME)
                         .projectDuration(PROJECT_DURATION)
                         .projectCreatorId(PROJECT_CREATOR_ID)
                         .build()
         );
+        this.projectService.deleteProject(createdProject.getProjectId());
     }
     @Test
+    @DirtiesContext
     public void updateProject_fullField() {
         UUID createdProjectId = this.projectService.createProject(
                 CreateProjectCommandRequest.builder()
@@ -61,12 +67,15 @@ public class ProjectServiceTest {
                         .projectCreatorId(PROJECT_CREATOR_ID_CHANGED)
                         .build()
         );
+        this.projectService.deleteProject(createdProjectId);
     }
     @Test
+    @DirtiesContext
     public void listProject() {
         Assertions.assertNotNull(this.projectService.listProject());
     }
     @Test
+    @DirtiesContext
     public void detailProject() {
         UUID createdProjectId = this.projectService.createProject(
                 CreateProjectCommandRequest.builder()
@@ -76,5 +85,24 @@ public class ProjectServiceTest {
                         .build()
         ).getProjectId();
         Assertions.assertNotNull(this.projectService.detailProject(createdProjectId));
+        this.projectService.deleteProject(createdProjectId);
+    }
+    @Test
+    @DirtiesContext
+    public void deleteProject() {
+        UUID createdProjectId = this.projectService.createProject(
+                CreateProjectCommandRequest.builder()
+                        .projectName(PROJECT_NAME)
+                        .projectDuration(PROJECT_DURATION)
+                        .projectCreatorId(PROJECT_CREATOR_ID)
+                        .build()
+        ).getProjectId();
+        this.projectService.deleteProject(createdProjectId);
+        try {
+            this.projectService.detailProject(createdProjectId);
+            Assertions.assertTrue(false);
+        }catch (IllegalArgumentException ex) {
+            Assertions.assertTrue(true);
+        }
     }
 }
