@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITaskService {
-    CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest);
+    CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest, UUID projectId);
 
     UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
 

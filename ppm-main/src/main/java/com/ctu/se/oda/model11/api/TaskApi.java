@@ -26,10 +26,10 @@ public class TaskApi {
     private IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> updateTaskMapper;
     @Autowired
     private ITaskApplication taskApplication;
-    @PostMapping("")
-    public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
+    @PostMapping("/task/{projectId}")
+    public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest, @PathVariable String projectId) {
         return new ResponseEntity(
-                this.taskApplication.createTask(this.createTaskMapper.convert(createTaskRequest)),
+                this.taskApplication.createTask(this.createTaskMapper.convert(createTaskRequest), UUID.fromString(projectId)),
                 HttpStatus.CREATED
         );
     }

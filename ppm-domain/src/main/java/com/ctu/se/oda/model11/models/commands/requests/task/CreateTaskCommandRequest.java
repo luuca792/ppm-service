@@ -25,12 +25,15 @@ public class CreateTaskCommandRequest {
     private LocalDate taskStartAt;
     @NotNull
     private LocalDate taskEndAt;
+    @NotNull
+    private UUID projectId;
 
-    public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
+    public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.projectId = projectId;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class CreateTaskCommandRequest {
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
+                ", projectId=" + projectId +
                 '}';
     }
 }

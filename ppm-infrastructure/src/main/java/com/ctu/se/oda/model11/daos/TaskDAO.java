@@ -8,6 +8,7 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
+import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,15 @@ public class TaskDAO implements ITaskService{
     private IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> updateTaskEntityMapper;
     @Autowired
     private ITaskRepository taskRepository;
+    @Autowired
+    private IProjectRepository projectRepository;
     @Override
-    public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
+    public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest, UUID projectId) {
+        var retrieveProjectId = this.projectRepository.findById(projectId);
+        if(retrieveProjectId.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.CANNOT_CREATE_IF_PROJECT_DO_NOT_EXIST);
+        }
+        createTaskCommandRequest.setProjectId(retrieveProjectId.get().getId());
         return this.createTaskEntityMapper.reverse(
                 this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
         );

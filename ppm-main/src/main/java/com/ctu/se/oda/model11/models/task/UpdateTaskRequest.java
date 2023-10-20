@@ -13,4 +13,5 @@ public class UpdateTaskRequest {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+    private String projectId;
 }
