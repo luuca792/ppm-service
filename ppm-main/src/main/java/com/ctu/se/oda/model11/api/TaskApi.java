@@ -26,7 +26,8 @@ public class TaskApi {
     private IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> updateTaskMapper;
     @Autowired
     private ITaskApplication taskApplication;
-    @PostMapping("")
+
+    @PostMapping()
     public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(
                 this.taskApplication.createTask(createTaskMapper.convert(createTaskRequest)),
@@ -40,7 +41,7 @@ public class TaskApi {
                 HttpStatus.OK
         );
     }
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(this.taskApplication.listTask(), HttpStatus.OK);
     }
