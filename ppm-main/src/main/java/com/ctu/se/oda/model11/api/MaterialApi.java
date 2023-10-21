@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/materials")
@@ -25,24 +26,25 @@ public class MaterialApi {
     private IMainMapper<UpdateMaterialRequest, UpdateMaterialCommandRequest> updateMaterialMapper;
     @Autowired
     private IMaterialApplication materialApplication;
+
     @PostMapping("")
     public ResponseEntity<CreateMaterialCommandResponse> createMaterial(@RequestBody CreateMaterialRequest createMaterialRequest) {
         return new ResponseEntity<>(
-                this.materialApplication.createMaterial(this.createMaterialMapper.convert(createMaterialRequest)),
+                materialApplication.createMaterial(createMaterialMapper.convert(createMaterialRequest)),
                 HttpStatus.CREATED
         );
     }
     @PutMapping("/{materialId}")
     public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable String materialId) {
         return new ResponseEntity<>(
-                this.materialApplication.updateMaterial(this.updateMaterialMapper.convert(updateMaterialRequest), Long.valueOf(materialId)),
+                materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest), UUID.fromString(materialId)),
                 HttpStatus.OK
         );
     }
     @GetMapping("")
     public ResponseEntity<List<RetrieveMaterialQueryResponse>> listMaterial() {
         return new ResponseEntity<>(
-                this.materialApplication.listMaterial(),
+                materialApplication.listMaterial(),
                 HttpStatus.OK
         );
     }
@@ -50,19 +52,14 @@ public class MaterialApi {
     @GetMapping("/{materialId}")
     public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable String materialId) {
         return new ResponseEntity<>(
-                this.materialApplication.detailMaterial(Long.valueOf(materialId)),
+                materialApplication.detailMaterial(UUID.fromString(materialId)),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{materialId}")
     public ResponseEntity<?> deleteMaterial(@PathVariable String materialId) {
-        this.materialApplication.deleteMaterial(Long.valueOf(materialId));
-        return ResponseEntity.noContent().build();
-    }
-    @DeleteMapping("")
-    public ResponseEntity<?> deleteAllMaterial() {
-        this.materialApplication.deleteAllMaterial();
+        materialApplication.deleteMaterial(UUID.fromString(materialId));
         return ResponseEntity.noContent().build();
     }
 }

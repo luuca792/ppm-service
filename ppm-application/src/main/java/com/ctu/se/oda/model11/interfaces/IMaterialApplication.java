@@ -7,12 +7,12 @@ import com.ctu.se.oda.model11.models.commands.responses.material.UpdateMaterialC
 import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterialQueryResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IMaterialApplication {
     CreateMaterialCommandResponse createMaterial(CreateMaterialCommandRequest createMaterialCommandRequest);
-    UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest, Long materialId);
+    UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId);
     List<RetrieveMaterialQueryResponse> listMaterial();
-    RetrieveMaterialQueryResponse detailMaterial(Long materialId);
-    void deleteMaterial(Long materialId);
-    void deleteAllMaterial();
+    RetrieveMaterialQueryResponse detailMaterial(UUID materialId);
+    void deleteMaterial(UUID materialId);
 }

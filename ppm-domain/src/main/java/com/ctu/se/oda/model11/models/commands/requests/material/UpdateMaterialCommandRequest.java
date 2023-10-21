@@ -8,18 +8,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @RequiredArgsConstructor
 @Builder
 public class UpdateMaterialCommandRequest {
-    private Long materialId;
+    private UUID materialId;
     @NotBlank
     @Size(max = 250)
     private String materialName;
     @NotNull
     @Positive
     private Long materialType;
-    public UpdateMaterialCommandRequest(Long materialId,String materialName, Long materialType) {
+
+    public UpdateMaterialCommandRequest(UUID materialId,String materialName, Long materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialType = materialType;
@@ -27,7 +30,7 @@ public class UpdateMaterialCommandRequest {
 
     @Override
     public String toString() {
-        return "CreateMaterialCommandRequest{" +
+        return "UpdateMaterialCommandRequest{" +
                 "materialId" + this.materialId +
                 "materialName" + this.materialName +
                 "materialType"+ this.materialType +"}";

@@ -9,12 +9,12 @@ import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterial
 import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IMaterialService {
     CreateMaterialCommandResponse createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest);
-    UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, Long materialId);
+    UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId);
     List<RetrieveMaterialQueryResponse> listMaterial();
-    RetrieveMaterialQueryResponse detailMaterial(Long materialId);
-    void deleteMaterial(Long materialId);
-    void deleteAllMaterial();
+    RetrieveMaterialQueryResponse detailMaterial(UUID materialId);
+    void deleteMaterial(UUID materialId);
 }

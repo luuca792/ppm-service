@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 @Service
 @NoArgsConstructor
@@ -27,36 +28,37 @@ public class MaterialDAO implements IMaterialService{
     private IInfrastructureMapper<CreateMaterialCommandRequest, Material, CreateMaterialCommandResponse> createMaterialEntityMapper;
     @Autowired
     private IInfrastructureMapper<UpdateMaterialCommandRequest, Material, UpdateMaterialCommandResponse> updateMaterialEntityMapper;
+
     @Override
     public CreateMaterialCommandResponse createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest) {
-        return this.createMaterialEntityMapper.reverse(
-                this.materialRepository.save(this.createMaterialEntityMapper.convert(createMaterialCommandRequest))
+        return createMaterialEntityMapper.reverse(
+                materialRepository.save(createMaterialEntityMapper.convert(createMaterialCommandRequest))
         );
     }
 
     @Override
-    public UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, Long materialId) {
-        var retrieveMaterialOptional = this.materialRepository.findById(materialId);
+    public UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId) {
+        var retrieveMaterialOptional = materialRepository.findById(materialId);
         if (retrieveMaterialOptional.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrieveMaterial = retrieveMaterialOptional.get().getId();
         updateMaterialCommandRequest.setMaterialId(retrieveMaterial);
-        return this.updateMaterialEntityMapper.reverse(
-                this.materialRepository.save(this.updateMaterialEntityMapper.convert(updateMaterialCommandRequest))
+        return updateMaterialEntityMapper.reverse(
+                materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest))
         );
     }
 
     @Override
     public List<RetrieveMaterialQueryResponse> listMaterial() {
-        return this.materialRepository.findAll().stream()
+        return materialRepository.findAll().stream()
                 .map(material -> RetrieveMaterialQueryResponse.builder().materialId(material.getId()).materialName(material.getName()).materialType(material.getType()).build())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public RetrieveMaterialQueryResponse detailMaterial(Long materialId) {
-        var retrieveMaterial = this.materialRepository.findById(materialId).get();
+    public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
+        var retrieveMaterial = materialRepository.findById(materialId).get();
         return RetrieveMaterialQueryResponse.builder()
                 .materialId(retrieveMaterial.getId())
                 .materialName(retrieveMaterial.getName())
@@ -65,12 +67,7 @@ public class MaterialDAO implements IMaterialService{
     }
 
     @Override
-    public void deleteMaterial(Long materialId) {
-        this.materialRepository.deleteById(materialId);
-    }
-
-    @Override
-    public void deleteAllMaterial() {
-        this.materialRepository.deleteAll();
+    public void deleteMaterial(UUID materialId) {
+        materialRepository.deleteById(materialId);
     }
 }

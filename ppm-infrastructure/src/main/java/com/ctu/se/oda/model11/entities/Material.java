@@ -4,14 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "materials")
 @Data
 @NoArgsConstructor
 public class Material implements IEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "material_type", nullable = false)
@@ -22,8 +24,7 @@ public class Material implements IEntity{
         this.type = type;
 
     }
-
-    public Material(Long id, String name, Long type) {
+    public Material(UUID id, String name, Long type) {
         this.id = id;
         this.name = name;
         this.type = type;
