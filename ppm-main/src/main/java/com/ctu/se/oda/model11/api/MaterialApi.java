@@ -27,7 +27,7 @@ public class MaterialApi {
     @Autowired
     private IMaterialApplication materialApplication;
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<CreateMaterialCommandResponse> createMaterial(@RequestBody CreateMaterialRequest createMaterialRequest) {
         return new ResponseEntity<>(
                 materialApplication.createMaterial(createMaterialMapper.convert(createMaterialRequest)),
@@ -41,7 +41,7 @@ public class MaterialApi {
                 HttpStatus.OK
         );
     }
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<RetrieveMaterialQueryResponse>> listMaterial() {
         return new ResponseEntity<>(
                 materialApplication.listMaterial(),
