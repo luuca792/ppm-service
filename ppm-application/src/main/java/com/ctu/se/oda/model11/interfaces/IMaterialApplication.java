@@ -11,8 +11,8 @@ import java.util.UUID;
 
 public interface IMaterialApplication {
     CreateMaterialCommandResponse createMaterial(CreateMaterialCommandRequest createMaterialCommandRequest);
-    UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId);
+    UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest);
     List<RetrieveMaterialQueryResponse> listMaterial();
-    RetrieveMaterialQueryResponse detailMaterial(UUID materialId);
-    void deleteMaterial(UUID materialId);
+    RetrieveMaterialQueryResponse detailMaterial(UUID material);
+    void deleteMaterial(UUID material);
 }

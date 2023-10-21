@@ -22,7 +22,7 @@ public class UpdateMaterialCommandRequest {
     @Positive
     private Long materialType;
 
-    public UpdateMaterialCommandRequest(UUID materialId,String materialName, Long materialType) {
+    public UpdateMaterialCommandRequest(UUID materialId, String materialName, Long materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialType = materialType;

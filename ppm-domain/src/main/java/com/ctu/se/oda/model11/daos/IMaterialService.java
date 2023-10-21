@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface IMaterialService {
     CreateMaterialCommandResponse createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest);
-    UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId);
+    UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest);
     List<RetrieveMaterialQueryResponse> listMaterial();
     RetrieveMaterialQueryResponse detailMaterial(UUID materialId);
     void deleteMaterial(UUID materialId);

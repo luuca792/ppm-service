@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.api;
 
+import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.interfaces.IMaterialApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.CreateMaterialCommandRequest;
@@ -9,6 +10,7 @@ import com.ctu.se.oda.model11.models.commands.responses.material.UpdateMaterialC
 import com.ctu.se.oda.model11.models.material.CreateMaterialRequest;
 import com.ctu.se.oda.model11.models.material.UpdateMaterialRequest;
 import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterialQueryResponse;
+import com.ctu.se.oda.model11.repositories.IMaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class MaterialApi {
     private IMainMapper<UpdateMaterialRequest, UpdateMaterialCommandRequest> updateMaterialMapper;
     @Autowired
     private IMaterialApplication materialApplication;
+    @Autowired
+    private IMaterialRepository materialRepository;
 
     @PostMapping()
     public ResponseEntity<CreateMaterialCommandResponse> createMaterial(@RequestBody CreateMaterialRequest createMaterialRequest) {
@@ -35,9 +39,10 @@ public class MaterialApi {
         );
     }
     @PutMapping("/{materialId}")
-    public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable String materialId) {
+    public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable UUID materialId) {
+        updateMaterialRequest.setMaterialId(String.valueOf(materialId));
         return new ResponseEntity<>(
-                materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest), UUID.fromString(materialId)),
+                materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest)),
                 HttpStatus.OK
         );
     }
@@ -48,18 +53,16 @@ public class MaterialApi {
                 HttpStatus.OK
         );
     }
-
     @GetMapping("/{materialId}")
-    public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable String materialId) {
+    public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable UUID materialId) {
         return new ResponseEntity<>(
-                materialApplication.detailMaterial(UUID.fromString(materialId)),
+                materialApplication.detailMaterial(materialId),
                 HttpStatus.OK
         );
     }
-
     @DeleteMapping("/{materialId}")
-    public ResponseEntity<?> deleteMaterial(@PathVariable String materialId) {
-        materialApplication.deleteMaterial(UUID.fromString(materialId));
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteMaterial(@PathVariable UUID materialId) {
+        materialApplication.deleteMaterial(materialId);
+        return new ResponseEntity<String>("Material is deleted", HttpStatus.OK);
     }
 }

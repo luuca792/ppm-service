@@ -27,8 +27,8 @@ public class MaterialApplication implements IMaterialApplication {
     }
 
     @Override
-    public UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId) {
-        return materialService.updateMaterial(updateMaterialCommandRequest, materialId);
+    public UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest) {
+        return materialService.updateMaterial(updateMaterialCommandRequest);
     }
 
     @Override

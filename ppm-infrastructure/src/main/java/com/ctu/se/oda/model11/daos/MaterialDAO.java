@@ -37,13 +37,11 @@ public class MaterialDAO implements IMaterialService{
     }
 
     @Override
-    public UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest, UUID materialId) {
-        var retrieveMaterialOptional = materialRepository.findById(materialId);
-        if (retrieveMaterialOptional.isEmpty()) {
+    public UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
+        var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
+        if (retrieveMaterial.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
-        var retrieveMaterial = retrieveMaterialOptional.get().getId();
-        updateMaterialCommandRequest.setMaterialId(retrieveMaterial);
         return updateMaterialEntityMapper.reverse(
                 materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest))
         );
@@ -67,7 +65,7 @@ public class MaterialDAO implements IMaterialService{
     }
 
     @Override
-    public void deleteMaterial(UUID materialId) {
-        materialRepository.deleteById(materialId);
+    public void deleteMaterial(UUID material) {
+        materialRepository.deleteById(material);
     }
 }
