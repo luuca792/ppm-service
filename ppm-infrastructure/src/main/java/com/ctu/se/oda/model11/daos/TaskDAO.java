@@ -33,12 +33,12 @@ public class TaskDAO implements ITaskService{
     @Autowired
     private IProjectRepository projectRepository;
     @Override
-    public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest, UUID projectId) {
-        var retrieveProjectId = this.projectRepository.findById(projectId);
+    public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
+        var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
         if(retrieveProjectId.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.CANNOT_CREATE_IF_PROJECT_DO_NOT_EXIST);
         }
-        createTaskCommandRequest.setProjectId(retrieveProjectId.get().getId());
+
         return this.createTaskEntityMapper.reverse(
                 this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
         );
@@ -59,6 +59,7 @@ public class TaskDAO implements ITaskService{
                         .taskDescription(task.getDescription())
                         .taskStartAt(task.getStartAt())
                         .taskEndAt(task.getEndAt())
+                        .projectId(task.getProjectId())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -75,6 +76,7 @@ public class TaskDAO implements ITaskService{
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
+                .projectId(retrievedTask.getProjectId())
                 .build();
     }
 

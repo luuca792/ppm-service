@@ -21,8 +21,8 @@ public class TaskApplication implements ITaskApplication {
     private ITaskService taskService;
 
     @Override
-    public CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest, UUID projectId) {
-        return this.taskService.createTask(createTaskCommandRequest, projectId);
+    public CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest) {
+        return this.taskService.createTask(createTaskCommandRequest);
     }
 
     @Override

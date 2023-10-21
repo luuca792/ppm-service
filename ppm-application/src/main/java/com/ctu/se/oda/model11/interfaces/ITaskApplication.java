@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITaskApplication {
-    CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest, UUID projectId);
+    CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest);
 
     UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
 

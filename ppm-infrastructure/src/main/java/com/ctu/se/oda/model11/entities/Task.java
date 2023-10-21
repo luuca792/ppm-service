@@ -23,7 +23,7 @@ public class Task implements IEntity{
     private LocalDate startAt;
     @Column(name = "end_at")
     private LocalDate endAt;
-    @Column
+    @Column(name = "project_id")
     private UUID projectId;
 
     public Task(String name, String description, LocalDate startAt, LocalDate endAt, UUID projectId) {
