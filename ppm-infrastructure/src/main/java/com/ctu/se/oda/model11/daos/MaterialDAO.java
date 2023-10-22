@@ -50,7 +50,11 @@ public class MaterialDAO implements IMaterialService{
     @Override
     public List<RetrieveMaterialQueryResponse> listMaterial() {
         return materialRepository.findAll().stream()
-                .map(material -> RetrieveMaterialQueryResponse.builder().materialId(material.getId()).materialName(material.getName()).materialType(material.getType()).build())
+                .map(material -> RetrieveMaterialQueryResponse.builder()
+                        .materialId(material.getId())
+                        .materialName(material.getName())
+                        .materialType(material.getType())
+                        .build())
                 .collect(Collectors.toList());
     }
 
