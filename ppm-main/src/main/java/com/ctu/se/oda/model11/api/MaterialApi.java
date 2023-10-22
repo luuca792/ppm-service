@@ -28,8 +28,6 @@ public class MaterialApi {
     private IMainMapper<UpdateMaterialRequest, UpdateMaterialCommandRequest> updateMaterialMapper;
     @Autowired
     private IMaterialApplication materialApplication;
-    @Autowired
-    private IMaterialRepository materialRepository;
 
     @PostMapping()
     public ResponseEntity<CreateMaterialCommandResponse> createMaterial(@RequestBody CreateMaterialRequest createMaterialRequest) {
