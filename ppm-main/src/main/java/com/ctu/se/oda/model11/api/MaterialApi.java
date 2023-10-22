@@ -1,6 +1,5 @@
 package com.ctu.se.oda.model11.api;
 
-import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.interfaces.IMaterialApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.CreateMaterialCommandRequest;
@@ -10,7 +9,6 @@ import com.ctu.se.oda.model11.models.commands.responses.material.UpdateMaterialC
 import com.ctu.se.oda.model11.models.material.CreateMaterialRequest;
 import com.ctu.se.oda.model11.models.material.UpdateMaterialRequest;
 import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterialQueryResponse;
-import com.ctu.se.oda.model11.repositories.IMaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
