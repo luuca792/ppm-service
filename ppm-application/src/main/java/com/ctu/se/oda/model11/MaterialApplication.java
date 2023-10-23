@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @NoArgsConstructor
@@ -19,33 +20,30 @@ public class MaterialApplication implements IMaterialApplication {
 
     @Autowired
     private IMaterialService materialService;
+
     @Override
     public CreateMaterialCommandResponse createMaterial(CreateMaterialCommandRequest createMaterialCommandRequest) {
-        return this.materialService.createMaterial(createMaterialCommandRequest);
+        return materialService.createMaterial(createMaterialCommandRequest);
     }
 
     @Override
-    public UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest, Long materialId) {
-        return this.materialService.updateMaterial(updateMaterialCommandRequest, materialId);
+    public UpdateMaterialCommandResponse updateMaterial(UpdateMaterialCommandRequest updateMaterialCommandRequest) {
+        return materialService.updateMaterial(updateMaterialCommandRequest);
     }
 
     @Override
     public List<RetrieveMaterialQueryResponse> listMaterial() {
-        return this.materialService.listMaterial();
+        return materialService.listMaterial();
     }
 
     @Override
-    public RetrieveMaterialQueryResponse detailMaterial(Long materialId) {
-        return this.materialService.detailMaterial(materialId);
+    public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
+        return materialService.detailMaterial(materialId);
     }
 
     @Override
-    public void deleteMaterial(Long materialId) {
-        this.materialService.deleteMaterial(materialId);
+    public void deleteMaterial(UUID materialId) {
+        materialService.deleteMaterial(materialId);
     }
 
-    @Override
-    public void deleteAllMaterial() {
-        this.materialService.deleteAllMaterial();
-    }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdateMaterialRequest {
-    private Long materialId;
+    private String materialId;
     private String materialName;
     private Long materialType;
 }

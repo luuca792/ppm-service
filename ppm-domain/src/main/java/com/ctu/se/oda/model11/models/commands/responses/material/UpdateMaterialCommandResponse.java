@@ -5,16 +5,17 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @Builder
 @RequiredArgsConstructor
 public class UpdateMaterialCommandResponse {
-    private Long materialId;
+    private UUID materialId;
     private String materialName;
     private Long materialType;
 
-    public UpdateMaterialCommandResponse(Long materialId, String materialName, Long materialType) {
+    public UpdateMaterialCommandResponse(UUID materialId, String materialName, Long materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialType = materialType;

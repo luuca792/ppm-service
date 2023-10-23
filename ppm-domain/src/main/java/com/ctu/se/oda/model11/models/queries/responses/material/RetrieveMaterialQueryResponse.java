@@ -4,15 +4,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @RequiredArgsConstructor
 public class RetrieveMaterialQueryResponse {
-    private Long materialId;
+    private UUID materialId;
     private String materialName;
     private Long materialType;
 
-    public RetrieveMaterialQueryResponse(Long materialId, String materialName, Long materialType) {
+    public RetrieveMaterialQueryResponse(UUID materialId, String materialName, Long materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialType = materialType;

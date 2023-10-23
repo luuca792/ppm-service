@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class CreateResourceEntityMapper implements IInfrastructureMapper<CreateResourceCommandRequest, Resource, CreateResourceCommandResponse> {
+public class CreateResourceEntityMapper implements IInfrastructureMapper<CreateResourceCommandRequest, Resource, CreateResourceCommandResponse>{
 
     @Override
     public Resource convert(CreateResourceCommandRequest source) {
