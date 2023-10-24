@@ -31,6 +31,7 @@ public class TaskDAO implements ITaskService{
     private ITaskRepository taskRepository;
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
+        int day = createTaskCommandRequest.getTaskStartAt().getDayOfYear();
         return this.createTaskEntityMapper.reverse(
                 this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
         );
@@ -50,7 +51,7 @@ public class TaskDAO implements ITaskService{
                         .taskName(task.getName())
                         .taskDescription(task.getDescription())
                         .taskStartAt(task.getStartAt())
-                        .taskEndAt(task.getEndAt())
+                        .taskDuration(task.getDuration())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -66,7 +67,7 @@ public class TaskDAO implements ITaskService{
                 .taskName(retrievedTask.getName())
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
-                .taskEndAt(retrievedTask.getEndAt())
+                .taskDuration(retrievedTask.getDuration())
                 .build();
     }
 

@@ -20,6 +20,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
+                .taskDuration(source.getTaskDuration())
                 .build();
     }
     @Override
@@ -29,6 +30,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
+                .taskDuration(destination.getTaskDuration())
                 .build();
     }
 }

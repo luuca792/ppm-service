@@ -23,19 +23,23 @@ public class Task implements IEntity{
     private LocalDate startAt;
     @Column(name = "end_at")
     private LocalDate endAt;
+    @Column(name = "duration")
+    private Double duration;
 
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt) {
+    public Task(String name, String description, LocalDate startAt, LocalDate endAt, Double duration) {
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.duration = duration;
     }
 
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt) {
+    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, Double duration) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.duration = duration;
     }
 }

@@ -21,7 +21,8 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 source.getTaskName(),
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
-                source.getTaskEndAt()
+                source.getTaskEndAt(),
+                source.getTaskDuration()
         );
     }
     @Override
@@ -32,6 +33,7 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
+                .taskDuration(destination.getDuration())
                 .build();
     }
 }

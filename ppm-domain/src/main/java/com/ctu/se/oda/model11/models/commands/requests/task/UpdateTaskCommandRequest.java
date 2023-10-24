@@ -25,13 +25,16 @@ public class UpdateTaskCommandRequest {
     private LocalDate taskStartAt;
     @NotNull
     private LocalDate taskEndAt;
+    @NotNull
+    private Double taskDuration;
 
-    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
+    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskDuration = taskDuration;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class UpdateTaskCommandRequest {
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
+                ", taskDuration=" + taskDuration +
                 '}';
     }
 }

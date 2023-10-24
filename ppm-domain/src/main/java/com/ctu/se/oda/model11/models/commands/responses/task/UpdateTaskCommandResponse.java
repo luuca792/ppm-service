@@ -17,13 +17,15 @@ public class UpdateTaskCommandResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+    private Double taskDuration;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskDuration = taskDuration;
     }
 
     @Override
@@ -31,11 +33,11 @@ public class UpdateTaskCommandResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UpdateTaskCommandResponse that = (UpdateTaskCommandResponse) o;
-        return Objects.equals(taskId, that.taskId) && Objects.equals(taskName, that.taskName) && Objects.equals(taskDescription, that.taskDescription) && Objects.equals(taskStartAt, that.taskStartAt) && Objects.equals(taskEndAt, that.taskEndAt);
+        return Objects.equals(taskId, that.taskId) && Objects.equals(taskName, that.taskName) && Objects.equals(taskDescription, that.taskDescription) && Objects.equals(taskStartAt, that.taskStartAt) && Objects.equals(taskEndAt, that.taskEndAt) && Objects.equals(taskDuration, that.taskDuration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt);
+        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskDescription);
     }
 }

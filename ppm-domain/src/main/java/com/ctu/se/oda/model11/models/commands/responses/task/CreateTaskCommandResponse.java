@@ -16,12 +16,14 @@ public class CreateTaskCommandResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+    private Double taskDuration;
 
-    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
+    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskDuration = taskDuration;
     }
 }
