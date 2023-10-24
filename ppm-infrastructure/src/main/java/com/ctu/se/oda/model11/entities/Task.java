@@ -24,18 +24,32 @@ public class Task implements IEntity{
     @Column(name = "end_at")
     private LocalDate endAt;
 
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt) {
-        this.name = name;
-        this.description = description;
-        this.startAt = startAt;
-        this.endAt = endAt;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="task_status")
+    private TaskStatus taskStatus = TaskStatus.OPEN;
+
+    public Task(String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus) {
+        name = name;
+        description = description;
+        startAt = startAt;
+        endAt = endAt;
+        taskStatus = TaskStatus.OPEN;
     }
 
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.startAt = startAt;
-        this.endAt = endAt;
+    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus) {
+        id = id;
+        name = name;
+        description = description;
+        startAt = startAt;
+        endAt = endAt;
+        taskStatus = taskStatus;
+    }
+
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(TaskStatus taskStatus) {
+        taskStatus = taskStatus;
     }
 }

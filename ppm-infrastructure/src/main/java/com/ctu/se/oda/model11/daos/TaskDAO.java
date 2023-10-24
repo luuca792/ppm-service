@@ -51,6 +51,7 @@ public class TaskDAO implements ITaskService{
                         .taskDescription(task.getDescription())
                         .taskStartAt(task.getStartAt())
                         .taskEndAt(task.getEndAt())
+                        .taskStatus(task.getTaskStatus())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -61,13 +62,16 @@ public class TaskDAO implements ITaskService{
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrievedTask =  retrievedTaskOptional.get();
-        return RetrieveTaskQueryResponse.builder()
+        var test1 = RetrieveTaskQueryResponse.builder()
                 .taskId(retrievedTask.getId())
                 .taskName(retrievedTask.getName())
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
+                .taskStatus(retrievedTask.getTaskStatus())
                 .build();
+        System.out.println(test1);
+        return test1;
     }
 
     @Override

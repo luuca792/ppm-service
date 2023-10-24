@@ -22,15 +22,15 @@ public class Project implements IEntity{
     private UUID creatorId;
 
     public Project(String name, Double duration, UUID creatorId) {
-        this.name = name;
-        this.duration = duration;
-        this.creatorId = creatorId;
+        name = name;
+        duration = duration;
+        creatorId = creatorId;
     }
 
     public Project(UUID id, String name, Double duration, UUID creatorId) {
-        this.id = id;
-        this.name = name;
-        this.duration = duration;
-        this.creatorId = creatorId;
+        id = id;
+        name = name;
+        duration = duration;
+        creatorId = creatorId;
     }
 }

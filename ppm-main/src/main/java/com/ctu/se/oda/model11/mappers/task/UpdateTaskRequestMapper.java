@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.mappers.task;
 
+import com.ctu.se.oda.model11.entities.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
@@ -20,6 +21,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
+                .taskStatus(source.getTaskStatus())
                 .build();
     }
     @Override
@@ -30,6 +32,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
+                .taskStatus((TaskStatus) destination.getTaskStatus())
                 .build();
     }
 }

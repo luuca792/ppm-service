@@ -16,9 +16,9 @@ public class RetrieveProjectQueryResponse {
     private UUID projectCreatorId;
 
     public RetrieveProjectQueryResponse(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.projectDuration = projectDuration;
-        this.projectCreatorId = projectCreatorId;
+        projectId = projectId;
+        projectName = projectName;
+        projectDuration = projectDuration;
+        projectCreatorId = projectCreatorId;
     }
 }

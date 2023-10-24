@@ -1,11 +1,9 @@
 package com.ctu.se.oda.model11.mappers.task;
 
-import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.entities.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,12 +14,14 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
 
     @Override
     public Task convert(CreateTaskCommandRequest source) {
-        return new Task(
+        Task newTask = new Task(
                 source.getTaskName(),
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
-                source.getTaskEndAt()
+                source.getTaskEndAt(),
+                TaskStatus.OPEN
         );
+        return newTask;
     }
 
     @Override
@@ -32,6 +32,7 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
+                .taskStatus(destination.getTaskStatus())
                 .build();
     }
 }

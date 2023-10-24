@@ -22,9 +22,9 @@ public class CreateProjectCommandRequest {
     private UUID projectCreatorId;
 
     public CreateProjectCommandRequest(String projectName, Double projectDuration, UUID projectCreatorId) {
-        this.projectName = projectName;
-        this.projectDuration = projectDuration;
-        this.projectCreatorId = projectCreatorId;
+        projectName = projectName;
+        projectDuration = projectDuration;
+        projectCreatorId = projectCreatorId;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.models.queries.responses.task;
 
+
+import com.ctu.se.oda.model11.daos.ITaskStatusService;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,14 @@ public class RetrieveTaskQueryResponse {
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
 
-    public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        this.taskStartAt = taskStartAt;
-        this.taskEndAt = taskEndAt;
+    private ITaskStatusService taskStatus;
+
+    public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, ITaskStatusService taskStatus) {
+        taskId = taskId;
+        taskName = taskName;
+        taskDescription = taskDescription;
+        taskStartAt = taskStartAt;
+        taskEndAt = taskEndAt;
+        taskStatus = taskStatus;
     }
 }
