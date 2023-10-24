@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.repositories;
 
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.ProjectStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

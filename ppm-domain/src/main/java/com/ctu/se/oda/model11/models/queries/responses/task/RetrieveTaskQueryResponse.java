@@ -18,10 +18,10 @@ public class RetrieveTaskQueryResponse {
     private LocalDate taskEndAt;
 
     public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        this.taskStartAt = taskStartAt;
-        this.taskEndAt = taskEndAt;
+        taskId = taskId;
+        taskName = taskName;
+        taskDescription = taskDescription;
+        taskStartAt = taskStartAt;
+        taskEndAt = taskEndAt;
     }
 }

@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.mappers.project;
 
+import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.ProjectStatus;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
@@ -17,6 +19,7 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
                 .projectName(source.getProjectName())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
+                .projectStatus(source.getProjectStatus())
                 .build();
     }
 
@@ -27,6 +30,7 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
                 .projectName(destination.getProjectName())
                 .projectDuration(destination.getProjectDuration())
                 .projectCreatorId(destination.getProjectCreatorId().toString())
+                .projectName(destination.getProjectStatus().toString())
                 .build();
     }
 }

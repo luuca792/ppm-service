@@ -2,6 +2,7 @@ package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.daos.IProjectService;
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.ProjectStatus;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -48,7 +49,13 @@ public class ProjectDAO implements IProjectService {
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return this.projectRepository.findAll().stream()
-                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
+                .map(project -> RetrieveProjectQueryResponse.builder()
+                        .projectId(project.getId())
+                        .projectName(project.getName())
+                        .projectDuration(project.getDuration())
+                        .projectCreatorId(project.getCreatorId())
+                        .projectStatus(project.getStatus())
+                        .build())
                 .collect(Collectors.toList());
     }
     @Override
@@ -58,12 +65,14 @@ public class ProjectDAO implements IProjectService {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrievedProject = retrievedProjectOptional.get();
-        return RetrieveProjectQueryResponse.builder()
+        var showDetailProject = RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())
                 .projectDuration(retrievedProject.getDuration())
                 .projectCreatorId(retrievedProject.getCreatorId())
+                .projectStatus(retrievedProject.getStatus())
                 .build();
+        return showDetailProject;
     }
 
     @Override

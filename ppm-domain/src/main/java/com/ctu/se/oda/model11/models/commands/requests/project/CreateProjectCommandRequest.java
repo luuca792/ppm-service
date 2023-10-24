@@ -22,17 +22,17 @@ public class CreateProjectCommandRequest {
     private UUID projectCreatorId;
 
     public CreateProjectCommandRequest(String projectName, Double projectDuration, UUID projectCreatorId) {
-        this.projectName = projectName;
-        this.projectDuration = projectDuration;
-        this.projectCreatorId = projectCreatorId;
+        projectName = projectName;
+        projectDuration = projectDuration;
+        projectCreatorId = projectCreatorId;
     }
 
     @Override
     public String toString() {
         return "CreateProjectCommandRequest{" +
-                "projectName=" + this.projectName +
-                ", projectDuration=" + this.projectDuration +
-                ", projectCreatorId=" + this.projectCreatorId +
+                "projectName=" + projectName +
+                ", projectDuration=" + projectDuration +
+                ", projectCreatorId=" + projectCreatorId +
                 '}';
     }
 

@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.mappers.project;
 
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.ProjectStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
@@ -19,7 +20,8 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
                 source.getProjectId(),
                 source.getProjectName(),
                 source.getProjectDuration(),
-                source.getProjectCreatorId()
+                source.getProjectCreatorId(),
+                (ProjectStatus) source.getProjectStatus()
         );
     }
 
@@ -30,6 +32,7 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
                 .projectName(destination.getName())
                 .projectDuration(destination.getDuration())
                 .projectCreatorId(destination.getCreatorId())
+                .projectStatus(destination.getProjectStatus())
                 .build();
     }
 }

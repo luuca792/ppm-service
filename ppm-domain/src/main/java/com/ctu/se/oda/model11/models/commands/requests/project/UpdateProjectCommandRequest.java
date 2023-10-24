@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.project;
 
+import com.ctu.se.oda.model11.daos.IProjectStatusService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -23,12 +24,14 @@ public class UpdateProjectCommandRequest {
     private Double projectDuration;
     @NotNull
     private UUID projectCreatorId;
-
-    public UpdateProjectCommandRequest(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.projectDuration = projectDuration;
-        this.projectCreatorId = projectCreatorId;
+    @NotNull
+    private IProjectStatusService projectStatus;
+    public UpdateProjectCommandRequest(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId, IProjectStatusService projectStatus) {
+        projectId = projectId;
+        projectName = projectName;
+        projectDuration = projectDuration;
+        projectCreatorId = projectCreatorId;
+        projectStatus = projectStatus;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class UpdateProjectCommandRequest {
                 ", projectName='" + projectName + '\'' +
                 ", projectDuration=" + projectDuration +
                 ", projectCreatorId=" + projectCreatorId +
+                ", projectStatus=" + projectStatus +
                 '}';
     }
 }
