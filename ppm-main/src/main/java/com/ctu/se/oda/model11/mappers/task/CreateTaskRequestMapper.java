@@ -13,6 +13,7 @@ import java.util.UUID;
 @Component
 @NoArgsConstructor
 public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, CreateTaskCommandRequest> {
+
     @Override
     public CreateTaskCommandRequest convert(CreateTaskRequest source) {
         return CreateTaskCommandRequest.builder()
@@ -22,6 +23,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskEndAt(source.getTaskEndAt())
                 .build();
     }
+
     @Override
     public CreateTaskRequest reverse(CreateTaskCommandRequest destination) {
         return CreateTaskRequest.builder()

@@ -13,6 +13,7 @@ import java.util.UUID;
 @Component
 @NoArgsConstructor
 public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> {
+
     @Override
     public UpdateTaskCommandRequest convert(UpdateTaskRequest source) {
         return UpdateTaskCommandRequest.builder()
@@ -22,6 +23,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskEndAt(source.getTaskEndAt())
                 .build();
     }
+
     @Override
     public UpdateTaskRequest reverse(UpdateTaskCommandRequest destination) {
         return UpdateTaskRequest.builder()

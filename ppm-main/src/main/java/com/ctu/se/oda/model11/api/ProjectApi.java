@@ -21,8 +21,10 @@ import java.util.stream.Collector;
 @RestController
 @RequestMapping("/projects")
 public class ProjectApi {
+
     @Autowired
     private IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> createProjectMapper;
+
     @Autowired
     private IMainMapper<UpdateProjectRequest, UpdateProjectCommandRequest> updateProjectMapper;
 
@@ -36,6 +38,7 @@ public class ProjectApi {
                 HttpStatus.CREATED
         );
     }
+
     @PatchMapping("/{projectId}")
     public ResponseEntity<UpdateProjectCommandResponse> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable UUID projectId) {
         updateProjectRequest.setProjectId(projectId);
@@ -44,6 +47,7 @@ public class ProjectApi {
                 HttpStatus.OK
         );
     }
+
     @GetMapping()
     public ResponseEntity<List<RetrieveProjectQueryResponse>> listProject() {
         return new ResponseEntity<>(
@@ -51,6 +55,7 @@ public class ProjectApi {
                 HttpStatus.OK
         );
     }
+
     @GetMapping("/{projectId}")
     public ResponseEntity<RetrieveProjectQueryResponse> detailProject(@PathVariable UUID projectId) {
         return new ResponseEntity<>(
@@ -58,6 +63,7 @@ public class ProjectApi {
                 HttpStatus.OK
         );
     }
+
     @DeleteMapping("/{projectId}")
     public ResponseEntity<?> deleteProject(@PathVariable UUID projectId) {
         projectApplication.deleteProject(projectId);

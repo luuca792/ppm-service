@@ -8,8 +8,12 @@ import java.util.UUID;
 @Data
 @Builder
 public class UpdateProjectRequest {
+
     private UUID projectId;
+
     private String projectName;
+
     private Double projectDuration;
+
     private String projectCreatorId;
 }

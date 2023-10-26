@@ -33,7 +33,7 @@ public class TaskApi {
                 HttpStatus.CREATED
         );
     }
-    @PutMapping("/{taskId}")
+    @PatchMapping("/{taskId}")
     public ResponseEntity<UpdateTaskCommandResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
         return new ResponseEntity<>(
                 this.taskApplication.updateTask(this.updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)),
