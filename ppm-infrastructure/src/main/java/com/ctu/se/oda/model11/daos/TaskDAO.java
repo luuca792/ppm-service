@@ -8,6 +8,7 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
+import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,15 @@ public class TaskDAO implements ITaskService{
     private IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> updateTaskEntityMapper;
     @Autowired
     private ITaskRepository taskRepository;
+    @Autowired
+    private IProjectRepository projectRepository;
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
+        var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
+        if(retrieveProjectId.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.CANNOT_CREATE_IF_PROJECT_DO_NOT_EXIST);
+        }
+
         return this.createTaskEntityMapper.reverse(
                 this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
         );
@@ -51,6 +59,7 @@ public class TaskDAO implements ITaskService{
                         .taskDescription(task.getDescription())
                         .taskStartAt(task.getStartAt())
                         .taskEndAt(task.getEndAt())
+                        .projectId(task.getProjectId())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -67,6 +76,7 @@ public class TaskDAO implements ITaskService{
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
+                .projectId(retrievedTask.getProjectId())
                 .build();
     }
 

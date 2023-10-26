@@ -21,6 +21,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
+                .projectId(UUID.fromString(source.getProjectId()))
                 .build();
     }
 
@@ -32,6 +33,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
+                .projectId(destination.getProjectId().toString())
                 .build();
     }
 }
