@@ -19,5 +19,6 @@ public interface ITaskApplication {
 
     RetrieveTaskQueryResponse detailTask(UUID taskId);
 
+    CreateTaskCommandResponse addSubTaskToTask(CreateTaskCommandRequest createTaskCommandRequest, UUID taskParentId);
     void deleteTask(UUID taskId);
 }

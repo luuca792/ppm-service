@@ -27,21 +27,39 @@ public class TaskApi {
     @Autowired
     private ITaskApplication taskApplication;
 
-    @PostMapping()
     public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
-        return new ResponseEntity<>(
-                this.taskApplication.createTask(createTaskMapper.convert(createTaskRequest)),
-                HttpStatus.CREATED
-        );
+        CreateTaskCommandRequest createTaskCommandRequest = this.createTaskMapper.convert(createTaskRequest);
+        if ((createTaskRequest.getTaskParentId() == null)) {
+            return new ResponseEntity<>(
+                    this.taskApplication.createTask(createTaskCommandRequest),
+                    HttpStatus.CREATED
+            );
+        } else {
+            return new ResponseEntity(
+                    this.taskApplication.addSubTaskToTask(this.createTaskMapper.convert(createTaskRequest), createTaskRequest.getTaskParentId()),
+                    HttpStatus.CREATED
+            );
+        }
     }
     @PutMapping("/{taskId}")
-    public ResponseEntity<UpdateTaskCommandResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
-        return new ResponseEntity<>(
-                this.taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)),
-                HttpStatus.OK
-        );
+    public ResponseEntity<?> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
+        if (updateTaskRequest == null || taskId == null || taskId.isEmpty()) {
+            return new ResponseEntity<>("Invalid request data", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            UpdateTaskCommandResponse updatedTask = this.taskApplication.updateTask(
+                    this.updateTaskMapper.convert(updateTaskRequest),
+                    UUID.fromString(taskId)
+            );
+            if (updatedTask == null) {
+                return new ResponseEntity<>("Task not found or update failed", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Invalid task ID format", HttpStatus.BAD_REQUEST);
+        }
     }
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(this.taskApplication.listTask(), HttpStatus.OK);
     }

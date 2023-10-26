@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,14 +19,18 @@ public class UpdateTaskCommandResponse {
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
     private UUID projectId;
+    private UUID taskParentId;
+    private List<UpdateTaskCommandResponse> subtasks;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId) {
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
         this.projectId = projectId;
+        this.taskParentId = taskParentId;
+        this.subtasks = subtasks;
     }
 
     @Override

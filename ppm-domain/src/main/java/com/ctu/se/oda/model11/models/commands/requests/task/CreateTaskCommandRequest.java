@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -27,13 +28,17 @@ public class CreateTaskCommandRequest {
     private LocalDate taskEndAt;
     @NotNull
     private UUID projectId;
+    private UUID taskParentId;
+    private List<CreateTaskCommandRequest> subtasks;
 
-    public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId) {
+    public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
         this.projectId = projectId;
+        this.taskParentId = taskParentId;
+        this.subtasks = subtasks;
     }
 
     @Override
@@ -44,6 +49,8 @@ public class CreateTaskCommandRequest {
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
                 ", projectId=" + projectId +
+                ", taskParentId=" + taskParentId +
+                ", subtasks=" + subtasks +
                 '}';
     }
 }

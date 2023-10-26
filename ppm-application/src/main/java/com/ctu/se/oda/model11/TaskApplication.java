@@ -41,6 +41,10 @@ public class TaskApplication implements ITaskApplication {
     }
 
     @Override
+    public CreateTaskCommandResponse addSubTaskToTask(CreateTaskCommandRequest createTaskCommandRequest, UUID taskParentId) {
+        return this.taskService.addSubTaskToTask(createTaskCommandRequest, taskParentId);
+    }
+    @Override
     public void deleteTask(UUID taskId) {
         this.taskService.deleteTask(taskId);
     }
