@@ -14,7 +14,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
     @Override
     public UpdateMaterialCommandRequest convert(UpdateMaterialRequest source) {
         return UpdateMaterialCommandRequest.builder()
-                .materialId(UUID.fromString(source.getMaterialId()))
+                .materialId(source.getMaterialId())
                 .materialName(source.getMaterialName())
                 .materialType(source.getMaterialType())
                 .build();
@@ -23,7 +23,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
     @Override
     public UpdateMaterialRequest reverse(UpdateMaterialCommandRequest destination) {
         return UpdateMaterialRequest.builder()
-                .materialId(destination.getMaterialId().toString())
+                .materialId(destination.getMaterialId())
                 .materialName(destination.getMaterialName())
                 .materialType(destination.getMaterialType())
                 .build();
