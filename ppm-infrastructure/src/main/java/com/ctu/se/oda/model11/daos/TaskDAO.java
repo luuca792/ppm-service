@@ -36,7 +36,7 @@ public class TaskDAO implements ITaskService{
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
         if(retrieveProjectId.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.CANNOT_CREATE_IF_PROJECT_DO_NOT_EXIST);
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
 
         return this.createTaskEntityMapper.reverse(
