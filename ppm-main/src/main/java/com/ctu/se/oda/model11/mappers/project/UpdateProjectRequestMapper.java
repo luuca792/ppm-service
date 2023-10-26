@@ -14,6 +14,7 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
     @Override
     public UpdateProjectCommandRequest convert(UpdateProjectRequest source) {
         return UpdateProjectCommandRequest.builder()
+                .projectId(source.getProjectId())
                 .projectName(source.getProjectName())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
@@ -23,7 +24,7 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
     @Override
     public UpdateProjectRequest reverse(UpdateProjectCommandRequest destination) {
         return UpdateProjectRequest.builder()
-                .projectId(destination.getProjectId().toString())
+                .projectId(destination.getProjectId())
                 .projectName(destination.getProjectName())
                 .projectDuration(destination.getProjectDuration())
                 .projectCreatorId(destination.getProjectCreatorId().toString())

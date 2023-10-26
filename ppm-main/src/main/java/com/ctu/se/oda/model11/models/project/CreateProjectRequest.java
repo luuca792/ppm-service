@@ -10,5 +10,5 @@ import java.util.UUID;
 public class CreateProjectRequest {
     private String projectName;
     private Double projectDuration;
-    private String projectCreatorId;
+    private UUID projectCreatorId;
 }

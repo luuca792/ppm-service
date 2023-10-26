@@ -29,37 +29,38 @@ public class ProjectApi {
     @Autowired
     private IProjectApplication projectApplication;
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<CreateProjectCommandResponse> createProject(@RequestBody CreateProjectRequest createProjectRequest) {
         return new ResponseEntity<>(
-                this.projectApplication.createProject(this.createProjectMapper.convert(createProjectRequest)),
+                projectApplication.createProject(createProjectMapper.convert(createProjectRequest)),
                 HttpStatus.CREATED
         );
     }
-    @PutMapping("/{projectId}")
-    public ResponseEntity<UpdateProjectCommandResponse> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable String projectId) {
+    @PatchMapping("/{projectId}")
+    public ResponseEntity<UpdateProjectCommandResponse> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable UUID projectId) {
+        updateProjectRequest.setProjectId(projectId);
         return new ResponseEntity<>(
-                this.projectApplication.updateProject(this.updateProjectMapper.convert(updateProjectRequest), UUID.fromString(projectId)),
+                projectApplication.updateProject(updateProjectMapper.convert(updateProjectRequest)),
                 HttpStatus.OK
         );
     }
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<RetrieveProjectQueryResponse>> listProject() {
         return new ResponseEntity<>(
-            this.projectApplication.listProject(),
+            projectApplication.listProject(),
                 HttpStatus.OK
         );
     }
     @GetMapping("/{projectId}")
-    public ResponseEntity<RetrieveProjectQueryResponse> detailProject(@PathVariable String projectId) {
+    public ResponseEntity<RetrieveProjectQueryResponse> detailProject(@PathVariable UUID projectId) {
         return new ResponseEntity<>(
-                this.projectApplication.detailProject(UUID.fromString(projectId)),
+                projectApplication.detailProject(projectId),
                 HttpStatus.OK
         );
     }
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {
-        this.projectApplication.deleteProject(UUID.fromString(projectId));
+    public ResponseEntity<?> deleteProject(@PathVariable UUID projectId) {
+        projectApplication.deleteProject(projectId);
         return ResponseEntity.noContent().build();
     }
 }
