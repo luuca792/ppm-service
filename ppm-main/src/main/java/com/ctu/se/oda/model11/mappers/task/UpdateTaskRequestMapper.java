@@ -17,23 +17,24 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
     @Override
     public UpdateTaskCommandRequest convert(UpdateTaskRequest source) {
         return UpdateTaskCommandRequest.builder()
+                .taskId(source.getTaskId())
                 .taskName(source.getTaskName())
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
-                .projectId(UUID.fromString(source.getProjectId()))
+                .projectId(source.getProjectId())
                 .build();
     }
 
     @Override
     public UpdateTaskRequest reverse(UpdateTaskCommandRequest destination) {
         return UpdateTaskRequest.builder()
-                .taskId(destination.getTaskId().toString())
+                .taskId(destination.getTaskId())
                 .taskName(destination.getTaskName())
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-                .projectId(destination.getProjectId().toString())
+                .projectId(destination.getProjectId())
                 .build();
     }
 }

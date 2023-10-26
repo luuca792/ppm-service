@@ -21,7 +21,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
-                .projectId(UUID.fromString(source.getProjectId()))
+                .projectId(source.getProjectId())
                 .build();
     }
 
@@ -32,7 +32,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-                .projectId(destination.getProjectId().toString())
+                .projectId(destination.getProjectId())
                 .build();
     }
 }

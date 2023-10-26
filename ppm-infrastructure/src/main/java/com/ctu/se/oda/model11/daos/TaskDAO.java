@@ -24,32 +24,42 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Validated
 public class TaskDAO implements ITaskService{
+
     @Autowired
     private IInfrastructureMapper<CreateTaskCommandRequest, Task, CreateTaskCommandResponse> createTaskEntityMapper;
+
     @Autowired
     private IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> updateTaskEntityMapper;
+
     @Autowired
     private ITaskRepository taskRepository;
+
     @Autowired
     private IProjectRepository projectRepository;
+
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
         if(retrieveProjectId.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.CANNOT_CREATE_IF_PROJECT_DO_NOT_EXIST);
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
 
         return this.createTaskEntityMapper.reverse(
                 this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
         );
     }
+
     @Override
-    public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId) {
-        updateTaskCommandRequest.setTaskId(taskId);
+    public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
+        var optionalProject = projectRepository.findById(updateTaskCommandRequest.getProjectId());
+        if (optionalProject.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+        }
         return this.updateTaskEntityMapper.reverse(
                 this.taskRepository.save(this.updateTaskEntityMapper.convert(updateTaskCommandRequest))
         );
     }
+
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
         return this.taskRepository.findAll().stream().map(
@@ -63,6 +73,7 @@ public class TaskDAO implements ITaskService{
                         .build()
         ).collect(Collectors.toList());
     }
+
     @Override
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
         var retrievedTaskOptional = this.taskRepository.findById(taskId);
