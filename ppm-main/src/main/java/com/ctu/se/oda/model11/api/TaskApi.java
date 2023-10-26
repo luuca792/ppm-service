@@ -26,21 +26,22 @@ public class TaskApi {
     private IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> updateTaskMapper;
     @Autowired
     private ITaskApplication taskApplication;
-    @PostMapping("")
+
+    @PostMapping()
     public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
-        return new ResponseEntity(
-                this.taskApplication.createTask(this.createTaskMapper.convert(createTaskRequest)),
+        return new ResponseEntity<>(
+                this.taskApplication.createTask(createTaskMapper.convert(createTaskRequest)),
                 HttpStatus.CREATED
         );
     }
     @PutMapping("/{taskId}")
     public ResponseEntity<UpdateTaskCommandResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
         return new ResponseEntity<>(
-                this.taskApplication.updateTask(this.updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)),
+                this.taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)),
                 HttpStatus.OK
         );
     }
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(this.taskApplication.listTask(), HttpStatus.OK);
     }
