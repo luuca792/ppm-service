@@ -10,5 +10,9 @@ public class CustomErrorMessage {
 
     public static String PROJECT_ID_DO_NOT_EXIST = "Project ID doesn't exist, please try again";
 
+    public static String TASK_ID_DO_NOT_EXIST = "Task ID doesn't exist, please try again";
+
     public static String NOT_FOUND_BY_ID = "Can not found this entity by ID";
+
+    public static String START_DATE_BEFORE_END_DATE = "Start Date need to be set before End Date, please try again";
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -39,30 +40,48 @@ public class TaskDAO implements ITaskService{
 
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
-        var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
+        var retrieveProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
         if(retrieveProjectId.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
-
-        return this.createTaskEntityMapper.reverse(
-                this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
+        return createTaskEntityMapper.reverse(
+                taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest))
         );
     }
 
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
-        var optionalProject = projectRepository.findById(updateTaskCommandRequest.getProjectId());
-        if (optionalProject.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+        var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
+        if (optionalTask.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
-        return this.updateTaskEntityMapper.reverse(
-                this.taskRepository.save(this.updateTaskEntityMapper.convert(updateTaskCommandRequest))
+        var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
+        var creatingTask = optionalTask.get();
+        if (Objects.nonNull(mappedTask.getName())) {
+            creatingTask.setName(mappedTask.getName());
+        }
+        if (Objects.nonNull(mappedTask.getDescription())) {
+            creatingTask.setDescription(mappedTask.getDescription());
+        }
+        if (Objects.nonNull(mappedTask.getStartAt()) && Objects.nonNull(mappedTask.getEndAt())) {
+            if (mappedTask.getStartAt().isAfter(mappedTask.getEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_BEFORE_END_DATE);
+            }
+        }
+        if (Objects.nonNull(mappedTask.getStartAt())) {
+            creatingTask.setStartAt(mappedTask.getStartAt());
+        }
+        if (Objects.nonNull(mappedTask.getEndAt())) {
+            creatingTask.setEndAt(mappedTask.getEndAt());
+        }
+        return updateTaskEntityMapper.reverse(
+                taskRepository.save(creatingTask)
         );
     }
 
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
-        return this.taskRepository.findAll().stream().map(
+        return taskRepository.findAll().stream().map(
                 task -> RetrieveTaskQueryResponse.builder()
                         .taskId(task.getId())
                         .taskName(task.getName())
@@ -76,7 +95,7 @@ public class TaskDAO implements ITaskService{
 
     @Override
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
-        var retrievedTaskOptional = this.taskRepository.findById(taskId);
+        var retrievedTaskOptional = taskRepository.findById(taskId);
         if (retrievedTaskOptional.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
@@ -93,6 +112,6 @@ public class TaskDAO implements ITaskService{
 
     @Override
     public void deleteTask(UUID taskId) {
-        this.taskRepository.deleteById(taskId);
+        taskRepository.deleteById(taskId);
     }
 }
