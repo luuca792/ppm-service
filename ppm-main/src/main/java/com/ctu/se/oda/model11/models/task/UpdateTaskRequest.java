@@ -10,8 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class UpdateTaskRequest {
-
-    private UUID taskId;
+    private String taskId;
     private String taskName;
     private String taskDescription;
     private LocalDate taskStartAt;

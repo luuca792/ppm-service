@@ -71,7 +71,7 @@ public class TaskDAO implements ITaskService{
         }
         if (Objects.nonNull(mappedTask.getStartAt()) && Objects.nonNull(mappedTask.getEndAt())) {
             if (mappedTask.getStartAt().isAfter(mappedTask.getEndAt())) {
-                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_BEFORE_END_DATE);
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
             }
         }
         if (Objects.nonNull(mappedTask.getStartAt())) {
@@ -157,21 +157,6 @@ public class TaskDAO implements ITaskService{
         }).collect(Collectors.toList());
     }
 
-    @Override
-    public CreateTaskCommandResponse addSubTaskToTask(@Valid CreateTaskCommandRequest createTaskCommandRequest, UUID parentTaskId) {
-        var parentTask = this.taskRepository.findById(parentTaskId).orElseThrow(
-                () -> new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID)
-        );
-
-        var subTask = this.createTaskEntityMapper.convert(createTaskCommandRequest);
-        subTask.setTaskParent(parentTask);
-
-        parentTask.getSubtasks().add(subTask);
-
-        this.taskRepository.save(parentTask);
-
-        return this.createTaskEntityMapper.reverse(subTask);
-    }
     @Override
     public void deleteTask(UUID taskId) {
         taskRepository.deleteById(taskId);

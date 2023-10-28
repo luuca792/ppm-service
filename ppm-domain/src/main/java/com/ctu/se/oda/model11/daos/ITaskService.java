@@ -20,6 +20,5 @@ public interface ITaskService {
 
     RetrieveTaskQueryResponse detailTask(UUID taskId);
 
-    CreateTaskCommandResponse addSubTaskToTask(@Valid CreateTaskCommandRequest createTaskCommandRequest, UUID parentTaskId);
     void deleteTask(UUID taskId);
 }

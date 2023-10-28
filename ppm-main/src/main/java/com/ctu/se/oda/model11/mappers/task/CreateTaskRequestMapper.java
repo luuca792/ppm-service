@@ -32,7 +32,7 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-                .projectId(destination.getProjectId())
+                .projectId(destination.getProjectId().toString())
                 .build();
     }
 }

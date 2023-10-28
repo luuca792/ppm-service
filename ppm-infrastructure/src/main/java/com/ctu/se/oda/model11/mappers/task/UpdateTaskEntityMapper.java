@@ -27,11 +27,9 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 source.getTaskEndAt(),
                 source.getProjectId()
         );
-
         if (source.getTaskParentId() != null) {
             task.setTaskParent(source.getTaskParentId());
         }
-
         return task;
     }
     @Override
@@ -47,7 +45,6 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
         if (destination.getSubtasks() != null) {
             responseBuilder.subtasks(destination.getSubtasks().stream().map(this::reverse).collect(Collectors.toList()));
         }
-
         return responseBuilder.build();
     }
 }
