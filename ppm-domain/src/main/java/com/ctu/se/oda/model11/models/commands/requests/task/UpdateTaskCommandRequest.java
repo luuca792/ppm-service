@@ -30,9 +30,9 @@ public class UpdateTaskCommandRequest {
 
     private UUID projectId;
     private UUID taskParentId;
-    private List<UpdateTaskCommandRequest> subtasks;
 
-    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId, UUID taskParentId, List<UpdateTaskCommandRequest> subtasks) {
+    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
+        LocalDate taskEndAt, UUID projectId, UUID taskParentId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
@@ -40,7 +40,6 @@ public class UpdateTaskCommandRequest {
         this.taskEndAt = taskEndAt;
         this.projectId = projectId;
         this.taskParentId = taskParentId;
-        this.subtasks = subtasks;
     }
 
     @Override
@@ -53,7 +52,6 @@ public class UpdateTaskCommandRequest {
                 ", taskEndAt=" + taskEndAt +
                 ", projectId=" + projectId +
                 ", taskParentId=" + taskParentId +
-                ", subtasks=" + subtasks +
                 '}';
     }
 
@@ -63,13 +61,5 @@ public class UpdateTaskCommandRequest {
 
     public void setTaskParentId(UUID taskParentId) {
         this.taskParentId = taskParentId;
-    }
-
-    public List<UpdateTaskCommandRequest> getSubtasks() {
-        return subtasks;
-    }
-
-    public void setSubtasks(List<UpdateTaskCommandRequest> subtasks) {
-        this.subtasks = subtasks;
     }
 }

@@ -1,13 +1,12 @@
 package com.ctu.se.oda.model11.mappers.task;
 
 import com.ctu.se.oda.model11.mappers.IMainMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
 import com.ctu.se.oda.model11.models.task.CreateTaskRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -21,7 +20,8 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
-                .projectId(source.getProjectId())
+                .projectId(UUID.fromString(source.getProjectId()))
+                .taskParentId(Optional.ofNullable(source.getTaskParentId()).map(UUID::fromString).orElse(null))
                 .build();
     }
 

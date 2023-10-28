@@ -18,12 +18,6 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
 
     @Override
     public UpdateTaskCommandRequest convert(UpdateTaskRequest source) {
-        List<UpdateTaskCommandRequest> convertedSubtasks = null;
-        if (source.getSubtasks() != null) {
-            convertedSubtasks = source.getSubtasks().stream()
-                    .map(this::convert)
-                    .collect(Collectors.toList());
-        }
         return UpdateTaskCommandRequest.builder()
                 .taskId(source.getTaskId())
                 .taskName(source.getTaskName())
@@ -31,8 +25,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
                 .projectId(UUID.fromString(source.getProjectId()))
-                .taskParentId(source.getTaskParentId())
-                .subtasks(convertedSubtasks)
+                .taskParentId(UUID.fromString(source.getTaskParentId()))
                 .build();
     }
 

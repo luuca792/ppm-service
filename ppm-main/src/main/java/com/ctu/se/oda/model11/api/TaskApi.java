@@ -1,10 +1,11 @@
 package com.ctu.se.oda.model11.api;
 
+import com.ctu.se.oda.model11.constants.ConstantLibrary;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.models.task.CreateTaskRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -30,37 +32,25 @@ public class TaskApi {
     @Autowired
     private ITaskApplication taskApplication;
 
-    public ResponseEntity<CreateTaskCommandResponse> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
-        CreateTaskCommandRequest createTaskCommandRequest = this.createTaskMapper.convert(createTaskRequest);
-        if ((createTaskRequest.getTaskParentId() == null)) {
-            return new ResponseEntity<>(
-                    this.taskApplication.createTask(createTaskCommandRequest),
-                    HttpStatus.CREATED
-            );
-        } else {
-            return new ResponseEntity(
-                    this.taskApplication.addSubTaskToTask(this.createTaskMapper.convert(createTaskRequest), createTaskRequest.getTaskParentId()),
-                    HttpStatus.CREATED
-            );
+    @PostMapping()
+    public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
+        if (Objects.isNull(createTaskRequest.getProjectId())) {
+            throw new InternalServerErrorException(ConstantLibrary.MISSING_PARAMS_WARNING);
         }
+        CreateTaskCommandRequest createTaskCommandRequest = createTaskMapper.convert(createTaskRequest);
+        return new ResponseEntity<>(taskApplication.createTask(createTaskCommandRequest), HttpStatus.CREATED
+        );
+
     }
     @PutMapping("/{taskId}")
     public ResponseEntity<?> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
-        if (updateTaskRequest == null || taskId == null || taskId.isEmpty()) {
-            return new ResponseEntity<>("Invalid request data", HttpStatus.BAD_REQUEST);
+        updateTaskRequest.setTaskId(taskId);
+        if (Objects.isNull(updateTaskRequest.getTaskId())) {
+            throw new InternalServerErrorException(ConstantLibrary.MISSING_PARAMS_WARNING);
         }
-        try {
-            UpdateTaskCommandResponse updatedTask = this.taskApplication.updateTask(
-                    this.updateTaskMapper.convert(updateTaskRequest),
-                    UUID.fromString(taskId)
-            );
-            if (updatedTask == null) {
-                return new ResponseEntity<>("Task not found or update failed", HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(updatedTask, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Invalid task ID format", HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(
+            taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)), HttpStatus.OK
+        );
     }
     @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {

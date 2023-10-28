@@ -17,6 +17,5 @@ public class UpdateTaskRequest {
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
     private String projectId;
-    private UUID taskParentId;
-    private List<UpdateTaskRequest> subtasks;
+    private String taskParentId;
 }

@@ -41,15 +41,20 @@ public class TaskDAO implements ITaskService{
 
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
-        var retrieveProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
-        if(retrieveProjectId.isEmpty()) {
+        var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
+        if (retrievedProjectId.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
-        return createTaskEntityMapper.reverse(
-                taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest))
+        if (Objects.nonNull(createTaskCommandRequest.getTaskParentId())) {
+            var retrievedTaskParentId = taskRepository.findById(createTaskCommandRequest.getTaskParentId());
+            if (retrievedTaskParentId.isEmpty()) {
+                throw new IllegalArgumentException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
+            }
+        }
+        return this.createTaskEntityMapper.reverse(taskRepository.save(createTaskEntityMapper
+                .convert(createTaskCommandRequest))
         );
     }
-
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
