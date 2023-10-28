@@ -140,9 +140,8 @@ public class TaskDAO implements ITaskService{
         if (task.getSubtasks().isEmpty()) {
             return Collections.emptyList();
         }
-
         return task.getSubtasks().stream().map(subtask -> {
-            List<RetrieveTaskQueryResponse> subtasksOfSubtask = getSubtasksRecursively(subtask); // Đệ quy
+            List<RetrieveTaskQueryResponse> subtasksOfSubtask = getSubtasksRecursively(subtask);
 
             return RetrieveTaskQueryResponse.builder()
                     .taskId(subtask.getId())
