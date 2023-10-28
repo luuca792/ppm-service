@@ -14,19 +14,21 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Builder
 public class UpdateTaskCommandRequest {
+
     private UUID taskId;
-    @NotBlank
+
     @Size(max = 250)
     private String taskName;
-    @NotBlank
+
     @Size(max = 500)
     private String taskDescription;
-    @NotNull
+
     private LocalDate taskStartAt;
-    @NotNull
+
     private LocalDate taskEndAt;
-    @NotNull
+
     private UUID projectId;
+
 
     public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId) {
         this.taskId = taskId;

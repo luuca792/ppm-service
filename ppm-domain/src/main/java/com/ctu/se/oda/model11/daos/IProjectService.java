@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface IProjectService {
     CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest);
 
-    UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId);
+    UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest);
 
     List<RetrieveProjectQueryResponse> listProject();
 

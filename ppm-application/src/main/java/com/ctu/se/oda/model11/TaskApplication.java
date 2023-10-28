@@ -26,8 +26,8 @@ public class TaskApplication implements ITaskApplication {
     }
 
     @Override
-    public UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId) {
-        return this.taskService.updateTask(updateTaskCommandRequest, taskId);
+    public UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
+        return this.taskService.updateTask(updateTaskCommandRequest);
     }
 
     @Override

@@ -20,10 +20,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/tasks")
 public class TaskApi {
+
     @Autowired
     private IMainMapper<CreateTaskRequest, CreateTaskCommandRequest> createTaskMapper;
+
     @Autowired
     private IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> updateTaskMapper;
+
     @Autowired
     private ITaskApplication taskApplication;
 
@@ -34,21 +37,26 @@ public class TaskApi {
                 HttpStatus.CREATED
         );
     }
-    @PutMapping("/{taskId}")
-    public ResponseEntity<UpdateTaskCommandResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
+
+    @PatchMapping("/{taskId}")
+    public ResponseEntity<UpdateTaskCommandResponse> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable UUID taskId) {
+        updateTaskRequest.setTaskId(taskId);
         return new ResponseEntity<>(
-                this.taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest), UUID.fromString(taskId)),
+                this.taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest)),
                 HttpStatus.OK
         );
     }
+
     @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(this.taskApplication.listTask(), HttpStatus.OK);
     }
+
     @GetMapping("/{taskId}")
     public ResponseEntity<RetrieveTaskQueryResponse> detailTask(@PathVariable String taskId) {
         return new ResponseEntity<>(this.taskApplication.detailTask(UUID.fromString(taskId)), HttpStatus.OK);
     }
+
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable String taskId) {
         this.taskApplication.deleteTask(UUID.fromString(taskId));
