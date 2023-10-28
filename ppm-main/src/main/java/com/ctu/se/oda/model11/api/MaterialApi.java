@@ -20,10 +20,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/materials")
 public class MaterialApi {
+
     @Autowired
     private IMainMapper<CreateMaterialRequest, CreateMaterialCommandRequest> createMaterialMapper;
+
     @Autowired
     private IMainMapper<UpdateMaterialRequest, UpdateMaterialCommandRequest> updateMaterialMapper;
+
     @Autowired
     private IMaterialApplication materialApplication;
 
@@ -34,14 +37,16 @@ public class MaterialApi {
                 HttpStatus.CREATED
         );
     }
-    @PutMapping("/{materialId}")
+
+    @PatchMapping("/{materialId}")
     public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable UUID materialId) {
-        updateMaterialRequest.setMaterialId(String.valueOf(materialId));
+        updateMaterialRequest.setMaterialId(materialId);
         return new ResponseEntity<>(
                 materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest)),
                 HttpStatus.OK
         );
     }
+
     @GetMapping()
     public ResponseEntity<List<RetrieveMaterialQueryResponse>> listMaterial() {
         return new ResponseEntity<>(
@@ -49,6 +54,7 @@ public class MaterialApi {
                 HttpStatus.OK
         );
     }
+
     @GetMapping("/{materialId}")
     public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable UUID materialId) {
         return new ResponseEntity<>(
@@ -56,6 +62,7 @@ public class MaterialApi {
                 HttpStatus.OK
         );
     }
+
     @DeleteMapping("/{materialId}")
     public ResponseEntity<?> deleteMaterial(@PathVariable UUID materialId) {
         materialApplication.deleteMaterial(materialId);

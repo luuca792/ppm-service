@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,32 +26,60 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Validated
 public class TaskDAO implements ITaskService{
+
     @Autowired
     private IInfrastructureMapper<CreateTaskCommandRequest, Task, CreateTaskCommandResponse> createTaskEntityMapper;
+
     @Autowired
     private IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> updateTaskEntityMapper;
+
     @Autowired
     private ITaskRepository taskRepository;
+
     @Autowired
     private IProjectRepository projectRepository;
+
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
-        var retrieveProjectId = this.projectRepository.findById(createTaskCommandRequest.getProjectId());
+        var retrieveProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
         if(retrieveProjectId.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
+        return createTaskEntityMapper.reverse(
+                taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest))
+        );
+    }
 
-        return this.createTaskEntityMapper.reverse(
-                this.taskRepository.save(this.createTaskEntityMapper.convert(createTaskCommandRequest))
-        );
-    }
     @Override
-    public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId) {
-        updateTaskCommandRequest.setTaskId(taskId);
-        return this.updateTaskEntityMapper.reverse(
-                this.taskRepository.save(this.updateTaskEntityMapper.convert(updateTaskCommandRequest))
+    public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
+        var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
+        if (optionalTask.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+        }
+        var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
+        var creatingTask = optionalTask.get();
+        if (Objects.nonNull(mappedTask.getName())) {
+            creatingTask.setName(mappedTask.getName());
+        }
+        if (Objects.nonNull(mappedTask.getDescription())) {
+            creatingTask.setDescription(mappedTask.getDescription());
+        }
+        if (Objects.nonNull(mappedTask.getStartAt()) && Objects.nonNull(mappedTask.getEndAt())) {
+            if (mappedTask.getStartAt().isAfter(mappedTask.getEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_BEFORE_END_DATE);
+            }
+        }
+        if (Objects.nonNull(mappedTask.getStartAt())) {
+            creatingTask.setStartAt(mappedTask.getStartAt());
+        }
+        if (Objects.nonNull(mappedTask.getEndAt())) {
+            creatingTask.setEndAt(mappedTask.getEndAt());
+        }
+        return updateTaskEntityMapper.reverse(
+                taskRepository.save(creatingTask)
         );
     }
+
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
         return this.taskRepository.findAll().stream().map(
@@ -79,9 +108,10 @@ public class TaskDAO implements ITaskService{
                 }
         ).collect(Collectors.toList());
     }
+
     @Override
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
-        var retrievedTaskOptional = this.taskRepository.findById(taskId);
+        var retrievedTaskOptional = taskRepository.findById(taskId);
         if (retrievedTaskOptional.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
@@ -139,6 +169,6 @@ public class TaskDAO implements ITaskService{
     }
     @Override
     public void deleteTask(UUID taskId) {
-        this.taskRepository.deleteById(taskId);
+        taskRepository.deleteById(taskId);
     }
 }

@@ -20,10 +20,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/tasks")
 public class TaskApi {
+
     @Autowired
     private IMainMapper<CreateTaskRequest, CreateTaskCommandRequest> createTaskMapper;
+
     @Autowired
     private IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> updateTaskMapper;
+
     @Autowired
     private ITaskApplication taskApplication;
 
@@ -59,14 +62,16 @@ public class TaskApi {
             return new ResponseEntity<>("Invalid task ID format", HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(this.taskApplication.listTask(), HttpStatus.OK);
     }
+
     @GetMapping("/{taskId}")
     public ResponseEntity<RetrieveTaskQueryResponse> detailTask(@PathVariable String taskId) {
         return new ResponseEntity<>(this.taskApplication.detailTask(UUID.fromString(taskId)), HttpStatus.OK);
     }
+
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable String taskId) {
         this.taskApplication.deleteTask(UUID.fromString(taskId));

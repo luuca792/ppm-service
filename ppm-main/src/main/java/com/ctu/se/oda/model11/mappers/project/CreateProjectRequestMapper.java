@@ -11,12 +11,13 @@ import java.util.UUID;
 @Component
 @NoArgsConstructor
 public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> {
+
     @Override
     public CreateProjectCommandRequest convert(CreateProjectRequest source) {
         return CreateProjectCommandRequest.builder()
                 .projectName(source.getProjectName())
                 .projectDuration(source.getProjectDuration())
-                .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
+                .projectCreatorId(source.getProjectCreatorId())
                 .build();
     }
 
@@ -25,7 +26,7 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
         return CreateProjectRequest.builder()
                 .projectName(destination.getProjectName())
                 .projectDuration(destination.getProjectDuration())
-                .projectCreatorId(destination.getProjectCreatorId().toString())
+                .projectCreatorId(destination.getProjectCreatorId())
                 .build();
     }
 }

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @Component
 @NoArgsConstructor
 public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, UpdateTaskCommandRequest> {
+
     @Override
     public UpdateTaskCommandRequest convert(UpdateTaskRequest source) {
         List<UpdateTaskCommandRequest> convertedSubtasks = null;
@@ -24,6 +25,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                     .collect(Collectors.toList());
         }
         return UpdateTaskCommandRequest.builder()
+                .taskId(source.getTaskId())
                 .taskName(source.getTaskName())
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
@@ -33,15 +35,16 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .subtasks(convertedSubtasks)
                 .build();
     }
+
     @Override
     public UpdateTaskRequest reverse(UpdateTaskCommandRequest destination) {
         return UpdateTaskRequest.builder()
-                .taskId(destination.getTaskId().toString())
+                .taskId(destination.getTaskId())
                 .taskName(destination.getTaskName())
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-                .projectId(destination.getProjectId().toString())
+                .projectId(destination.getProjectId())
                 .build();
     }
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface IProjectApplication {
     CreateProjectCommandResponse createProject(CreateProjectCommandRequest createProjectCommandRequest);
 
-    UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId);
+    UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest);
 
     List<RetrieveProjectQueryResponse> listProject();
 

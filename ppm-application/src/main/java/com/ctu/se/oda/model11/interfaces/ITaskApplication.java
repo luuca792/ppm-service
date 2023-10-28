@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface ITaskApplication {
     CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest);
 
-    UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
+    UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest);
 
     List<RetrieveTaskQueryResponse> listTask();
 
