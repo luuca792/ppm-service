@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,15 +29,17 @@ public class UpdateTaskCommandRequest {
     private LocalDate taskEndAt;
 
     private UUID projectId;
+    private UUID taskParentId;
 
-
-    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId) {
+    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
+        LocalDate taskEndAt, UUID projectId, UUID taskParentId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
         this.projectId = projectId;
+        this.taskParentId = taskParentId;
     }
 
     @Override
@@ -48,6 +51,15 @@ public class UpdateTaskCommandRequest {
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
                 ", projectId=" + projectId +
+                ", taskParentId=" + taskParentId +
                 '}';
+    }
+
+    public UUID getTaskParentId() {
+        return taskParentId;
+    }
+
+    public void setTaskParentId(UUID taskParentId) {
+        this.taskParentId = taskParentId;
     }
 }

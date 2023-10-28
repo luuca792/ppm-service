@@ -22,22 +22,22 @@ public class TaskApplication implements ITaskApplication {
 
     @Override
     public CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest) {
-        return this.taskService.createTask(createTaskCommandRequest);
+        return taskService.createTask(createTaskCommandRequest);
     }
 
     @Override
     public UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
-        return this.taskService.updateTask(updateTaskCommandRequest);
+        return taskService.updateTask(updateTaskCommandRequest);
     }
 
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
-        return this.taskService.listTask();
+        return taskService.listTask();
     }
 
     @Override
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
-        return this.taskService.detailTask(taskId);
+        return taskService.detailTask(taskId);
     }
 
     @Override

@@ -4,21 +4,17 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @Builder
 public class UpdateTaskRequest {
-
-    private UUID taskId;
-
+    private String taskId;
     private String taskName;
-
     private String taskDescription;
-
     private LocalDate taskStartAt;
-
     private LocalDate taskEndAt;
-
-    private UUID projectId;
+    private String projectId;
+    private String taskParentId;
 }

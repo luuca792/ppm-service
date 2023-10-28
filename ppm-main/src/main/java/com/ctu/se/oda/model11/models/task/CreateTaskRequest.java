@@ -13,5 +13,6 @@ public class CreateTaskRequest {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
-    private UUID projectId;
+    private String projectId;
+    private String taskParentId;
 }
