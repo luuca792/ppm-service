@@ -86,26 +86,7 @@ public class TaskApi {
     public ResponseEntity<?> addMaterialToTask(@PathVariable String taskId,
                                                @PathVariable String materialId,
                                                @RequestParam Double amount) {
-        var retrieveTask = taskRepository.findById(UUID.fromString(taskId)).get();
-        if(retrieveTask == null) {
-            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
-        }
-        var retrieveResource = retrieveTask.getResource();
-
-        ResourceMaterial resourceMaterial = new ResourceMaterial();
-        resourceMaterial.setResource(retrieveResource);
-
-        Material materialRetrieve = materialRepository.findById(UUID.fromString(materialId)).get();
-        if(materialRetrieve == null) {
-            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
-        }
-        resourceMaterial.setMaterial(materialRetrieve);
-        resourceMaterial.setAmount(amount);
-        System.out.println(resourceMaterial.getMaterial().getId());
-        System.out.println(resourceMaterial.getResource().getId());
-        System.out.println(resourceMaterial.getAmount());
-
-        resourceMaterialRepository.save(resourceMaterial);
+        taskApplication.addMaterialToTask(UUID.fromString(taskId), UUID.fromString(materialId), amount);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

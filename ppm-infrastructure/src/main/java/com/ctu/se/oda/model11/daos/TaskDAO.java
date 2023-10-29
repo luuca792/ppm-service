@@ -1,6 +1,8 @@
 package com.ctu.se.oda.model11.daos;
 
+import com.ctu.se.oda.model11.entities.Material;
 import com.ctu.se.oda.model11.entities.Resource;
+import com.ctu.se.oda.model11.entities.ResourceMaterial;
 import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
@@ -9,9 +11,7 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
-import com.ctu.se.oda.model11.repositories.IProjectRepository;
-import com.ctu.se.oda.model11.repositories.IResourceRepository;
-import com.ctu.se.oda.model11.repositories.ITaskRepository;
+import com.ctu.se.oda.model11.repositories.*;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,12 @@ public class TaskDAO implements ITaskService{
 
     @Autowired
     private IResourceRepository resourceRepository;
+
+    @Autowired
+    private IMaterialRepository materialRepository;
+
+    @Autowired
+    private IResourceMaterialRepository resourceMaterialRepository;
 
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
@@ -144,6 +150,31 @@ public class TaskDAO implements ITaskService{
                 .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
                 .subtasks(subtasks)
                 .build();
+    }
+
+    @Override
+    public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
+        var retrieveTask = taskRepository.findById(taskId);
+        if(retrieveTask.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+        }
+        var retrieveResource = retrieveTask.get().getResource();
+
+        ResourceMaterial resourceMaterial = new ResourceMaterial();
+        resourceMaterial.setResource(retrieveResource);
+
+        var materialRetrieveOptional = materialRepository.findById(materialId);
+        if(materialRetrieveOptional.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+        }
+        var materialRetrieve = materialRetrieveOptional.get();
+        resourceMaterial.setMaterial(materialRetrieve);
+        resourceMaterial.setAmount(amount);
+        System.out.println(resourceMaterial.getMaterial().getId());
+        System.out.println(resourceMaterial.getResource().getId());
+        System.out.println(resourceMaterial.getAmount());
+
+        resourceMaterialRepository.save(resourceMaterial);
     }
 
     private List<RetrieveTaskQueryResponse> getSubtasksRecursively(Task task) {
