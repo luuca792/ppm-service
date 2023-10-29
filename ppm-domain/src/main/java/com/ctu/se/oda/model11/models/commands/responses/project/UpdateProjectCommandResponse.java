@@ -17,10 +17,10 @@ public class UpdateProjectCommandResponse {
     private UUID projectCreatorId;
 
     public UpdateProjectCommandResponse(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
-        projectId = projectId;
-        projectName = projectName;
-        projectDuration = projectDuration;
-        projectCreatorId = projectCreatorId;
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.projectDuration = projectDuration;
+        this.projectCreatorId = projectCreatorId;
     }
 
     @Override
