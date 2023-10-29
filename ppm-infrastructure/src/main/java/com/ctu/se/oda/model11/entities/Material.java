@@ -17,10 +17,13 @@ public class Material implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "material_type", nullable = false)
     private Long type;
+
     @JsonIgnore
     @OneToMany(mappedBy = "material")
     List<ResourceMaterial> resourceMaterials = new ArrayList<>();

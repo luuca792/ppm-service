@@ -14,10 +14,13 @@ public class ResourceMaterial implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(name = "amount")
     private Double amount;
+
     @ManyToOne
     private Material material;
+
     @ManyToOne
     private Resource resource;
 }

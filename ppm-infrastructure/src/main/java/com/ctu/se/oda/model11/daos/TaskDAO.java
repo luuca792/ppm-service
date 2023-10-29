@@ -4,6 +4,7 @@ import com.ctu.se.oda.model11.entities.Material;
 import com.ctu.se.oda.model11.entities.Resource;
 import com.ctu.se.oda.model11.entities.ResourceMaterial;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
@@ -156,23 +157,21 @@ public class TaskDAO implements ITaskService{
     public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
         var retrieveTask = taskRepository.findById(taskId);
         if(retrieveTask.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+            throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
-        var retrieveResource = retrieveTask.get().getResource();
 
+        var retrieveResource = retrieveTask.get().getResource();
         ResourceMaterial resourceMaterial = new ResourceMaterial();
         resourceMaterial.setResource(retrieveResource);
 
         var materialRetrieveOptional = materialRepository.findById(materialId);
         if(materialRetrieveOptional.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+            throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
         }
+
         var materialRetrieve = materialRetrieveOptional.get();
         resourceMaterial.setMaterial(materialRetrieve);
         resourceMaterial.setAmount(amount);
-        System.out.println(resourceMaterial.getMaterial().getId());
-        System.out.println(resourceMaterial.getResource().getId());
-        System.out.println(resourceMaterial.getAmount());
 
         resourceMaterialRepository.save(resourceMaterial);
     }
