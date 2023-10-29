@@ -19,8 +19,8 @@ public class UpdateTaskCommandResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
-    private UUID projectId;
     private TaskStatus taskStatus;
+    private UUID projectId;
     private UUID taskParentId;
     private List<UpdateTaskCommandResponse> subtasks;
 

@@ -39,9 +39,9 @@ public class TaskApi {
         CreateTaskCommandRequest createTaskCommandRequest = createTaskMapper.convert(createTaskRequest);
         return new ResponseEntity<>(taskApplication.createTask(createTaskCommandRequest), HttpStatus.CREATED
         );
-
     }
-    @PutMapping("/{taskId}")
+
+    @PatchMapping("/{taskId}")
     public ResponseEntity<?> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
         updateTaskRequest.setTaskId(taskId);
         if (Objects.isNull(updateTaskRequest.getTaskId())) {
@@ -51,6 +51,7 @@ public class TaskApi {
             taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest)), HttpStatus.OK
         );
     }
+
     @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(taskApplication.listTask(), HttpStatus.OK);

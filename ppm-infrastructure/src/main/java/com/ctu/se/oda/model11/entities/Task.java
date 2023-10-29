@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.entities;
 
 import com.ctu.se.oda.model11.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Data
 @Table(name = "tasks")
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task implements IEntity{
 
     @Id

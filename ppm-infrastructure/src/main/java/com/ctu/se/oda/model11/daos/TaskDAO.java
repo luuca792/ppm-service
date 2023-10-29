@@ -10,12 +10,17 @@ import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandRe
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.io.DataInput;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -55,14 +60,15 @@ public class TaskDAO implements ITaskService{
                 .convert(createTaskCommandRequest))
         );
     }
+
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
-        var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
-        if (optionalTask.isEmpty()) {
+        var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
+        if (retrievedTask.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
         var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
-        var creatingTask = optionalTask.get();
+        var creatingTask = retrievedTask.get();
         if (Objects.nonNull(mappedTask.getName())) {
             creatingTask.setName(mappedTask.getName());
         }
@@ -80,8 +86,10 @@ public class TaskDAO implements ITaskService{
         if (Objects.nonNull(mappedTask.getEndAt())) {
             creatingTask.setEndAt(mappedTask.getEndAt());
         }
-        return updateTaskEntityMapper.reverse(
-                taskRepository.save(creatingTask)
+        if (Objects.nonNull(mappedTask.getStatus())) {
+            creatingTask.setStatus(mappedTask.getStatus());
+        }
+        return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get())
         );
     }
 
@@ -96,6 +104,7 @@ public class TaskDAO implements ITaskService{
                                     .taskDescription(subtask.getDescription())
                                     .taskStartAt(subtask.getStartAt())
                                     .taskEndAt(subtask.getEndAt())
+                                    .taskStatus(subtask.getStatus())
                                     .projectId(subtask.getProjectId())
                                     .taskParentId(subtask.getTaskParent().getId())
                                     .build()
@@ -107,6 +116,7 @@ public class TaskDAO implements ITaskService{
                             .taskStartAt(task.getStartAt())
                             .taskEndAt(task.getEndAt())
                             .projectId(task.getProjectId())
+                            .taskStatus(task.getStatus())
                             .taskParentId(task.getTaskParent() != null ? task.getTaskParent().getId() : null)
                             .subtasks(subtasks)
                             .build();
