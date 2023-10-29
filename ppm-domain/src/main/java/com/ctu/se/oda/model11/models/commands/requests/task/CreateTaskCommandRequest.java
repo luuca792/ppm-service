@@ -1,16 +1,13 @@
 package com.ctu.se.oda.model11.models.commands.requests.task;
 
-import com.ctu.se.oda.model11.daos.ITaskStatusService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -28,10 +25,10 @@ public class CreateTaskCommandRequest {
     private LocalDate taskEndAt;
 
     public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt) {
-        taskName = taskName;
-        taskDescription = taskDescription;
-        taskStartAt = taskStartAt;
-        taskEndAt = taskEndAt;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStartAt = taskStartAt;
+        this.taskEndAt = taskEndAt;
     }
 
     @Override

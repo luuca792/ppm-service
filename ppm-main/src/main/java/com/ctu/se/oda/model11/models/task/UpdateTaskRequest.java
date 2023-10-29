@@ -1,6 +1,6 @@
 package com.ctu.se.oda.model11.models.task;
 
-import com.ctu.se.oda.model11.entities.TaskStatus;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Data;
 

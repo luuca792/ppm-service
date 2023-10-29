@@ -1,6 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.task;
 
-import com.ctu.se.oda.model11.daos.ITaskStatusService;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,15 +27,16 @@ public class UpdateTaskCommandRequest {
     @NotNull
     private LocalDate taskEndAt;
 
-    private ITaskStatusService taskStatus;
+    private TaskStatus taskStatus;
 
-    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, ITaskStatusService taskStatus) {
-        taskId = taskId;
-        taskName = taskName;
-        taskDescription = taskDescription;
-        taskStartAt = taskStartAt;
-        taskEndAt = taskEndAt;
-        taskStatus = taskStatus;
+    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
+        LocalDate taskEndAt, TaskStatus taskStatus) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStartAt = taskStartAt;
+        this.taskEndAt = taskEndAt;
+        this.taskStatus = taskStatus;
     }
 
     @Override

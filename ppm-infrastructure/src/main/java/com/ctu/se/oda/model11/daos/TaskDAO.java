@@ -51,7 +51,7 @@ public class TaskDAO implements ITaskService{
                         .taskDescription(task.getDescription())
                         .taskStartAt(task.getStartAt())
                         .taskEndAt(task.getEndAt())
-                        .taskStatus(task.getTaskStatus())
+                        .taskStatus(task.getStatus())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -68,7 +68,7 @@ public class TaskDAO implements ITaskService{
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
-                .taskStatus(retrievedTask.getTaskStatus())
+                .taskStatus(retrievedTask.getStatus())
                 .build();
         System.out.println(test1);
         return test1;

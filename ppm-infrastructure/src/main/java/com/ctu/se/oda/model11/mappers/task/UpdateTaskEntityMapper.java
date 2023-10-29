@@ -1,7 +1,7 @@
 package com.ctu.se.oda.model11.mappers.task;
 
 import com.ctu.se.oda.model11.entities.Task;
-import com.ctu.se.oda.model11.entities.TaskStatus;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
@@ -20,7 +20,7 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
                 source.getTaskEndAt(),
-                (TaskStatus) source.getTaskStatus()
+                source.getTaskStatus()
         );
     }
     @Override
@@ -31,7 +31,7 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
-                .taskStatus(destination.getTaskStatus())
+                .taskStatus(destination.getStatus())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.responses.task;
 
-import com.ctu.se.oda.model11.daos.ITaskStatusService;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +19,15 @@ public class UpdateTaskCommandResponse {
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
 
-    private ITaskStatusService taskStatus;
+    private TaskStatus taskStatus;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, ITaskStatusService taskStatus) {
-        taskId = taskId;
-        taskName = taskName;
-        taskDescription = taskDescription;
-        taskStartAt = taskStartAt;
-        taskEndAt = taskEndAt;
-        taskStatus = taskStatus;
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, TaskStatus taskStatus) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+        this.taskStartAt = taskStartAt;
+        this.taskEndAt = taskEndAt;
+        this.taskStatus = taskStatus;
     }
 
     @Override

@@ -1,15 +1,11 @@
 package com.ctu.se.oda.model11.mappers.task;
 
-import com.ctu.se.oda.model11.entities.TaskStatus;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
 import com.ctu.se.oda.model11.models.task.UpdateTaskRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @NoArgsConstructor
@@ -32,7 +28,7 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-                .taskStatus((TaskStatus) destination.getTaskStatus())
+                .taskStatus(destination.getTaskStatus())
                 .build();
     }
 }
