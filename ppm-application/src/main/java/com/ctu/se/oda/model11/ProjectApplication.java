@@ -21,25 +21,25 @@ public class ProjectApplication implements IProjectApplication {
     private IProjectService projectService;
     @Override
     public CreateProjectCommandResponse createProject(CreateProjectCommandRequest createProjectCommandRequest) {
-        return this.projectService.createProject(createProjectCommandRequest);
+        return projectService.createProject(createProjectCommandRequest);
     }
     @Override
-    public UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId) {
-        return this.projectService.updateProject(updateProjectCommandRequest, projectId);
+    public UpdateProjectCommandResponse updateProject(UpdateProjectCommandRequest updateProjectCommandRequest) {
+        return projectService.updateProject(updateProjectCommandRequest);
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
-        return this.projectService.listProject();
+        return projectService.listProject();
     }
 
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        return this.projectService.detailProject(projectId);
+        return projectService.detailProject(projectId);
     }
 
     @Override
     public void deleteProject(UUID projectId) {
-        this.projectService.deleteProject(projectId);
+        projectService.deleteProject(projectId);
     }
 
 }
