@@ -32,6 +32,9 @@ public class Task implements IEntity{
     private Task taskParent;
     @OneToMany(mappedBy = "taskParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> subtasks = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resource_id", referencedColumnName = "id")
+    private Resource resource;
 
     public Task(String name, String description, LocalDate startAt, LocalDate endAt, UUID projectId) {
         this.name = name;
@@ -40,7 +43,6 @@ public class Task implements IEntity{
         this.endAt = endAt;
         this.projectId = projectId;
     }
-
     public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, UUID projectId) {
         this.id = id;
         this.name = name;

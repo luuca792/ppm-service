@@ -1,9 +1,12 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +21,9 @@ public class Material implements IEntity{
     private String name;
     @Column(name = "material_type", nullable = false)
     private Long type;
+    @JsonIgnore
+    @OneToMany(mappedBy = "material")
+    List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 
     public Material(String name, Long type) {
         this.name = name;

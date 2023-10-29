@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.daos;
 
+import com.ctu.se.oda.model11.entities.Resource;
 import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
@@ -9,6 +10,7 @@ import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandRe
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
+import com.ctu.se.oda.model11.repositories.IResourceRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,9 @@ public class TaskDAO implements ITaskService{
     @Autowired
     private IProjectRepository projectRepository;
 
+    @Autowired
+    private IResourceRepository resourceRepository;
+
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
@@ -51,10 +56,15 @@ public class TaskDAO implements ITaskService{
                 throw new IllegalArgumentException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
             }
         }
-        return this.createTaskEntityMapper.reverse(taskRepository.save(createTaskEntityMapper
-                .convert(createTaskCommandRequest))
-        );
+        var retrieveTask = taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest));
+
+        Resource resource = new Resource();
+        var createdResource = resourceRepository.save(resource);
+        retrieveTask.setResource(createdResource);
+
+        return createTaskEntityMapper.reverse(taskRepository.save(retrieveTask));
     }
+    
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
