@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,14 +19,20 @@ public class UpdateTaskCommandResponse {
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
     private Double taskDuration;
+    private UUID projectId;
+    private UUID taskParentId;
+    private List<UpdateTaskCommandResponse> subtasks;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration) {
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
         this.taskDuration = taskDuration;
+        this.projectId = projectId;
+        this.taskParentId = taskParentId;
+        this.subtasks = subtasks;
     }
 
     @Override
@@ -33,11 +40,16 @@ public class UpdateTaskCommandResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UpdateTaskCommandResponse that = (UpdateTaskCommandResponse) o;
-        return Objects.equals(taskId, that.taskId) && Objects.equals(taskName, that.taskName) && Objects.equals(taskDescription, that.taskDescription) && Objects.equals(taskStartAt, that.taskStartAt) && Objects.equals(taskEndAt, that.taskEndAt) && Objects.equals(taskDuration, that.taskDuration);
+        return Objects.equals(taskId, that.taskId) && Objects.equals(taskName, that.taskName)
+                && Objects.equals(taskDescription, that.taskDescription)
+                && Objects.equals(taskStartAt, that.taskStartAt)
+                && Objects.equals(taskEndAt, that.taskEndAt)
+                && Objects.equals(taskDuration, that.taskDuration)
+                && Objects.equals(projectId, that.projectId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskDescription);
+        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskDuration, projectId);
     }
 }

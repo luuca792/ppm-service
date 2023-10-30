@@ -7,22 +7,41 @@ import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectComm
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
+import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 @NoArgsConstructor
 public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskCommandRequest, Task, CreateTaskCommandResponse>{
-
+    @Autowired
+    private ITaskRepository taskRepository;
     @Override
     public Task convert(CreateTaskCommandRequest source) {
-        return new Task(
+        Task task = new Task(
                 source.getTaskName(),
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
                 source.getTaskEndAt(),
-                source.getTaskDuration()
+                source.getTaskDuration(),
+                source.getProjectId()
         );
+
+        if (source.getTaskParentId() != null) {
+            Task parentTask = taskRepository.findById(source.getTaskParentId()).orElse(null);
+            task.setTaskParent(parentTask);
+        }
+
+        if (source.getSubtasks() != null && !source.getSubtasks().isEmpty()) {
+            task.setSubtasks(source.getSubtasks().stream()
+                    .map(this::convert)
+                    .collect(Collectors.toList()));
+        }
+
+        return task;
     }
 
     @Override
@@ -34,6 +53,7 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
                 .taskDuration(destination.getDuration())
+                .projectId(destination.getProjectId())
                 .build();
     }
 }

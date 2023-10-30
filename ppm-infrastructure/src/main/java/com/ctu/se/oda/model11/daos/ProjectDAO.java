@@ -34,26 +34,25 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
-        return this.createProjectEntityMapper.reverse(
-                this.projectRepository.save(this.createProjectEntityMapper.convert(createProjectCommandRequest))
+        return createProjectEntityMapper.reverse(
+                projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest))
         );
     }
     @Override
-    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest, UUID projectId) {
-        updateProjectCommandRequest.setProjectId(projectId);
-        return this.updateProjectEntityMapper.reverse(
-                this.projectRepository.save(this.updateProjectEntityMapper.convert(updateProjectCommandRequest))
+    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
+        return updateProjectEntityMapper.reverse(
+                projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest))
         );
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
-        return this.projectRepository.findAll().stream()
+        return projectRepository.findAll().stream()
                 .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
                 .collect(Collectors.toList());
     }
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        var retrievedProjectOptional = this.projectRepository.findById(projectId);
+        var retrievedProjectOptional = projectRepository.findById(projectId);
         if (retrievedProjectOptional.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
@@ -68,6 +67,6 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public void deleteProject(UUID projectId) {
-        this.projectRepository.deleteById(projectId);
+        projectRepository.deleteById(projectId);
     }
 }

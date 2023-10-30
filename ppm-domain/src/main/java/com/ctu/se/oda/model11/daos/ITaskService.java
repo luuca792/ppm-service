@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface ITaskService {
     CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest);
 
-    UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest, UUID taskId);
+    UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest);
 
     List<RetrieveTaskQueryResponse> listTask();
 
