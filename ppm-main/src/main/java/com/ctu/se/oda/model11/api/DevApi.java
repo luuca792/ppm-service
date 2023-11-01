@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.api;
 
+import com.ctu.se.oda.model11.AppInformationService;
+import com.ctu.se.oda.model11.models.AppInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dev")
 public class DevApi {
 
-    @GetMapping("/test")
-    public ResponseEntity<String> callTest() {
-        return new ResponseEntity<String>("Application is ready to serve", HttpStatus.OK);
+    @GetMapping("/info")
+    public ResponseEntity<AppInfo> getAppInfo() {
+        return new ResponseEntity<>(AppInformationService.getAppInfo(), HttpStatus.OK);
     }
 }
