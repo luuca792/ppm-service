@@ -6,16 +6,16 @@
     <parent>
         <groupId>com.ctu.se.oda.model11</groupId>
         <artifactId>ppm-service</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>ppm-infrastructure</artifactId>
-
+    <version>0.1.0</version>
     <dependencies>
         <dependency>
             <groupId>com.ctu.se.oda.model11</groupId>
             <artifactId>ppm-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
     </dependencies>
     <build>
