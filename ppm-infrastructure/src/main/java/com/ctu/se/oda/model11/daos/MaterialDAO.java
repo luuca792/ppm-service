@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.entities.Material;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.CreateMaterialCommandRequest;
@@ -16,12 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 @Service
 @NoArgsConstructor
 @Validated
-public class MaterialDAO implements IMaterialService{
+public class MaterialDAO implements IMaterialService {
     @Autowired
     private IMaterialRepository materialRepository;
     @Autowired
@@ -40,7 +43,7 @@ public class MaterialDAO implements IMaterialService{
     public UpdateMaterialCommandResponse updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
         var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
         if (retrieveMaterial.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
         }
         return updateMaterialEntityMapper.reverse(
                 materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest))
@@ -61,6 +64,9 @@ public class MaterialDAO implements IMaterialService{
     @Override
     public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
         var retrieveMaterial = materialRepository.findById(materialId).get();
+        if (Objects.isNull(retrieveMaterial)) {
+            throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
+        }
         return RetrieveMaterialQueryResponse.builder()
                 .materialId(retrieveMaterial.getId())
                 .materialName(retrieveMaterial.getName())

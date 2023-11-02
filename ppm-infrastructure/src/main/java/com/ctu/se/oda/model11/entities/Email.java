@@ -1,9 +1,12 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.jackson.JsonComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "emails")
-@Data
 @NoArgsConstructor
+@Data
 public class Email implements IEntity{
 
     @Id

@@ -38,8 +38,8 @@ public class MaterialApi {
         );
     }
 
-    @PatchMapping("/{materialId}")
-    public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable UUID materialId) {
+    @PutMapping("/{materialId}")
+    public ResponseEntity<UpdateMaterialCommandResponse> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable String materialId) {
         updateMaterialRequest.setMaterialId(materialId);
         return new ResponseEntity<>(
                 materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest)),
@@ -56,16 +56,16 @@ public class MaterialApi {
     }
 
     @GetMapping("/{materialId}")
-    public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable UUID materialId) {
+    public ResponseEntity<RetrieveMaterialQueryResponse> detailMaterial(@PathVariable String materialId) {
         return new ResponseEntity<>(
-                materialApplication.detailMaterial(materialId),
+                materialApplication.detailMaterial(UUID.fromString(materialId)),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping("/{materialId}")
-    public ResponseEntity<?> deleteMaterial(@PathVariable UUID materialId) {
-        materialApplication.deleteMaterial(materialId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteMaterial(@PathVariable String materialId) {
+        materialApplication.deleteMaterial(UUID.fromString(materialId));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
