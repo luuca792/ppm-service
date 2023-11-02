@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,13 @@ public class Email implements IEntity{
     @Column(name = "email", nullable = false)
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "email")
     List<ProjectConfigurationEmail> projectConfigurationEmails = new ArrayList<>();
+
+    public Email(String email) {
+        this.email = email;
+    }
 
     public Email(UUID id, String email) {
         this.id = id;

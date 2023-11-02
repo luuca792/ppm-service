@@ -21,10 +21,10 @@ public class CreateMaterialEntityMapper implements IInfrastructureMapper<CreateM
 
     @Override
     public CreateMaterialCommandResponse reverse(Material destination) {
-        return new CreateMaterialCommandResponse(
-                destination.getId(),
-                destination.getName(),
-                destination.getType()
-        );
+        return CreateMaterialCommandResponse.builder()
+                .materialId(destination.getId())
+                .materialName(destination.getName())
+                .materialType(destination.getType())
+                .build();
     }
 }
