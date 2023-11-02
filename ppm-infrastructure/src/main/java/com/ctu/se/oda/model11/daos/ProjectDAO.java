@@ -1,7 +1,8 @@
 package com.ctu.se.oda.model11.daos;
 
-import com.ctu.se.oda.model11.daos.IProjectService;
+
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -10,9 +11,9 @@ import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCom
 import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
+import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,8 @@ import java.util.stream.Collectors;
 @Validated
 public class ProjectDAO implements IProjectService {
     @Autowired
-    private IProjectRepository projectRepository;
+    private IProjectRepository projectRepository;@Autowired
+    private ITaskRepository taskRepository;
     @Autowired
     private IInfrastructureMapper<CreateProjectCommandRequest, Project, CreateProjectCommandResponse> createProjectEntityMapper;
     @Autowired
@@ -67,6 +69,8 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public void deleteProject(UUID projectId) {
+        List<Task> listTasks = taskRepository.findAllByProjectId(projectId);
+        taskRepository.deleteAll(listTasks);
         projectRepository.deleteById(projectId);
     }
 }

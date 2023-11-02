@@ -67,6 +67,7 @@ public class ProjectApi {
     @DeleteMapping("/{projectId}")
     public ResponseEntity<?> deleteProject(@PathVariable UUID projectId) {
         projectApplication.deleteProject(projectId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
+
     }
 }
