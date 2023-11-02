@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.responses.task;
 
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +19,18 @@ public class UpdateTaskCommandResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+    private TaskStatus taskStatus;
     private UUID projectId;
     private UUID taskParentId;
     private List<UpdateTaskCommandResponse> subtasks;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskStatus = taskStatus;
         this.projectId = projectId;
         this.taskParentId = taskParentId;
         this.subtasks = subtasks;
@@ -42,11 +45,12 @@ public class UpdateTaskCommandResponse {
                 && Objects.equals(taskDescription, that.taskDescription)
                 && Objects.equals(taskStartAt, that.taskStartAt)
                 && Objects.equals(taskEndAt, that.taskEndAt)
+                && Objects.equals(taskStatus, that.taskStatus)
                 && Objects.equals(projectId, that.projectId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, projectId);
+        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskStatus, projectId);
     }
 }
