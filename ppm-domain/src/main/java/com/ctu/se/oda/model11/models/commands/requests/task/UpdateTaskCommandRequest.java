@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.task;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -24,10 +25,12 @@ public class UpdateTaskCommandRequest {
     @Size(max = 500)
     private String taskDescription;
 
+    @Nullable
     private LocalDate taskStartAt;
 
+    @Nullable
     private LocalDate taskEndAt;
-    
+
     @NotNull
     private Double taskDuration;
 
@@ -36,7 +39,7 @@ public class UpdateTaskCommandRequest {
     private UUID taskParentId;
 
     public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
-        LocalDate taskEndAt, UUID projectId, UUID taskParentId, Double taskDuration) {
+        LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;

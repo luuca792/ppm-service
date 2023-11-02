@@ -80,6 +80,9 @@ public class TaskDAO implements ITaskService{
         if (Objects.nonNull(mappedTask.getEndAt())) {
             creatingTask.setEndAt(mappedTask.getEndAt());
         }
+        if (Objects.nonNull(mappedTask.getDuration())) {
+            creatingTask.setDuration(mappedTask.getDuration());
+        }
         return updateTaskEntityMapper.reverse(
                 taskRepository.save(creatingTask)
         );
@@ -96,7 +99,7 @@ public class TaskDAO implements ITaskService{
                                     .taskDescription(subtask.getDescription())
                                     .taskStartAt(subtask.getStartAt())
                                     .taskEndAt(subtask.getEndAt())
-                                    .taskDuration(task.getDuration())
+                                    .taskDuration(subtask.getDuration())
                                     .projectId(subtask.getProjectId())
                                     .taskParentId(subtask.getTaskParent().getId())
                                     .build()

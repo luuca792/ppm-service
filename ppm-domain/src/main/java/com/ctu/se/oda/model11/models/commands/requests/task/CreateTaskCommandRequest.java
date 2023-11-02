@@ -23,9 +23,9 @@ public class CreateTaskCommandRequest {
     @NotBlank
     @Size(max = 500)
     private String taskDescription;
-    @NotNull
+    @Nullable
     private LocalDate taskStartAt;
-    @NotNull
+    @Nullable
     private LocalDate taskEndAt;
     @NotNull
     private Double taskDuration;
@@ -37,7 +37,7 @@ public class CreateTaskCommandRequest {
     private List<CreateTaskCommandRequest> subtasks;
 
     public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt,
-        LocalDate taskEndAt, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks, Double taskDuration) {
+        LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
