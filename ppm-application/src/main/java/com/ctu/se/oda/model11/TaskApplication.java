@@ -41,6 +41,11 @@ public class TaskApplication implements ITaskApplication {
     }
 
     @Override
+    public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
+        taskService.addMaterialToTask(taskId, materialId, amount);
+    }
+
+    @Override
     public void deleteTask(UUID taskId) {
         this.taskService.deleteTask(taskId);
     }
