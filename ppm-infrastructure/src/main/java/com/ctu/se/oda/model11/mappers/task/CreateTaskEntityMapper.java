@@ -1,11 +1,9 @@
 package com.ctu.se.oda.model11.mappers.task;
 
-import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import lombok.NoArgsConstructor;
@@ -26,7 +24,11 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
                 source.getTaskEndAt(),
+<<<<<<< HEAD
                 source.getTaskDuration(),
+=======
+                TaskStatus.OPEN,
+>>>>>>> main
                 source.getProjectId()
         );
 
@@ -52,7 +54,11 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
+<<<<<<< HEAD
                 .taskDuration(destination.getDuration())
+=======
+                .taskStatus(destination.getStatus())
+>>>>>>> main
                 .projectId(destination.getProjectId())
                 .build();
     }

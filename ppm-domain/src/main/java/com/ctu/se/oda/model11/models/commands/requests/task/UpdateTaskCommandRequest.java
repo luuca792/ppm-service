@@ -1,6 +1,10 @@
 package com.ctu.se.oda.model11.models.commands.requests.task;
 
+<<<<<<< HEAD
 import jakarta.annotation.Nullable;
+=======
+import com.ctu.se.oda.model11.enums.TaskStatus;
+>>>>>>> main
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,6 +35,7 @@ public class UpdateTaskCommandRequest {
     @Nullable
     private LocalDate taskEndAt;
 
+<<<<<<< HEAD
     @NotNull
     private Double taskDuration;
 
@@ -40,12 +45,26 @@ public class UpdateTaskCommandRequest {
 
     public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
         LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId) {
+=======
+    private TaskStatus taskStatus;
+
+    private UUID projectId;
+    
+    private UUID taskParentId;
+
+    public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
+        LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId) {
+>>>>>>> main
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+<<<<<<< HEAD
         this.taskDuration = taskDuration;
+=======
+        this.taskStatus = taskStatus;
+>>>>>>> main
         this.projectId = projectId;
         this.taskParentId = taskParentId;
     }
@@ -58,7 +77,11 @@ public class UpdateTaskCommandRequest {
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
+<<<<<<< HEAD
                 ", taskDuration=" + taskDuration +
+=======
+                ", taskStatus=" + taskStatus +
+>>>>>>> main
                 ", projectId=" + projectId +
                 ", taskParentId=" + taskParentId +
                 '}';

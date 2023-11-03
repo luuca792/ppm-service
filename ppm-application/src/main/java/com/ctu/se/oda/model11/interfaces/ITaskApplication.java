@@ -19,5 +19,7 @@ public interface ITaskApplication {
 
     RetrieveTaskQueryResponse detailTask(UUID taskId);
 
+    void addMaterialToTask(UUID taskId, UUID materialId, Double amount);
+
     void deleteTask(UUID taskId);
 }

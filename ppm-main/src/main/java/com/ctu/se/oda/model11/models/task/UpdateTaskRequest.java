@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -15,7 +13,11 @@ public class UpdateTaskRequest {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+<<<<<<< HEAD
     private Double taskDuration;
+=======
+    private String taskStatus;
+>>>>>>> main
     private String projectId;
     private String taskParentId;
 }

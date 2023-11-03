@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.responses.task;
 
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +19,30 @@ public class UpdateTaskCommandResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+<<<<<<< HEAD
     private Double taskDuration;
+=======
+    private TaskStatus taskStatus;
+>>>>>>> main
     private UUID projectId;
     private UUID taskParentId;
     private List<UpdateTaskCommandResponse> subtasks;
 
+<<<<<<< HEAD
     public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
+=======
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
+>>>>>>> main
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+<<<<<<< HEAD
         this.taskDuration = taskDuration;
+=======
+        this.taskStatus = taskStatus;
+>>>>>>> main
         this.projectId = projectId;
         this.taskParentId = taskParentId;
         this.subtasks = subtasks;
@@ -44,12 +57,20 @@ public class UpdateTaskCommandResponse {
                 && Objects.equals(taskDescription, that.taskDescription)
                 && Objects.equals(taskStartAt, that.taskStartAt)
                 && Objects.equals(taskEndAt, that.taskEndAt)
+<<<<<<< HEAD
                 && Objects.equals(taskDuration, that.taskDuration)
+=======
+                && Objects.equals(taskStatus, that.taskStatus)
+>>>>>>> main
                 && Objects.equals(projectId, that.projectId);
     }
 
     @Override
     public int hashCode() {
+<<<<<<< HEAD
         return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskDuration, projectId);
+=======
+        return Objects.hash(taskId, taskName, taskDescription, taskStartAt, taskEndAt, taskStatus, projectId);
+>>>>>>> main
     }
 }
