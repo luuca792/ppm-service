@@ -2,9 +2,6 @@ package com.ctu.se.oda.model11.api;
 
 import com.ctu.se.oda.model11.constants.ConstantLibrary;
 import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
-import com.ctu.se.oda.model11.entities.Material;
-import com.ctu.se.oda.model11.entities.ResourceMaterial;
-import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
@@ -37,12 +34,16 @@ public class TaskApi {
 
     @Autowired
     private ITaskApplication taskApplication;
+
     @Autowired
     private ITaskRepository taskRepository;
+
     @Autowired
     private IResourceRepository resourceRepository;
+
     @Autowired
     private IMaterialRepository materialRepository;
+
     @Autowired
     private IResourceMaterialRepository resourceMaterialRepository;
 
@@ -54,9 +55,9 @@ public class TaskApi {
         CreateTaskCommandRequest createTaskCommandRequest = createTaskMapper.convert(createTaskRequest);
         return new ResponseEntity<>(taskApplication.createTask(createTaskCommandRequest), HttpStatus.CREATED
         );
-
     }
-    @PutMapping("/{taskId}")
+
+    @PatchMapping("/{taskId}")
     public ResponseEntity<?> updateTask(@RequestBody UpdateTaskRequest updateTaskRequest, @PathVariable String taskId) {
         updateTaskRequest.setTaskId(taskId);
         if (Objects.isNull(updateTaskRequest.getTaskId())) {
@@ -66,6 +67,7 @@ public class TaskApi {
             taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest)), HttpStatus.OK
         );
     }
+
     @GetMapping()
     public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
         return new ResponseEntity<>(taskApplication.listTask(), HttpStatus.OK);

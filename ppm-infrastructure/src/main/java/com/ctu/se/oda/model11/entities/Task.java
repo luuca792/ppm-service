@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.ctu.se.oda.model11.enums.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,42 +15,58 @@ import java.util.UUID;
 @Data
 @Table(name = "tasks")
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task implements IEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column(name = "description", nullable = true)
     private String description;
+
     @Column(name = "start_at")
     private LocalDate startAt;
+
     @Column(name = "end_at")
     private LocalDate endAt;
+    
     @Column(name = "project_id")
     private UUID projectId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_parent_id")
     private Task taskParent;
+
     @OneToMany(mappedBy = "taskParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> subtasks = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
 
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt, UUID projectId) {
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name="status")
+    private TaskStatus status = TaskStatus.OPEN;
+
+    public Task(String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.status = TaskStatus.OPEN;
         this.projectId = projectId;
     }
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, UUID projectId) {
+
+    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.status = taskStatus;
         this.projectId = projectId;
     }
 

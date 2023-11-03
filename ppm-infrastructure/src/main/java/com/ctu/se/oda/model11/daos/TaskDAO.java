@@ -1,6 +1,5 @@
 package com.ctu.se.oda.model11.daos;
 
-import com.ctu.se.oda.model11.entities.Material;
 import com.ctu.se.oda.model11.entities.Resource;
 import com.ctu.se.oda.model11.entities.ResourceMaterial;
 import com.ctu.se.oda.model11.entities.Task;
@@ -13,6 +12,7 @@ import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandRe
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.*;
+
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +55,12 @@ public class TaskDAO implements ITaskService{
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
         if (retrievedProjectId.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+            throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
         if (Objects.nonNull(createTaskCommandRequest.getTaskParentId())) {
             var retrievedTaskParentId = taskRepository.findById(createTaskCommandRequest.getTaskParentId());
             if (retrievedTaskParentId.isEmpty()) {
-                throw new IllegalArgumentException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
+                throw new InternalServerErrorException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
             }
         }
         var retrieveTask = taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest));
@@ -74,12 +74,12 @@ public class TaskDAO implements ITaskService{
     
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
-        var optionalTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
-        if (optionalTask.isEmpty()) {
+        var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
+        if (retrievedTask.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
         var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
-        var creatingTask = optionalTask.get();
+        var creatingTask = retrievedTask.get();
         if (Objects.nonNull(mappedTask.getName())) {
             creatingTask.setName(mappedTask.getName());
         }
@@ -97,8 +97,10 @@ public class TaskDAO implements ITaskService{
         if (Objects.nonNull(mappedTask.getEndAt())) {
             creatingTask.setEndAt(mappedTask.getEndAt());
         }
-        return updateTaskEntityMapper.reverse(
-                taskRepository.save(creatingTask)
+        if (Objects.nonNull(mappedTask.getStatus())) {
+            creatingTask.setStatus(mappedTask.getStatus());
+        }
+        return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get())
         );
     }
 
@@ -113,6 +115,7 @@ public class TaskDAO implements ITaskService{
                                     .taskDescription(subtask.getDescription())
                                     .taskStartAt(subtask.getStartAt())
                                     .taskEndAt(subtask.getEndAt())
+                                    .taskStatus(subtask.getStatus())
                                     .projectId(subtask.getProjectId())
                                     .taskParentId(subtask.getTaskParent().getId())
                                     .build()
@@ -124,6 +127,7 @@ public class TaskDAO implements ITaskService{
                             .taskStartAt(task.getStartAt())
                             .taskEndAt(task.getEndAt())
                             .projectId(task.getProjectId())
+                            .taskStatus(task.getStatus())
                             .taskParentId(task.getTaskParent() != null ? task.getTaskParent().getId() : null)
                             .subtasks(subtasks)
                             .build();
@@ -135,7 +139,7 @@ public class TaskDAO implements ITaskService{
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
         var retrievedTaskOptional = taskRepository.findById(taskId);
         if (retrievedTaskOptional.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrievedTask = retrievedTaskOptional.get();
 
@@ -147,6 +151,7 @@ public class TaskDAO implements ITaskService{
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
+                .taskStatus(retrievedTask.getStatus())
                 .projectId(retrievedTask.getProjectId())
                 .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
                 .subtasks(subtasks)
