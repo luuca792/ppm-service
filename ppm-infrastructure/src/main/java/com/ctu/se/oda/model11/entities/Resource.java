@@ -1,9 +1,12 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,22 +15,27 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Resource implements IEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "name", nullable = false)
-    private String name;
-    @Column(name = "task_id", nullable = false)
-    private UUID taskId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-    public Resource(String name, UUID taskId) {
-        this.name = name;
-        this.taskId = taskId;
+    @JsonIgnore
+    @OneToOne(mappedBy = "resource")
+    private Task task;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ResourceMaterial> resourceMaterials = new ArrayList<>();
+
+    public Resource(UUID id, Task task) {
+        this.id = id;
+        this.task = task;
     }
 
-    public Resource(Long id, String name, UUID taskId) {
-        this.id = id;
-        this.name = name;
-        this.taskId = taskId;
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "id=" + id +
+                ", task=" + task.getId() +
+                '}';
     }
 }

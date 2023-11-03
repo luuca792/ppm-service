@@ -43,6 +43,9 @@ public class Task implements IEntity{
 
     @OneToMany(mappedBy = "taskParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> subtasks = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "resource_id", referencedColumnName = "id")
+    private Resource resource;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name="status")

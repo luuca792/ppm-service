@@ -1,6 +1,9 @@
 package com.ctu.se.oda.model11.daos;
 
+import com.ctu.se.oda.model11.entities.Resource;
+import com.ctu.se.oda.model11.entities.ResourceMaterial;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
@@ -8,19 +11,14 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
-import com.ctu.se.oda.model11.repositories.IProjectRepository;
-import com.ctu.se.oda.model11.repositories.ITaskRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import com.ctu.se.oda.model11.repositories.*;
+
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -44,23 +42,36 @@ public class TaskDAO implements ITaskService{
     @Autowired
     private IProjectRepository projectRepository;
 
+    @Autowired
+    private IResourceRepository resourceRepository;
+
+    @Autowired
+    private IMaterialRepository materialRepository;
+
+    @Autowired
+    private IResourceMaterialRepository resourceMaterialRepository;
+
     @Override
     public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
         if (retrievedProjectId.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+            throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
         if (Objects.nonNull(createTaskCommandRequest.getTaskParentId())) {
             var retrievedTaskParentId = taskRepository.findById(createTaskCommandRequest.getTaskParentId());
             if (retrievedTaskParentId.isEmpty()) {
-                throw new IllegalArgumentException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
+                throw new InternalServerErrorException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
             }
         }
-        return this.createTaskEntityMapper.reverse(taskRepository.save(createTaskEntityMapper
-                .convert(createTaskCommandRequest))
-        );
-    }
+        var retrieveTask = taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest));
 
+        Resource resource = new Resource();
+        var createdResource = resourceRepository.save(resource);
+        retrieveTask.setResource(createdResource);
+
+        return createTaskEntityMapper.reverse(taskRepository.save(retrieveTask));
+    }
+    
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
@@ -128,7 +139,7 @@ public class TaskDAO implements ITaskService{
     public RetrieveTaskQueryResponse detailTask(UUID taskId) {
         var retrievedTaskOptional = taskRepository.findById(taskId);
         if (retrievedTaskOptional.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrievedTask = retrievedTaskOptional.get();
 
@@ -145,6 +156,29 @@ public class TaskDAO implements ITaskService{
                 .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
                 .subtasks(subtasks)
                 .build();
+    }
+
+    @Override
+    public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
+        var retrieveTask = taskRepository.findById(taskId);
+        if(retrieveTask.isEmpty()) {
+            throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+        }
+
+        var retrieveResource = retrieveTask.get().getResource();
+        ResourceMaterial resourceMaterial = new ResourceMaterial();
+        resourceMaterial.setResource(retrieveResource);
+
+        var materialRetrieveOptional = materialRepository.findById(materialId);
+        if(materialRetrieveOptional.isEmpty()) {
+            throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
+        }
+
+        var materialRetrieve = materialRetrieveOptional.get();
+        resourceMaterial.setMaterial(materialRetrieve);
+        resourceMaterial.setAmount(amount);
+
+        resourceMaterialRepository.save(resourceMaterial);
     }
 
     private List<RetrieveTaskQueryResponse> getSubtasksRecursively(Task task) {

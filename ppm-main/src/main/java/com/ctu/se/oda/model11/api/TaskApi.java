@@ -9,6 +9,10 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.models.task.CreateTaskRequest;
 import com.ctu.se.oda.model11.models.task.UpdateTaskRequest;
+import com.ctu.se.oda.model11.repositories.IMaterialRepository;
+import com.ctu.se.oda.model11.repositories.IResourceMaterialRepository;
+import com.ctu.se.oda.model11.repositories.IResourceRepository;
+import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,18 @@ public class TaskApi {
 
     @Autowired
     private ITaskApplication taskApplication;
+
+    @Autowired
+    private ITaskRepository taskRepository;
+
+    @Autowired
+    private IResourceRepository resourceRepository;
+
+    @Autowired
+    private IMaterialRepository materialRepository;
+
+    @Autowired
+    private IResourceMaterialRepository resourceMaterialRepository;
 
     @PostMapping()
     public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
@@ -65,6 +81,15 @@ public class TaskApi {
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable String taskId) {
         taskApplication.deleteTask(UUID.fromString(taskId));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{taskId}/material/{materialId}")
+    public ResponseEntity<?> addMaterialToTask(@PathVariable String taskId,
+                                               @PathVariable String materialId,
+                                               @RequestParam Double amount) {
+        taskApplication.addMaterialToTask(UUID.fromString(taskId), UUID.fromString(materialId), amount);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
