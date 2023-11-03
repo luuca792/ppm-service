@@ -24,11 +24,8 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
                 source.getTaskEndAt(),
-<<<<<<< HEAD
                 source.getTaskDuration(),
-=======
                 TaskStatus.OPEN,
->>>>>>> main
                 source.getProjectId()
         );
 
@@ -54,11 +51,8 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
-<<<<<<< HEAD
                 .taskDuration(destination.getDuration())
-=======
                 .taskStatus(destination.getStatus())
->>>>>>> main
                 .projectId(destination.getProjectId())
                 .build();
     }

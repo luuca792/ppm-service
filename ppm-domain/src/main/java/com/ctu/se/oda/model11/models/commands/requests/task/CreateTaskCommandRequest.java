@@ -37,7 +37,7 @@ public class CreateTaskCommandRequest {
     private List<CreateTaskCommandRequest> subtasks;
 
     public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt,
-        LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks) {
+                                    LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;

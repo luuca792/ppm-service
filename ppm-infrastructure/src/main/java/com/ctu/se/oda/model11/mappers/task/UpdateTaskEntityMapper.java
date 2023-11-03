@@ -23,11 +23,8 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 source.getTaskDescription(),
                 source.getTaskStartAt(),
                 source.getTaskEndAt(),
-<<<<<<< HEAD
                 source.getTaskDuration(),
-=======
                 source.getTaskStatus(),
->>>>>>> main
                 source.getProjectId()
         );
         if (source.getTaskParentId() != null) {
@@ -43,11 +40,8 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
                 .taskDescription(destination.getDescription())
                 .taskStartAt(destination.getStartAt())
                 .taskEndAt(destination.getEndAt())
-<<<<<<< HEAD
                 .taskDuration(destination.getDuration())
-=======
                 .taskStatus(destination.getStatus())
->>>>>>> main
                 .projectId(destination.getProjectId())
                 .taskParentId(destination.getTaskParent() != null ? destination.getTaskParent().getId() : null);
         if (destination.getSubtasks() != null) {

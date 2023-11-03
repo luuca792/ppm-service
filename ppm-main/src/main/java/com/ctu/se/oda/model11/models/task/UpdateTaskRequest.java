@@ -13,11 +13,8 @@ public class UpdateTaskRequest {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
-<<<<<<< HEAD
     private Double taskDuration;
-=======
     private String taskStatus;
->>>>>>> main
     private String projectId;
     private String taskParentId;
 }

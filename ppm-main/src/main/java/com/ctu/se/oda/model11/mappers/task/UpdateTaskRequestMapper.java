@@ -24,15 +24,10 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(source.getTaskDescription())
                 .taskStartAt(source.getTaskStartAt())
                 .taskEndAt(source.getTaskEndAt())
-<<<<<<< HEAD
                 .taskDuration(source.getTaskDuration())
-                .projectId(UUID.fromString(source.getProjectId()))
-                .taskParentId(UUID.fromString(source.getTaskParentId()))
-=======
                 .taskStatus(Optional.ofNullable(source.getTaskStatus()).map(TaskStatus::valueOf).orElse(null))
                 .projectId(Optional.ofNullable(source.getProjectId()).map(UUID::fromString).orElse(null))
                 .taskParentId(Optional.ofNullable(source.getTaskParentId()).map(UUID::fromString).orElse(null))
->>>>>>> main
                 .build();
     }
 
@@ -44,11 +39,8 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .taskDescription(destination.getTaskDescription())
                 .taskStartAt(destination.getTaskStartAt())
                 .taskEndAt(destination.getTaskEndAt())
-<<<<<<< HEAD
                 .taskDuration(destination.getTaskDuration())
-=======
                 .taskStatus(destination.getTaskStatus().toString())
->>>>>>> main
                 .projectId(destination.getProjectId().toString())
                 .build();
     }

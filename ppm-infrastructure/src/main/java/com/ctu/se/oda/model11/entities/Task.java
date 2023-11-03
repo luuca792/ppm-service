@@ -17,11 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task implements IEntity{
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> main
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -37,12 +33,10 @@ public class Task implements IEntity{
 
     @Column(name = "end_at")
     private LocalDate endAt;
-<<<<<<< HEAD
+
     @Column(name = "duration")
     private Double duration;
-=======
-    
->>>>>>> main
+
     @Column(name = "project_id")
     private UUID projectId;
 
@@ -56,42 +50,28 @@ public class Task implements IEntity{
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
 
-<<<<<<< HEAD
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt, Double duration, UUID projectId) {
-=======
     @Enumerated(EnumType.ORDINAL)
     @Column(name="status")
     private TaskStatus status = TaskStatus.OPEN;
 
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
->>>>>>> main
+    public Task(String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
-<<<<<<< HEAD
         this.duration = duration;
-        this.projectId = projectId;
-    }
-
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, Double duration, UUID projectId) {
-=======
         this.status = TaskStatus.OPEN;
         this.projectId = projectId;
     }
 
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
->>>>>>> main
+    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
-<<<<<<< HEAD
         this.duration = duration;
-=======
         this.status = taskStatus;
->>>>>>> main
         this.projectId = projectId;
     }
 

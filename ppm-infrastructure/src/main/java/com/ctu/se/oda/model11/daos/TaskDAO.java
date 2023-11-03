@@ -71,7 +71,7 @@ public class TaskDAO implements ITaskService{
 
         return createTaskEntityMapper.reverse(taskRepository.save(retrieveTask));
     }
-    
+
     @Override
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
@@ -97,18 +97,13 @@ public class TaskDAO implements ITaskService{
         if (Objects.nonNull(mappedTask.getEndAt())) {
             creatingTask.setEndAt(mappedTask.getEndAt());
         }
-<<<<<<< HEAD
         if (Objects.nonNull(mappedTask.getDuration())) {
             creatingTask.setDuration(mappedTask.getDuration());
         }
-        return updateTaskEntityMapper.reverse(
-                taskRepository.save(creatingTask)
-=======
         if (Objects.nonNull(mappedTask.getStatus())) {
             creatingTask.setStatus(mappedTask.getStatus());
         }
         return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get())
->>>>>>> main
         );
     }
 
@@ -123,11 +118,8 @@ public class TaskDAO implements ITaskService{
                                     .taskDescription(subtask.getDescription())
                                     .taskStartAt(subtask.getStartAt())
                                     .taskEndAt(subtask.getEndAt())
-<<<<<<< HEAD
                                     .taskDuration(subtask.getDuration())
-=======
                                     .taskStatus(subtask.getStatus())
->>>>>>> main
                                     .projectId(subtask.getProjectId())
                                     .taskParentId(subtask.getTaskParent().getId())
                                     .build()
@@ -164,11 +156,8 @@ public class TaskDAO implements ITaskService{
                 .taskDescription(retrievedTask.getDescription())
                 .taskStartAt(retrievedTask.getStartAt())
                 .taskEndAt(retrievedTask.getEndAt())
-<<<<<<< HEAD
                 .taskDuration(retrievedTask.getDuration())
-=======
                 .taskStatus(retrievedTask.getStatus())
->>>>>>> main
                 .projectId(retrievedTask.getProjectId())
                 .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
                 .subtasks(subtasks)
@@ -211,6 +200,7 @@ public class TaskDAO implements ITaskService{
                     .taskDescription(subtask.getDescription())
                     .taskStartAt(subtask.getStartAt())
                     .taskEndAt(subtask.getEndAt())
+                    .taskDuration(subtask.getDuration())
                     .projectId(subtask.getProjectId())
                     .taskParentId(subtask.getTaskParent() != null ? subtask.getTaskParent().getId() : null)
                     .subtasks(subtasksOfSubtask)

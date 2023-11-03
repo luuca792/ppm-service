@@ -13,26 +13,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Builder
 public class CreateTaskCommandResponse {
-    
     private UUID taskId;
     private String taskName;
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
-<<<<<<< HEAD
     private Double taskDuration;
-=======
     private TaskStatus taskStatus;
->>>>>>> main
     private UUID projectId;
     private UUID taskParentId;
     private List<CreateTaskCommandResponse> subtasks;
 
-<<<<<<< HEAD
-    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandResponse> subtasks) {
-=======
-    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<CreateTaskCommandResponse> subtasks) {
->>>>>>> main
+    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<CreateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
