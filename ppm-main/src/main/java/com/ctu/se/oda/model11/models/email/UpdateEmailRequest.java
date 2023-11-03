@@ -8,5 +8,5 @@ import lombok.Data;
 public class UpdateEmailRequest {
     private String emailId;
 
-    private String email;
+    private String emailAddress;
 }

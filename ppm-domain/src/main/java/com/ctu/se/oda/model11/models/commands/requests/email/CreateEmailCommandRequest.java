@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.email;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,22 +9,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Data
-@Builder
 @RequiredArgsConstructor
+@Builder
 public class CreateEmailCommandRequest {
 
     @NotNull
     @Size(max = 255)
-    private String email;
+    private String emailAddress;
 
-    public CreateEmailCommandRequest(@JsonProperty("email") String email) {
-        this.email = email;
+    public CreateEmailCommandRequest(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     @Override
     public String toString() {
         return "CreateEmailCommandRequest{" +
-                "email='" + email + '\'';
+                "emailAddress='" + emailAddress +
+                '\'';
     }
 }

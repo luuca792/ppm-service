@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.models.commands.requests.email;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +15,20 @@ public class UpdateEmailCommandRequest {
 
     private UUID emailId;
 
-    private String email;
+    @NotNull
+    @Size(max = 255)
+    private String emailAddress;
 
-    public UpdateEmailCommandRequest(UUID emailId, String email) {
+    public UpdateEmailCommandRequest(UUID emailId, String emailAddress) {
         this.emailId = emailId;
-        this.email = email;
+        this.emailAddress = emailAddress;
     }
 
     @Override
     public String toString() {
         return "UpdateEmailCommandRequest{" +
                 "emailId='" + emailId +
-                "email='" + email + '\'';
+                "emailAddress='" + emailAddress +
+                '\'';
     }
 }

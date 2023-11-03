@@ -12,10 +12,10 @@ import java.util.UUID;
 public class CreateEmailCommandResponse {
     private UUID emailId;
 
-    private String email;
+    private String emailAddress;
 
-    public CreateEmailCommandResponse(UUID emailId, String email) {
+    public CreateEmailCommandResponse(UUID emailId, String emailAddress) {
         this.emailId = emailId;
-        this.email = email;
+        this.emailAddress = emailAddress;
     }
 }

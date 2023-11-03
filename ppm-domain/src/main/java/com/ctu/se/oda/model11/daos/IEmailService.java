@@ -15,5 +15,5 @@ public interface IEmailService {
     UpdateEmailCommandResponse updateEmail(@Valid UpdateEmailCommandRequest updateEmailCommandRequest);
     List<RetrieveEmailQueryResponse> listEmail();
     RetrieveEmailQueryResponse detailEmail(UUID emailId);
-    void deteleEmail(UUID emailId);
+    void deleteEmail(UUID emailId);
 }

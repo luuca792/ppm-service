@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "project-configuration")
+@Table(name = "project_configuration")
 @Data
 @NoArgsConstructor
 public class ProjectConfiguration {
@@ -23,7 +23,7 @@ public class ProjectConfiguration {
     @OneToOne(mappedBy = "projectConfiguration")
     private Project project;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "projectConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProjectConfigurationEmail> projectConfigurationEmails = new ArrayList<>();
 
     public ProjectConfiguration(UUID id, Project project) {

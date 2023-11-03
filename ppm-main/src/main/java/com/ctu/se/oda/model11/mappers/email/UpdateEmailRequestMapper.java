@@ -15,15 +15,15 @@ public class UpdateEmailRequestMapper implements IMainMapper<UpdateEmailRequest,
     public UpdateEmailCommandRequest convert(UpdateEmailRequest source) {
         return UpdateEmailCommandRequest.builder()
                 .emailId(UUID.fromString(source.getEmailId()))
-                .email(source.getEmail())
+                .emailAddress(source.getEmailAddress())
                 .build();
     }
 
     @Override
     public UpdateEmailRequest reverse(UpdateEmailCommandRequest destination) {
         return UpdateEmailRequest.builder()
-                .emailId(destination.getEmail())
-                .email(destination.getEmail())
+                .emailId(destination.getEmailId().toString())
+                .emailAddress(destination.getEmailAddress())
                 .build();
     }
 }

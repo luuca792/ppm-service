@@ -38,6 +38,11 @@ public class ProjectApplication implements IProjectApplication {
     }
 
     @Override
+    public void addEmailToProject(UUID projectId, UUID emailId, boolean status) {
+        projectService.addEmailToProject(projectId, emailId, status);
+    }
+
+    @Override
     public void deleteProject(UUID projectId) {
         projectService.deleteProject(projectId);
     }

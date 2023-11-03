@@ -14,27 +14,28 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "emails")
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 public class Email implements IEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "email_address", nullable = false)
+    private String emailAddress;
 
     @JsonIgnore
     @OneToMany(mappedBy = "email")
     List<ProjectConfigurationEmail> projectConfigurationEmails = new ArrayList<>();
 
-    public Email(String email) {
-        this.email = email;
+    @JsonCreator
+    public Email(@JsonProperty("email_address") String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
-    public Email(UUID id, String email) {
+    public Email(UUID id, String emailAddress) {
         this.id = id;
-        this.email = email;
+        this.emailAddress = emailAddress;
     }
 }

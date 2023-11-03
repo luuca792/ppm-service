@@ -37,10 +37,8 @@ public class EmailDAO implements IEmailService {
 
     @Override
     public CreateEmailCommandResponse createEmail(@Valid CreateEmailCommandRequest createEmailCommandRequest) {
-        Email email = new Email();
-        email.setEmail(createEmailCommandRequest.getEmail());
         return createEmailEntityMapper.reverse(
-                emailRepository.save(email)
+                emailRepository.save(createEmailEntityMapper.convert(createEmailCommandRequest))
         );
     }
 
@@ -60,7 +58,7 @@ public class EmailDAO implements IEmailService {
         return emailRepository.findAll().stream()
                 .map(email -> RetrieveEmailQueryResponse.builder()
                         .emailId(email.getId())
-                        .email(email.getEmail())
+                        .emailAddress(email.getEmailAddress())
                         .build()
                 ).collect(Collectors.toList());
     }
@@ -74,12 +72,16 @@ public class EmailDAO implements IEmailService {
 
         return RetrieveEmailQueryResponse.builder()
                 .emailId(retrievedEmail.getId())
-                .email(retrievedEmail.getEmail())
+                .emailAddress(retrievedEmail.getEmailAddress())
                 .build();
     }
 
     @Override
-    public void deteleEmail(UUID emailId) {
+    public void deleteEmail(UUID emailId) {
+        var retrievedEmail = emailRepository.findById(emailId).get();
+        if (Objects.isNull(retrievedEmail)) {
+            throw new InternalServerErrorException(CustomErrorMessage.EMAIL_ID_DO_NOT_EXIST);
+        }
         emailRepository.deleteById(emailId);
     }
 }

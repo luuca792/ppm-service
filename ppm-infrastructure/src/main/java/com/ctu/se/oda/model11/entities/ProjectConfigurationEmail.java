@@ -16,9 +16,14 @@ public class ProjectConfigurationEmail implements IEntity{
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    private ProjectConfiguration projectConfiguration;
+    @Column(name = "status")
+    private boolean status;
 
     @ManyToOne
     private Email email;
+
+    @ManyToOne
+    private ProjectConfiguration projectConfiguration;
+
+
 }

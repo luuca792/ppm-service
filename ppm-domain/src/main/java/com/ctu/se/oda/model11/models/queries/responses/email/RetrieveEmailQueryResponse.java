@@ -13,10 +13,10 @@ public class RetrieveEmailQueryResponse {
 
     private UUID emailId;
 
-    private String email;
+    private String emailAddress;
 
-    public RetrieveEmailQueryResponse(UUID emailId, String email) {
+    public RetrieveEmailQueryResponse(UUID emailId, String emailAddress) {
         this.emailId = emailId;
-        this.email = email;
+        this.emailAddress = emailAddress;
     }
 }

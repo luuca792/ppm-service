@@ -67,7 +67,7 @@ public class EmailApi {
 
     @DeleteMapping("/{emailId}")
     public ResponseEntity<?> deleteEmail(@PathVariable String emailId) {
-        emailApplication.detailEmail(UUID.fromString(emailId));
+        emailApplication.deleteEmail(UUID.fromString(emailId));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

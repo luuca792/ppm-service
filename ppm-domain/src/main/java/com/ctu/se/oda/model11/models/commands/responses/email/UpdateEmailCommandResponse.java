@@ -13,11 +13,11 @@ import java.util.UUID;
 public class UpdateEmailCommandResponse {
     private UUID emailId;
 
-    private String email;
+    private String emailAddress;
 
-    public UpdateEmailCommandResponse(UUID emailId, String email) {
+    public UpdateEmailCommandResponse(UUID emailId, String emailAddress) {
         this.emailId = emailId;
-        this.email = email;
+        this.emailAddress = emailAddress;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class UpdateEmailCommandResponse {
         if (o == null || getClass() != o.getClass()) return false;
         UpdateEmailCommandResponse that = (UpdateEmailCommandResponse) o;
         return  emailId.equals(that.emailId) &&
-                email.equals(that.email);
+                emailAddress.equals(that.emailAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emailId, email);
+        return Objects.hash(emailId, emailAddress);
     }
 }

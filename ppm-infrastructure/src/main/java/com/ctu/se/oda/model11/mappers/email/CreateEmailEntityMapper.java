@@ -13,7 +13,7 @@ public class CreateEmailEntityMapper implements IInfrastructureMapper<CreateEmai
     @Override
     public Email convert(CreateEmailCommandRequest source) {
         return new Email(
-                source.getEmail()
+                source.getEmailAddress()
         );
     }
 
@@ -21,7 +21,7 @@ public class CreateEmailEntityMapper implements IInfrastructureMapper<CreateEmai
     public CreateEmailCommandResponse reverse(Email destination) {
         return CreateEmailCommandResponse.builder()
                 .emailId(destination.getId())
-                .email(destination.getEmail())
+                .emailAddress(destination.getEmailAddress())
                 .build();
     }
 }

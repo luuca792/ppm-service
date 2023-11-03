@@ -20,5 +20,7 @@ public interface IProjectApplication {
 
     RetrieveProjectQueryResponse detailProject(UUID projectId);
 
+    void addEmailToProject(UUID projectId, UUID emailId, boolean status);
+
     void deleteProject(UUID projectId);
 }

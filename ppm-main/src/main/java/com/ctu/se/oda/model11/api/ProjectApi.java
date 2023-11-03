@@ -70,4 +70,12 @@ public class ProjectApi {
         return ResponseEntity.ok().build();
 
     }
+
+    @PostMapping("/{projectId}/email/{emailId}")
+    public ResponseEntity<?> addEmailToProject(@PathVariable String projectId,
+                                               @PathVariable String emailId,
+                                               @RequestParam String status) {
+        projectApplication.addEmailToProject(UUID.fromString(projectId), UUID.fromString(emailId), Boolean.parseBoolean(status));
+        return ResponseEntity.ok().build();
+    }
 }

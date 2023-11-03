@@ -42,7 +42,7 @@ public class EmailApplication implements IEmailApplication {
     }
 
     @Override
-    public void deteleEmail(UUID emailId) {
-        emailService.deteleEmail(emailId);
+    public void deleteEmail(UUID emailId) {
+        emailService.deleteEmail(emailId);
     }
 }

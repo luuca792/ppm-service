@@ -14,7 +14,7 @@ public class UpdateEmailEntityMapper implements IInfrastructureMapper<UpdateEmai
     public Email convert(UpdateEmailCommandRequest source) {
         return new Email(
                 source.getEmailId(),
-                source.getEmail()
+                source.getEmailAddress()
         );
     }
 
@@ -22,7 +22,7 @@ public class UpdateEmailEntityMapper implements IInfrastructureMapper<UpdateEmai
     public UpdateEmailCommandResponse reverse(Email destination) {
         return UpdateEmailCommandResponse.builder()
                 .emailId(destination.getId())
-                .email(destination.getEmail())
+                .emailAddress(destination.getEmailAddress())
                 .build();
     }
 }

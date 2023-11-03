@@ -19,5 +19,5 @@ public interface IEmailApplication {
 
     RetrieveEmailQueryResponse detailEmail(UUID emailId);
 
-    void deteleEmail(UUID emailId);
+    void deleteEmail(UUID emailId);
 }
