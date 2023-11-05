@@ -38,7 +38,7 @@ public class UpdateTaskCommandRequest {
     private UUID taskParentId;
 
     public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
-                                    LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId) {
+        LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;

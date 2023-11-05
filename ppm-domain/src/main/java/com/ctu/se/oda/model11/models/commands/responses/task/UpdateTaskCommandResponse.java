@@ -25,7 +25,8 @@ public class UpdateTaskCommandResponse {
     private UUID taskParentId;
     private List<UpdateTaskCommandResponse> subtasks;
 
-    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
+    public UpdateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt,
+        Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<UpdateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;

@@ -24,7 +24,8 @@ public class CreateTaskCommandResponse {
     private UUID taskParentId;
     private List<CreateTaskCommandResponse> subtasks;
 
-    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<CreateTaskCommandResponse> subtasks) {
+    public CreateTaskCommandResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt,
+        Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<CreateTaskCommandResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
