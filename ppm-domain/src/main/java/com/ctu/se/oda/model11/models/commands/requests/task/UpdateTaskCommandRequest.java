@@ -29,19 +29,22 @@ public class UpdateTaskCommandRequest {
 
     private LocalDate taskEndAt;
 
+    private Double taskDuration;
+
     private TaskStatus taskStatus;
 
     private UUID projectId;
-    
+
     private UUID taskParentId;
 
     public UpdateTaskCommandRequest(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt,
-        LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId) {
+        LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskDuration = taskDuration;
         this.taskStatus = taskStatus;
         this.projectId = projectId;
         this.taskParentId = taskParentId;
@@ -55,6 +58,7 @@ public class UpdateTaskCommandRequest {
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskStartAt=" + taskStartAt +
                 ", taskEndAt=" + taskEndAt +
+                ", taskDuration=" + taskDuration +
                 ", taskStatus=" + taskStatus +
                 ", projectId=" + projectId +
                 ", taskParentId=" + taskParentId +

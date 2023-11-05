@@ -19,17 +19,19 @@ public class RetrieveTaskQueryResponse {
     private String taskDescription;
     private LocalDate taskStartAt;
     private LocalDate taskEndAt;
+    private Double taskDuration;
     private TaskStatus taskStatus;
     private UUID projectId;
     private UUID taskParentId;
     private List<RetrieveTaskQueryResponse> subtasks;
 
-    public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<RetrieveTaskQueryResponse> subtasks) {
+    public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<RetrieveTaskQueryResponse> subtasks) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
         this.taskEndAt = taskEndAt;
+        this.taskDuration = taskDuration;
         this.taskStatus = taskStatus;
         this.projectId = projectId;
         this.taskParentId = taskParentId;

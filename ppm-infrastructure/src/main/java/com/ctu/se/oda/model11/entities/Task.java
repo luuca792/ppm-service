@@ -33,7 +33,10 @@ public class Task implements IEntity{
 
     @Column(name = "end_at")
     private LocalDate endAt;
-    
+
+    @Column(name = "duration")
+    private Double duration;
+
     @Column(name = "project_id")
     private UUID projectId;
 
@@ -43,6 +46,7 @@ public class Task implements IEntity{
 
     @OneToMany(mappedBy = "taskParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Task> subtasks = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "resource_id", referencedColumnName = "id")
     private Resource resource;
@@ -51,21 +55,23 @@ public class Task implements IEntity{
     @Column(name="status")
     private TaskStatus status = TaskStatus.OPEN;
 
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
+    public Task(String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.duration = duration;
         this.status = TaskStatus.OPEN;
         this.projectId = projectId;
     }
 
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, TaskStatus taskStatus, UUID projectId) {
+    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.duration = duration;
         this.status = taskStatus;
         this.projectId = projectId;
     }
