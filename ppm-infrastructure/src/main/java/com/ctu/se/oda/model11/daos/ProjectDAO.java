@@ -110,9 +110,11 @@ public class ProjectDAO implements IProjectService {
 
         projectConfigurationEmailRepository.save(projectConfigurationEmail);
 
-        System.out.println(projectConfigurationEmail.getId());
-        System.out.println(projectConfigurationEmail.getEmail().getId());
-        System.out.println(projectConfigurationEmail.getProjectConfiguration().getId());
+        System.out.println("RetrievedProjectConfiguration Id: " + retrieveProjectConfiguration.getId());
+        System.out.println("ProjectConfigurationEmail ProjectConfiguration: " +projectConfigurationEmail.getProjectConfiguration().getId());
+        System.out.println("ProjectConfigurationEmail Id: " + projectConfigurationEmail.getId());
+        System.out.println("ProjectConfigurationEmail Email: " +projectConfigurationEmail.getEmail().getId());
+
     }
 
     @Override
