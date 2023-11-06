@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collector;
 
 @RestController
 @RequestMapping("/projects")
@@ -73,9 +72,8 @@ public class ProjectApi {
 
     @PostMapping("/{projectId}/email/{emailId}")
     public ResponseEntity<?> addEmailToProject(@PathVariable String projectId,
-                                               @PathVariable String emailId,
-                                               @RequestParam String status) {
-        projectApplication.addEmailToProject(UUID.fromString(projectId), UUID.fromString(emailId), Boolean.parseBoolean(status));
+                                               @PathVariable String emailId) {
+        projectApplication.addEmailToProject(UUID.fromString(projectId), UUID.fromString(emailId));
         return ResponseEntity.ok().build();
     }
 }

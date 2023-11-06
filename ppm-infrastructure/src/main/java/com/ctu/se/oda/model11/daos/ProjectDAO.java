@@ -93,13 +93,12 @@ public class ProjectDAO implements IProjectService {
     }
 
     @Override
-    public void addEmailToProject(UUID projectId, UUID emailId, boolean status) {
+    public void addEmailToProject(UUID projectId, UUID emailId) {
         var retrieveProject = projectRepository.findById(projectId).get();
         if (Objects.isNull(retrieveProject)) {
             throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
         var retrieveProjectConfiguration = retrieveProject.getProjectConfiguration();
-
         ProjectConfigurationEmail projectConfigurationEmail = new ProjectConfigurationEmail();
         projectConfigurationEmail.setProjectConfiguration(retrieveProjectConfiguration);
 
@@ -107,14 +106,13 @@ public class ProjectDAO implements IProjectService {
         if (Objects.isNull(retrieveEmail)) {
             throw new InternalServerErrorException(CustomErrorMessage.EMAIL_ID_DO_NOT_EXIST);
         }
-
         projectConfigurationEmail.setEmail(retrieveEmail);
-        projectConfigurationEmail.setStatus(status);
+
+        projectConfigurationEmailRepository.save(projectConfigurationEmail);
+
         System.out.println(projectConfigurationEmail.getId());
         System.out.println(projectConfigurationEmail.getEmail().getId());
         System.out.println(projectConfigurationEmail.getProjectConfiguration().getId());
-
-        projectConfigurationEmailRepository.save(projectConfigurationEmail);
     }
 
     @Override
