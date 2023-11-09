@@ -16,6 +16,8 @@ public class CreateProjectEntityMapper implements IInfrastructureMapper<CreatePr
     public Project convert(CreateProjectCommandRequest source) {
         return new Project(
                 source.getProjectName(),
+                source.getProjectStartAt(),
+                source.getProjectEndAt(),
                 source.getProjectDuration(),
                 source.getProjectCreatorId()
         );
@@ -26,6 +28,8 @@ public class CreateProjectEntityMapper implements IInfrastructureMapper<CreatePr
         return new CreateProjectCommandResponse(
                 destination.getId(),
                 destination.getName(),
+                destination.getStartAt(),
+                destination.getEndAt(),
                 destination.getDuration(),
                 destination.getCreatorId()
         );

@@ -18,6 +18,8 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
         return new Project(
                 source.getProjectId(),
                 source.getProjectName(),
+                source.getProjectStartAt(),
+                source.getProjectEndAt(),
                 source.getProjectDuration(),
                 source.getProjectCreatorId()
         );
@@ -28,6 +30,8 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
         return UpdateProjectCommandResponse.builder()
                 .projectId(destination.getId())
                 .projectName(destination.getName())
+                .projectStartAt(destination.getStartAt())
+                .projectEndAt(destination.getEndAt())
                 .projectDuration(destination.getDuration())
                 .projectCreatorId(destination.getCreatorId())
                 .build();

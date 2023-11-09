@@ -17,6 +17,8 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
         return UpdateProjectCommandRequest.builder()
                 .projectId(source.getProjectId())
                 .projectName(source.getProjectName())
+                .projectStartAt(source.getProjectStartAt())
+                .projectEndAt(source.getProjectEndAt())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
                 .build();

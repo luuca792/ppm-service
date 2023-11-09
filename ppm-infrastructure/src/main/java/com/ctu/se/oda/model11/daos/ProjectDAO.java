@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Objects;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,20 +37,45 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
+        var mappedProject = createProjectEntityMapper.convert(createProjectCommandRequest);
+        if (Objects.nonNull(mappedProject.getStartAt()) && Objects.nonNull(mappedProject.getEndAt())) {
+            if (mappedProject.getStartAt().isAfter(mappedProject.getEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+            }
+        }
         return createProjectEntityMapper.reverse(
                 projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest))
         );
     }
     @Override
     public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
-        return updateProjectEntityMapper.reverse(
-                projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest))
+        var retrievedProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
+        var mappedProject = updateProjectEntityMapper.convert(updateProjectCommandRequest);
+        var creatingProject = retrievedProject.get();
+        if (Objects.nonNull(mappedProject.getName())) {
+            creatingProject.setName(mappedProject.getName());
+        }
+        if (Objects.nonNull(mappedProject.getStartAt()) && Objects.nonNull(mappedProject.getEndAt())) {
+            if (mappedProject.getStartAt().isAfter(mappedProject.getEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+            }
+        }
+        if (Objects.nonNull(mappedProject.getStartAt())) {
+            creatingProject.setStartAt(mappedProject.getStartAt());
+        }
+        if (Objects.nonNull(mappedProject.getEndAt())) {
+            creatingProject.setEndAt(mappedProject.getEndAt());
+        }
+        if (Objects.nonNull(mappedProject.getDuration())) {
+            creatingProject.setDuration(mappedProject.getDuration());
+        }
+        return updateProjectEntityMapper.reverse(projectRepository.save(retrievedProject.get())
         );
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return projectRepository.findAll().stream()
-                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
+                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectStartAt(project.getStartAt()).projectEndAt(project.getEndAt()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
                 .collect(Collectors.toList());
     }
     @Override
@@ -62,6 +88,8 @@ public class ProjectDAO implements IProjectService {
         return RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())
+                .projectStartAt(retrievedProject.getStartAt())
+                .projectEndAt(retrievedProject.getEndAt())
                 .projectDuration(retrievedProject.getDuration())
                 .projectCreatorId(retrievedProject.getCreatorId())
                 .build();

@@ -16,6 +16,8 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
     public CreateProjectCommandRequest convert(CreateProjectRequest source) {
         return CreateProjectCommandRequest.builder()
                 .projectName(source.getProjectName())
+                .projectStartAt(source.getProjectStartAt())
+                .projectEndAt(source.getProjectEndAt())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(source.getProjectCreatorId())
                 .build();
@@ -25,6 +27,8 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
     public CreateProjectRequest reverse(CreateProjectCommandRequest destination) {
         return CreateProjectRequest.builder()
                 .projectName(destination.getProjectName())
+                .projectStartAt(destination.getProjectStartAt())
+                .projectEndAt(destination.getProjectEndAt())
                 .projectDuration(destination.getProjectDuration())
                 .projectCreatorId(destination.getProjectCreatorId())
                 .build();
