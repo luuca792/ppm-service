@@ -19,6 +19,7 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
                 source.getProjectId(),
                 source.getProjectName(),
                 source.getProjectDuration(),
+                source.getProjectStatus(),
                 source.getProjectCreatorId()
         );
     }
@@ -29,6 +30,7 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
                 .projectId(destination.getId())
                 .projectName(destination.getName())
                 .projectDuration(destination.getDuration())
+                .projectStatus(destination.getStatus())
                 .projectCreatorId(destination.getCreatorId())
                 .build();
     }

@@ -15,5 +15,7 @@ public class UpdateProjectRequest {
 
     private Double projectDuration;
 
+    private String projectStatus;
+
     private String projectCreatorId;
 }

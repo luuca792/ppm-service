@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,15 +42,29 @@ public class ProjectDAO implements IProjectService {
         );
     }
     @Override
-    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
-        return updateProjectEntityMapper.reverse(
-                projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest))
+    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest UpdateProjectCommandRequest) {
+        var retrievedProject = projectRepository.findById(UpdateProjectCommandRequest.getProjectId());
+        var mappedProject = updateProjectEntityMapper.convert(UpdateProjectCommandRequest);
+        var creatingProject = retrievedProject.get();
+        if (Objects.nonNull(mappedProject.getName())) {
+            creatingProject.setName(mappedProject.getName());
+        }
+        if (Objects.nonNull(mappedProject.getDuration())) {
+            creatingProject.setDuration(mappedProject.getDuration());
+        }
+        if (Objects.nonNull(mappedProject.getStatus())) {
+            creatingProject.setStatus(mappedProject.getStatus());
+        }
+        if (Objects.nonNull(mappedProject.getCreatorId())) {
+            creatingProject.setCreatorId(mappedProject.getCreatorId());
+        }
+        return updateProjectEntityMapper.reverse(projectRepository.save(retrievedProject.get())
         );
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return projectRepository.findAll().stream()
-                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
+                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectStatus(project.getStatus()).projectCreatorId(project.getCreatorId()).build())
                 .collect(Collectors.toList());
     }
     @Override
@@ -63,6 +78,7 @@ public class ProjectDAO implements IProjectService {
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())
                 .projectDuration(retrievedProject.getDuration())
+                .projectStatus(retrievedProject.getStatus())
                 .projectCreatorId(retrievedProject.getCreatorId())
                 .build();
     }

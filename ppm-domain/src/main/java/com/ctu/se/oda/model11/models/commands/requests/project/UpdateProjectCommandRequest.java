@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.project;
 
+import com.ctu.se.oda.model11.enums.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,12 +23,15 @@ public class UpdateProjectCommandRequest {
     @NotNull
     private Double projectDuration;
     @NotNull
+    private ProjectStatus projectStatus;
+    @NotNull
     private UUID projectCreatorId;
 
-    public UpdateProjectCommandRequest(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
+    public UpdateProjectCommandRequest(UUID projectId, String projectName, Double projectDuration, ProjectStatus projectStatus, UUID projectCreatorId) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectDuration = projectDuration;
+        this.projectStatus = projectStatus;
         this.projectCreatorId = projectCreatorId;
     }
 
@@ -37,6 +41,7 @@ public class UpdateProjectCommandRequest {
                 "projectId=" + projectId +
                 ", projectName='" + projectName + '\'' +
                 ", projectDuration=" + projectDuration +
+                ", projectStatus=" + projectStatus +
                 ", projectCreatorId=" + projectCreatorId +
                 '}';
     }
