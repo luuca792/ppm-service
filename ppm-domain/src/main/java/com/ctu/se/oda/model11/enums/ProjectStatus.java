@@ -6,7 +6,7 @@ public enum ProjectStatus {
 
     PENDING(0),
     IN_PROGRESS(1),
-    ON_HOLE(2),
+    ON_HOLD(2),
     DONE(3);
 
     private int valueStatus;
