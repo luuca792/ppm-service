@@ -28,7 +28,8 @@ public class UserApi {
             final String[] values = credentials.split(":", 2);
             String username = values[0];
 
-            List<User> users = userDAO.getUsersFromFile("E:\\LuanVan\\Code\\ppm-service-0.1.0\\ppm-service\\ppm-main\\src\\main\\java\\com\\ctu\\se\\oda\\model11\\data\\user.txt");
+            String fileUser = "E:\\LuanVan\\Code\\ppm-service-0.1.0\\ppm-service\\ppm-main\\src\\main\\java\\com\\ctu\\se\\oda\\model11\\data\\user.txt";
+            List<User> users = userDAO.getUsersFromFile(fileUser);
 
             for (User user : users) {
                 if (user.getUserInfo().getUsername().equals(username)) {
