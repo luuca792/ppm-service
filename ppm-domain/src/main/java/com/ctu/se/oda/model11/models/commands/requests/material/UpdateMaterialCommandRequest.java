@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.material;
 
+import com.ctu.se.oda.model11.enums.MaterialType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,17 +16,14 @@ import java.util.UUID;
 @Builder
 public class UpdateMaterialCommandRequest {
     private UUID materialId;
-    @NotBlank
     @Size(max = 250)
     private String materialName;
-    @NotNull
-    @Positive
-    private Long materialType;
+    private MaterialType materialTypeName;
 
-    public UpdateMaterialCommandRequest(UUID materialId, String materialName, Long materialType) {
+    public UpdateMaterialCommandRequest(UUID materialId, String materialName, MaterialType materialTypeName) {
         this.materialId = materialId;
         this.materialName = materialName;
-        this.materialType = materialType;
+        this.materialTypeName = materialTypeName;
     }
 
     @Override
@@ -33,6 +31,6 @@ public class UpdateMaterialCommandRequest {
         return "UpdateMaterialCommandRequest{" +
                 "materialId" + this.materialId +
                 "materialName" + this.materialName +
-                "materialType"+ this.materialType +"}";
+                "materialTypeName"+ this.materialTypeName +"}";
     }
 }

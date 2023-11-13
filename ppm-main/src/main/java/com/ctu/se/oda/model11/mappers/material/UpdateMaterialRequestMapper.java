@@ -1,11 +1,14 @@
 package com.ctu.se.oda.model11.mappers.material;
 
+import com.ctu.se.oda.model11.enums.MaterialType;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.UpdateMaterialCommandRequest;
 import com.ctu.se.oda.model11.models.material.UpdateMaterialRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -16,7 +19,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
         return UpdateMaterialCommandRequest.builder()
                 .materialId(source.getMaterialId())
                 .materialName(source.getMaterialName())
-                .materialType(source.getMaterialType())
+                .materialTypeName(Optional.ofNullable(source.getMaterialTypeName()).map(MaterialType::valueOf).orElse(null))
                 .build();
     }
 
@@ -25,7 +28,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
         return UpdateMaterialRequest.builder()
                 .materialId(destination.getMaterialId())
                 .materialName(destination.getMaterialName())
-                .materialType(destination.getMaterialType())
+                .materialTypeName(destination.getMaterialTypeName().toString())
                 .build();
     }
 }

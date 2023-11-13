@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.entities;
 
+import com.ctu.se.oda.model11.enums.MaterialType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -20,22 +21,22 @@ public class Material implements IEntity{
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "material_type", nullable = false)
-    private Long type;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "material_type_id", nullable = false)
+    private MaterialType materialTypeName;
 
     @JsonIgnore
     @OneToMany(mappedBy = "material")
     List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 
-    public Material(String name, Long type) {
+    public Material(String name, MaterialType materialTypeName) {
         this.name = name;
-        this.type = type;
+        this.materialTypeName = materialTypeName;
 
     }
-    public Material(UUID id, String name, Long type) {
+    public Material(UUID id, String name, MaterialType materialTypeName) {
         this.id = id;
         this.name = name;
-        this.type = type;
+        this.materialTypeName = materialTypeName;
     }
 }

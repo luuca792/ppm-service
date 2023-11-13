@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.responses.material;
 
+import com.ctu.se.oda.model11.enums.MaterialType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +14,12 @@ import java.util.UUID;
 public class UpdateMaterialCommandResponse {
     private UUID materialId;
     private String materialName;
-    private Long materialType;
+    private MaterialType materialTypeName;
 
-    public UpdateMaterialCommandResponse(UUID materialId, String materialName, Long materialType) {
+    public UpdateMaterialCommandResponse(UUID materialId, String materialName, MaterialType materialTypeName) {
         this.materialId = materialId;
         this.materialName = materialName;
-        this.materialType = materialType;
+        this.materialTypeName = materialTypeName;
     }
 
     @Override
@@ -28,11 +29,11 @@ public class UpdateMaterialCommandResponse {
         UpdateMaterialCommandResponse that = (UpdateMaterialCommandResponse) o;
         return  materialId.equals(that.materialId) &&
                 materialName.equals(that.materialName) &&
-                materialType.equals(that.materialType);
+                materialTypeName.equals(that.materialTypeName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(materialId, materialName, materialType);
+        return Objects.hash(materialId, materialName, materialTypeName);
     }
 }

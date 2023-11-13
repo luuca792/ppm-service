@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.material;
 
+import com.ctu.se.oda.model11.enums.MaterialType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,21 +13,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Builder
 public class CreateMaterialCommandRequest {
-    @NotBlank
     @Size(max = 250)
     private String materialName;
-    @NotNull
-    @Positive
-    private Long materialType;
-    public CreateMaterialCommandRequest(String materialName, Long materialType) {
+    private MaterialType materialTypeName;
+    public CreateMaterialCommandRequest(String materialName, MaterialType materialTypeName) {
         this.materialName = materialName;
-        this.materialType = materialType;
+        this.materialTypeName = materialTypeName;
     }
 
     @Override
     public String toString() {
         return "CreateMaterialCommandRequest{" +
                 "materialName" + this.materialName +
-                "materialType"+ this.materialType +"}";
+                "materialTypeName"+ this.materialTypeName +"}";
     }
 }

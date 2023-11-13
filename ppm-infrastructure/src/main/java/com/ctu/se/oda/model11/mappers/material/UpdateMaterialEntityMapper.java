@@ -15,7 +15,7 @@ public class UpdateMaterialEntityMapper implements IInfrastructureMapper<UpdateM
         return new Material(
                 source.getMaterialId(),
                 source.getMaterialName(),
-                source.getMaterialType()
+                source.getMaterialTypeName()
         );
     }
 
@@ -24,7 +24,7 @@ public class UpdateMaterialEntityMapper implements IInfrastructureMapper<UpdateM
         return UpdateMaterialCommandResponse.builder()
                 .materialId(destination.getId())
                 .materialName(destination.getName())
-                .materialType(destination.getType())
+                .materialTypeName(destination.getMaterialTypeName())
                 .build();
     }
 }
