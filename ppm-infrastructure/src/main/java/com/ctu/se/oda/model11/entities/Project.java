@@ -14,7 +14,7 @@ public class Project implements IEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "duration")
     private Double duration;
