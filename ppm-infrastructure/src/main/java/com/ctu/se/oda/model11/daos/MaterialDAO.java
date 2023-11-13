@@ -9,6 +9,7 @@ import com.ctu.se.oda.model11.models.commands.responses.material.CreateMaterialC
 import com.ctu.se.oda.model11.models.commands.responses.material.UpdateMaterialCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterialQueryResponse;
 import com.ctu.se.oda.model11.repositories.IMaterialRepository;
+import com.ctu.se.oda.model11.utils.NonNullPropertiesUtils;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,9 @@ public class MaterialDAO implements IMaterialService{
         if (retrieveMaterial.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
-        return updateMaterialEntityMapper.reverse(
-                materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest))
-        );
+        var mappedMaterial = updateMaterialEntityMapper.convert(updateMaterialCommandRequest);
+        NonNullPropertiesUtils.copyNonNullProperties(mappedMaterial, retrieveMaterial.get());
+        return updateMaterialEntityMapper.reverse(materialRepository.save(retrieveMaterial.get()));
     }
 
     @Override

@@ -15,10 +15,10 @@ import java.util.UUID;
 @Builder
 public class UpdateMaterialCommandRequest {
     private UUID materialId;
-    @NotBlank
+
     @Size(max = 250)
     private String materialName;
-    @NotNull
+
     @Positive
     private Long materialType;
 

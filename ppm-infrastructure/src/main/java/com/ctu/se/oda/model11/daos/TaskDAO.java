@@ -13,16 +13,15 @@ import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandRe
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.*;
 
+import com.ctu.se.oda.model11.utils.NonNullPropertiesUtils;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,35 +75,17 @@ public class TaskDAO implements ITaskService{
     public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
         if (retrievedTask.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+            throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
         var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
-        var creatingTask = retrievedTask.get();
-        if (Objects.nonNull(mappedTask.getName())) {
-            creatingTask.setName(mappedTask.getName());
-        }
-        if (Objects.nonNull(mappedTask.getDescription())) {
-            creatingTask.setDescription(mappedTask.getDescription());
-        }
-        if (Objects.nonNull(mappedTask.getStartAt()) && Objects.nonNull(mappedTask.getEndAt())) {
-            if (mappedTask.getStartAt().isAfter(mappedTask.getEndAt())) {
-                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
-            }
-        }
-        if (Objects.nonNull(mappedTask.getStartAt())) {
-            creatingTask.setStartAt(mappedTask.getStartAt());
-        }
-        if (Objects.nonNull(mappedTask.getEndAt())) {
-            creatingTask.setEndAt(mappedTask.getEndAt());
-        }
-        if (Objects.nonNull(mappedTask.getDuration())) {
-            creatingTask.setDuration(mappedTask.getDuration());
-        }
-        if (Objects.nonNull(mappedTask.getStatus())) {
-            creatingTask.setStatus(mappedTask.getStatus());
-        }
-        return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get())
-        );
+
+        NonNullPropertiesUtils.copyNonNullProperties(mappedTask, retrievedTask.get());
+        Optional.ofNullable(mappedTask.getStartAt())
+                .ifPresent(startAt -> Optional.ofNullable(mappedTask.getEndAt())
+                        .filter(startAt::isBefore)
+                        .orElseThrow(() -> new InternalServerErrorException(CustomErrorMessage.START_DATE_AFTER_END_DATE)));
+
+        return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get()));
     }
 
     @Override

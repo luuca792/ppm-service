@@ -3,6 +3,7 @@ package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -12,6 +13,7 @@ import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCom
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
+import com.ctu.se.oda.model11.utils.NonNullPropertiesUtils;
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +44,13 @@ public class ProjectDAO implements IProjectService {
     }
     @Override
     public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
-        return updateProjectEntityMapper.reverse(
-                projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest))
-        );
+        var retrievedProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
+        if (retrievedProject.isEmpty()) {
+            throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+        }
+        var mappedProject = updateProjectEntityMapper.convert(updateProjectCommandRequest);
+        NonNullPropertiesUtils.copyNonNullProperties(mappedProject, retrievedProject.get());
+        return updateProjectEntityMapper.reverse(projectRepository.save(retrievedProject.get()));
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {

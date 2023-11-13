@@ -15,13 +15,13 @@ import java.util.UUID;
 @Builder
 public class UpdateProjectCommandRequest {
     private UUID projectId;
-    @NotBlank
+
     @Size(max = 250)
     private String projectName;
+
     @Positive
-    @NotNull
     private Double projectDuration;
-    @NotNull
+
     private UUID projectCreatorId;
 
     public UpdateProjectCommandRequest(UUID projectId, String projectName, Double projectDuration, UUID projectCreatorId) {
