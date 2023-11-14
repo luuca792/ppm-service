@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 public class CreateMaterialCommandRequest {
     @Size(max = 250)
     private String materialName;
-    private MaterialType materialTypeName;
-    public CreateMaterialCommandRequest(String materialName, MaterialType materialTypeName) {
+    private MaterialType materialType;
+    public CreateMaterialCommandRequest(String materialName, MaterialType materialType) {
         this.materialName = materialName;
-        this.materialTypeName = materialTypeName;
+        this.materialType = materialType;
     }
 
     @Override
     public String toString() {
         return "CreateMaterialCommandRequest{" +
                 "materialName" + this.materialName +
-                "materialTypeName"+ this.materialTypeName +"}";
+                "materialType"+ this.materialType +"}";
     }
 }

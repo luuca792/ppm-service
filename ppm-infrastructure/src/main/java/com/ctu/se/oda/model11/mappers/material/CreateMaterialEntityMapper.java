@@ -15,7 +15,7 @@ public class CreateMaterialEntityMapper implements IInfrastructureMapper<CreateM
     public Material convert(CreateMaterialCommandRequest source) {
         return new Material(
                 source.getMaterialName(),
-                source.getMaterialTypeName()
+                source.getMaterialType()
         );
     }
 
@@ -24,7 +24,7 @@ public class CreateMaterialEntityMapper implements IInfrastructureMapper<CreateM
         return new CreateMaterialCommandResponse(
                 destination.getId(),
                 destination.getName(),
-                destination.getMaterialTypeName()
+                destination.getMaterialType()
         );
     }
 }

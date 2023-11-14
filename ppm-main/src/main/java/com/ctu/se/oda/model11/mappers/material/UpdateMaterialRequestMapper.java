@@ -19,7 +19,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
         return UpdateMaterialCommandRequest.builder()
                 .materialId(source.getMaterialId())
                 .materialName(source.getMaterialName())
-                .materialTypeName(Optional.ofNullable(source.getMaterialTypeName()).map(MaterialType::valueOf).orElse(null))
+                .materialType(Optional.ofNullable(source.getMaterialTypeName()).map(MaterialType::valueOf).orElse(null))
                 .build();
     }
 
@@ -28,7 +28,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
         return UpdateMaterialRequest.builder()
                 .materialId(destination.getMaterialId())
                 .materialName(destination.getMaterialName())
-                .materialTypeName(destination.getMaterialTypeName().toString())
+                .materialTypeName(destination.getMaterialType().toString())
                 .build();
     }
 }

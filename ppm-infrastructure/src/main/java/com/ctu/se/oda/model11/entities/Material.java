@@ -23,20 +23,20 @@ public class Material implements IEntity{
     private String name;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "material_type_id", nullable = false)
-    private MaterialType materialTypeName;
+    private MaterialType materialType;
 
     @JsonIgnore
     @OneToMany(mappedBy = "material")
     List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 
-    public Material(String name, MaterialType materialTypeName) {
+    public Material(String name, MaterialType materialType) {
         this.name = name;
-        this.materialTypeName = materialTypeName;
+        this.materialType = materialType;
 
     }
-    public Material(UUID id, String name, MaterialType materialTypeName) {
+    public Material(UUID id, String name, MaterialType materialType) {
         this.id = id;
         this.name = name;
-        this.materialTypeName = materialTypeName;
+        this.materialType = materialType;
     }
 }

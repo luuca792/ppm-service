@@ -16,7 +16,7 @@ public class CreateMaterialRequestMapper implements IMainMapper<CreateMaterialRe
     public CreateMaterialCommandRequest convert(CreateMaterialRequest source) {
         return CreateMaterialCommandRequest.builder()
                 .materialName(source.getMaterialName())
-                .materialTypeName(Optional.ofNullable(source.getMaterialTypeName()).map(MaterialType::valueOf).orElse(null))
+                .materialType(Optional.ofNullable(source.getMaterialTypeName()).map(MaterialType::valueOf).orElse(null))
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class CreateMaterialRequestMapper implements IMainMapper<CreateMaterialRe
     public CreateMaterialRequest reverse(CreateMaterialCommandRequest destination) {
         return CreateMaterialRequest.builder()
                 .materialName(destination.getMaterialName())
-                .materialTypeName(destination.getMaterialTypeName().toString())
+                .materialTypeName(destination.getMaterialType().toString())
                 .build();
     }
 }

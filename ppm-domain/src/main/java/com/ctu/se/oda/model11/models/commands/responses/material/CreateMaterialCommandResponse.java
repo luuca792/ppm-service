@@ -14,12 +14,12 @@ import java.util.UUID;
 public class CreateMaterialCommandResponse {
     private UUID materialId;
     private String materialName;
-    private MaterialType materialTypeName;
+    private MaterialType materialType;
 
-    public CreateMaterialCommandResponse(UUID materialId, String materialName, MaterialType materialTypeName) {
+    public CreateMaterialCommandResponse(UUID materialId, String materialName, MaterialType materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
-        this.materialTypeName = materialTypeName;
+        this.materialType = materialType;
     }
 
     @Override
@@ -27,11 +27,11 @@ public class CreateMaterialCommandResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreateMaterialCommandResponse that = (CreateMaterialCommandResponse) o;
-        return materialName.equals(that.materialName) && materialTypeName.equals(that.materialTypeName);
+        return materialName.equals(that.materialName) && materialType.equals(that.materialType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(materialName, materialTypeName);
+        return Objects.hash(materialName, materialType);
     }
 }

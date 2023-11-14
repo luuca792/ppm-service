@@ -53,7 +53,7 @@ public class MaterialDAO implements IMaterialService{
                 .map(material -> RetrieveMaterialQueryResponse.builder()
                         .materialId(material.getId())
                         .materialName(material.getName())
-                        .materialTypeName(String.valueOf(material.getMaterialTypeName()))
+                        .materialTypeName(String.valueOf(material.getMaterialType()))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -64,7 +64,7 @@ public class MaterialDAO implements IMaterialService{
         return RetrieveMaterialQueryResponse.builder()
                 .materialId(retrieveMaterial.getId())
                 .materialName(retrieveMaterial.getName())
-                .materialTypeName(String.valueOf(retrieveMaterial.getMaterialTypeName()))
+                .materialTypeName(String.valueOf(retrieveMaterial.getMaterialType()))
                 .build();
     }
 

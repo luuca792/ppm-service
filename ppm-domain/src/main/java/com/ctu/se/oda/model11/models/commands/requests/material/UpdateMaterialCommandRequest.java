@@ -18,12 +18,12 @@ public class UpdateMaterialCommandRequest {
     private UUID materialId;
     @Size(max = 250)
     private String materialName;
-    private MaterialType materialTypeName;
+    private MaterialType materialType;
 
-    public UpdateMaterialCommandRequest(UUID materialId, String materialName, MaterialType materialTypeName) {
+    public UpdateMaterialCommandRequest(UUID materialId, String materialName, MaterialType materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
-        this.materialTypeName = materialTypeName;
+        this.materialType = materialType;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class UpdateMaterialCommandRequest {
         return "UpdateMaterialCommandRequest{" +
                 "materialId" + this.materialId +
                 "materialName" + this.materialName +
-                "materialTypeName"+ this.materialTypeName +"}";
+                "materialType"+ this.materialType +"}";
     }
 }
