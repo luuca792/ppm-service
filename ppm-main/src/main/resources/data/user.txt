@@ -12,5 +12,12 @@
             "username": "kimanh",
             "role": "COOPERATION"
         }
+    },
+    {
+         "userId": "c6cf53fd-8795-4eb6-bdf4-d8e171af51dd",
+         "userInfo": {
+             "username": "nhuthao",
+             "role": "WORKER"
+         }
     }
 ]
