@@ -3,8 +3,12 @@ package com.ctu.se.oda.model11.enums;
 import java.util.Arrays;
 
 public enum MaterialType {
-    PHAN_BON(0L),
-    NGUYEN_LIEU(1L);
+    FERTILIZER(0L),
+    INGREDIENT(1L),
+    SEEDS(2L),
+    SEEDLING(3L),
+    UTENSILS(4L),
+    PLANTING_LAND(5L);
 
     private Long materialTypeId;
 
