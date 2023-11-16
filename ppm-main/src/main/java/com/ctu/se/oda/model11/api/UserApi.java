@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -27,12 +28,12 @@ public class UserApi {
 
         List<User> users = userDAO.getUsersFromFile();
 
-        for (User user : users) {
-            if (user.getUserInfo().getUsername().equals(username)) {
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        Optional<User> authenticatedUser = users.stream()
+                .filter(user -> user.getUserInfo().getUsername().equals(username))
+                .findFirst();
+
+        return authenticatedUser.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
     }
 
 }
