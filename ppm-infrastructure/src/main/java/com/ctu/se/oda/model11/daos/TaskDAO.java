@@ -10,6 +10,7 @@ import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
+import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.*;
 
@@ -69,7 +70,7 @@ public class TaskDAO implements ITaskService{
         var createdResource = resourceRepository.save(resource);
         retrieveTask.setResource(createdResource);
 
-        return createTaskEntityMapper.reverse(taskRepository.save(retrieveTask));
+        return createTaskEntityMapper.reverse(retrieveTask);
     }
 
     @Override
@@ -109,35 +110,16 @@ public class TaskDAO implements ITaskService{
 
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
-        return this.taskRepository.findAll().stream().map(
-                task -> {
-                    List<RetrieveTaskQueryResponse> subtasks = task.getSubtasks().stream().map(
-                            subtask -> RetrieveTaskQueryResponse.builder()
-                                    .taskId(subtask.getId())
-                                    .taskName(subtask.getName())
-                                    .taskDescription(subtask.getDescription())
-                                    .taskStartAt(subtask.getStartAt())
-                                    .taskEndAt(subtask.getEndAt())
-                                    .taskDuration(subtask.getDuration())
-                                    .taskStatus(subtask.getStatus())
-                                    .projectId(subtask.getProjectId())
-                                    .taskParentId(subtask.getTaskParent().getId())
-                                    .build()
-                    ).collect(Collectors.toList());
-                    return RetrieveTaskQueryResponse.builder()
-                            .taskId(task.getId())
-                            .taskName(task.getName())
-                            .taskDescription(task.getDescription())
-                            .taskStartAt(task.getStartAt())
-                            .taskEndAt(task.getEndAt())
-                            .taskDuration(task.getDuration())
-                            .projectId(task.getProjectId())
-                            .taskStatus(task.getStatus())
-                            .taskParentId(task.getTaskParent() != null ? task.getTaskParent().getId() : null)
-                            .subtasks(subtasks)
-                            .build();
-                }
-        ).collect(Collectors.toList());
+    	return taskRepository.findAll().stream().map(task -> RetrieveTaskQueryResponse.builder()
+    			.taskId(task.getId())
+                .taskName(task.getName())
+                .taskDescription(task.getDescription())
+                .taskStartAt(task.getStartAt())
+                .taskEndAt(task.getEndAt())
+                .taskDuration(task.getDuration())
+                .projectId(task.getProjectId())
+                .taskStatus(task.getStatus())
+    			.build()).collect(Collectors.toList());
     }
 
     @Override
@@ -147,8 +129,8 @@ public class TaskDAO implements ITaskService{
             throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
         }
         var retrievedTask = retrievedTaskOptional.get();
-
-        List<RetrieveTaskQueryResponse> subtasks = getSubtasksRecursively(retrievedTask);
+//
+//        List<RetrieveTaskQueryResponse> subtasks = getSubtasksRecursively(retrievedTask);
 
         return RetrieveTaskQueryResponse.builder()
                 .taskId(retrievedTask.getId())
@@ -159,8 +141,25 @@ public class TaskDAO implements ITaskService{
                 .taskDuration(retrievedTask.getDuration())
                 .taskStatus(retrievedTask.getStatus())
                 .projectId(retrievedTask.getProjectId())
-                .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
-                .subtasks(subtasks)
+//                .subtasks(subtasks)
+                .build();
+    }
+
+    @Override
+    public TaskDTO getTaskById(UUID taskId) {
+        var retrievedTask = taskRepository.findById(taskId);
+        if (retrievedTask.isEmpty()) {
+            throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
+        }
+        var task = retrievedTask.get();
+        return TaskDTO.builder()
+                .taskId(task.getId())
+                .taskName(task.getName())
+                .taskDescription(task.getDescription())
+                .taskStartAt(task.getStartAt())
+                .taskEndAt(task.getEndAt())
+                .taskDuration(task.getDuration())
+                .projectId(task.getProjectId())
                 .build();
     }
 
@@ -187,29 +186,45 @@ public class TaskDAO implements ITaskService{
         resourceMaterialRepository.save(resourceMaterial);
     }
 
-    private List<RetrieveTaskQueryResponse> getSubtasksRecursively(Task task) {
-        if (task.getSubtasks().isEmpty()) {
-            return Collections.emptyList();
-        }
-        return task.getSubtasks().stream().map(subtask -> {
-            List<RetrieveTaskQueryResponse> subtasksOfSubtask = getSubtasksRecursively(subtask);
-
-            return RetrieveTaskQueryResponse.builder()
-                    .taskId(subtask.getId())
-                    .taskName(subtask.getName())
-                    .taskDescription(subtask.getDescription())
-                    .taskStartAt(subtask.getStartAt())
-                    .taskEndAt(subtask.getEndAt())
-                    .taskDuration(subtask.getDuration())
-                    .projectId(subtask.getProjectId())
-                    .taskParentId(subtask.getTaskParent() != null ? subtask.getTaskParent().getId() : null)
-                    .subtasks(subtasksOfSubtask)
-                    .build();
-        }).collect(Collectors.toList());
-    }
+//    private List<RetrieveTaskQueryResponse> getSubtasksRecursively(Task task) {
+//        if (task.getSubtasks().isEmpty()) {
+//            return Collections.emptyList();
+//        }
+//        return task.getSubtasks().stream().map(subtask -> {
+//            List<RetrieveTaskQueryResponse> subtasksOfSubtask = getSubtasksRecursively(subtask);
+//
+//            return RetrieveTaskQueryResponse.builder()
+//                    .taskId(subtask.getId())
+//                    .taskName(subtask.getName())
+//                    .taskDescription(subtask.getDescription())
+//                    .taskStartAt(subtask.getStartAt())
+//                    .taskEndAt(subtask.getEndAt())
+//                    .taskDuration(subtask.getDuration())
+//                    .projectId(subtask.getProjectId())
+//                    .taskParentId(subtask.getTaskParent() != null ? subtask.getTaskParent().getId() : null)
+//                    .subtasks(subtasksOfSubtask)
+//                    .build();
+//        }).collect(Collectors.toList());
+//    }
 
     @Override
     public void deleteTask(UUID taskId) {
         taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public List<TaskDTO> getTasksOfProject(UUID projectId) {
+        List<Task> taskList = taskRepository.findAllByProjectId(projectId);
+        List<TaskDTO> TaskListDTO = taskList.stream().map(task -> TaskDTO.builder()
+                        .taskId(task.getId())
+                        .taskName(task.getName())
+                        .taskDescription(task.getDescription())
+                        .taskStartAt(task.getStartAt())
+                        .taskEndAt(task.getEndAt())
+                        .taskDuration(task.getDuration())
+                        .projectId(task.getProjectId())
+                        .build())
+                .collect(Collectors.toList());
+        return TaskListDTO;
     }
 }

@@ -21,4 +21,6 @@ public interface IProjectApplication {
     RetrieveProjectQueryResponse detailProject(UUID projectId);
 
     void deleteProject(UUID projectId);
+
+    void scheduleProject(UUID project);
 }

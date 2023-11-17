@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 @Component
 @NoArgsConstructor
 public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskCommandRequest, Task, CreateTaskCommandResponse>{
@@ -19,27 +17,13 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
     private ITaskRepository taskRepository;
     @Override
     public Task convert(CreateTaskCommandRequest source) {
-        Task task = new Task(
-                source.getTaskName(),
-                source.getTaskDescription(),
-                source.getTaskStartAt(),
-                source.getTaskEndAt(),
-                source.getTaskDuration(),
-                TaskStatus.OPEN,
-                source.getProjectId()
-        );
-
-        if (source.getTaskParentId() != null) {
-            Task parentTask = taskRepository.findById(source.getTaskParentId()).orElse(null);
-            task.setTaskParent(parentTask);
-        }
-
-        if (source.getSubtasks() != null && !source.getSubtasks().isEmpty()) {
-            task.setSubtasks(source.getSubtasks().stream()
-                    .map(this::convert)
-                    .collect(Collectors.toList()));
-        }
-
+        Task task = Task.builder()
+                .name(source.getTaskName())
+                .description(source.getTaskDescription())
+                .duration(source.getTaskDuration())
+                .projectId(source.getProjectId())
+                .status(TaskStatus.OPEN)
+                .build();
         return task;
     }
 

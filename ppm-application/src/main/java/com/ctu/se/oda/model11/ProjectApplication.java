@@ -1,5 +1,6 @@
 package com.ctu.se.oda.model11;
 
+import com.ctu.se.oda.model11.helpers.TaskDateCalculationHelper;
 import com.ctu.se.oda.model11.interfaces.IProjectApplication;
 import com.ctu.se.oda.model11.daos.IProjectService;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -17,8 +18,13 @@ import java.util.UUID;
 @Component
 @NoArgsConstructor
 public class ProjectApplication implements IProjectApplication {
+
     @Autowired
     private IProjectService projectService;
+
+    @Autowired
+    private TaskDateCalculationHelper taskDateCalculationHelper;
+
     @Override
     public CreateProjectCommandResponse createProject(CreateProjectCommandRequest createProjectCommandRequest) {
         return projectService.createProject(createProjectCommandRequest);
@@ -42,4 +48,8 @@ public class ProjectApplication implements IProjectApplication {
         projectService.deleteProject(projectId);
     }
 
+    @Override
+    public void scheduleProject(UUID projectId) {
+        taskDateCalculationHelper.dateScheduler(projectId);
+    }
 }
