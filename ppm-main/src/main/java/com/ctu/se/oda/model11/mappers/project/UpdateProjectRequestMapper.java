@@ -21,14 +21,4 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
                 .build();
     }
-
-    @Override
-    public UpdateProjectRequest reverse(UpdateProjectCommandRequest destination) {
-        return UpdateProjectRequest.builder()
-                .projectId(destination.getProjectId())
-                .projectName(destination.getProjectName())
-                .projectDuration(destination.getProjectDuration())
-                .projectCreatorId(destination.getProjectCreatorId().toString())
-                .build();
-    }
 }

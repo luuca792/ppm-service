@@ -1,22 +1,26 @@
 package com.ctu.se.oda.model11.api;
 
-import com.ctu.se.oda.model11.interfaces.IProjectApplication;
-import com.ctu.se.oda.model11.mappers.IMainMapper;
-import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
-import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
-import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
-import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
-import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collector;
+import com.ctu.se.oda.model11.interfaces.IProjectApplication;
+import com.ctu.se.oda.model11.mappers.IMainMapper;
+import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
+import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
+import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
+import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 
 @RestController
 @RequestMapping("/projects")
@@ -26,26 +30,18 @@ public class ProjectApi {
     private IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> createProjectMapper;
 
     @Autowired
-    private IMainMapper<UpdateProjectRequest, UpdateProjectCommandRequest> updateProjectMapper;
-
-    @Autowired
     private IProjectApplication projectApplication;
 
     @PostMapping()
-    public ResponseEntity<CreateProjectCommandResponse> createProject(@RequestBody CreateProjectRequest createProjectRequest) {
-        return new ResponseEntity<>(
-                projectApplication.createProject(createProjectMapper.convert(createProjectRequest)),
-                HttpStatus.CREATED
-        );
+    public ResponseEntity<?> createProject(@RequestBody CreateProjectRequest createProjectRequest) {
+    	projectApplication.createProject(createProjectMapper.convert(createProjectRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<UpdateProjectCommandResponse> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable UUID projectId) {
+    public ResponseEntity<?> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable UUID projectId) {
         updateProjectRequest.setProjectId(projectId);
-        return new ResponseEntity<>(
-                projectApplication.updateProject(updateProjectMapper.convert(updateProjectRequest)),
-                HttpStatus.OK
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping()
@@ -68,6 +64,5 @@ public class ProjectApi {
     public ResponseEntity<?> deleteProject(@PathVariable UUID projectId) {
         projectApplication.deleteProject(projectId);
         return ResponseEntity.ok().build();
-
     }
 }

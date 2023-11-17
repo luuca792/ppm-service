@@ -10,5 +10,5 @@ import java.util.UUID;
 public class UpdateMaterialRequest {
     private UUID materialId;
     private String materialName;
-    private Long materialType;
+    private String materialTypeName;
 }

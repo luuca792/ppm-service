@@ -1,16 +1,16 @@
 package com.ctu.se.oda.model11.mappers.project;
 
+import org.springframework.stereotype.Component;
+
 import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
-import jakarta.validation.Valid;
+
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class CreateProjectEntityMapper implements IInfrastructureMapper<CreateProjectCommandRequest, Project, CreateProjectCommandResponse>{
+public class CreateProjectEntityMapper implements IInfrastructureMapper<CreateProjectCommandRequest, Project>{
 
     @Override
     public Project convert(CreateProjectCommandRequest source) {
@@ -21,13 +21,4 @@ public class CreateProjectEntityMapper implements IInfrastructureMapper<CreatePr
         );
     }
 
-    @Override
-    public CreateProjectCommandResponse reverse(Project destination) {
-        return new CreateProjectCommandResponse(
-                destination.getId(),
-                destination.getName(),
-                destination.getDuration(),
-                destination.getCreatorId()
-        );
-    }
 }
