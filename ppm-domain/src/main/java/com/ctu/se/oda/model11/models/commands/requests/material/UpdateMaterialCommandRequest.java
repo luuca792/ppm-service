@@ -1,15 +1,11 @@
 package com.ctu.se.oda.model11.models.commands.requests.material;
 
-import com.ctu.se.oda.model11.enums.MaterialType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import java.util.UUID;
+
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor
@@ -18,9 +14,9 @@ public class UpdateMaterialCommandRequest {
     private UUID materialId;
     @Size(max = 250)
     private String materialName;
-    private MaterialType materialType;
+    private UUID materialType;
 
-    public UpdateMaterialCommandRequest(UUID materialId, String materialName, MaterialType materialType) {
+    public UpdateMaterialCommandRequest(UUID materialId, String materialName, UUID materialType) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialType = materialType;

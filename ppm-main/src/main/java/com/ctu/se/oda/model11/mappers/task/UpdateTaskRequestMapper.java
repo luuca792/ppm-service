@@ -31,7 +31,6 @@ public class UpdateTaskRequestMapper implements IMainMapper<UpdateTaskRequest, U
                 .build();
     }
 
-    @Override
     public UpdateTaskRequest reverse(UpdateTaskCommandRequest destination) {
         return UpdateTaskRequest.builder()
                 .taskId(destination.getTaskId().toString())
