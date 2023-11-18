@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class CreateMaterialRequest {
     private String materialName;
-    private String materialTypeName;
+    private String materialType;
 }
