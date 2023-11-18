@@ -1,11 +1,10 @@
 package com.ctu.se.oda.model11.errors.responses;
 
+import java.time.LocalDateTime;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Builder

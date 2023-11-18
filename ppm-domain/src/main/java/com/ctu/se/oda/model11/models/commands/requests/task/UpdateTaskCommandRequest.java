@@ -1,16 +1,14 @@
 package com.ctu.se.oda.model11.models.commands.requests.task;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import com.ctu.se.oda.model11.enums.TaskStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @RequiredArgsConstructor

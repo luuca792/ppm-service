@@ -1,10 +1,9 @@
 package com.ctu.se.oda.model11.models.project;
 
+import java.time.LocalDate;
+
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @Builder

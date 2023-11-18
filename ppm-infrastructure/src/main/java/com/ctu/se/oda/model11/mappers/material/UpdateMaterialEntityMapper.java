@@ -1,7 +1,6 @@
 package com.ctu.se.oda.model11.mappers.material;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +27,7 @@ public class UpdateMaterialEntityMapper implements IInfrastructureMapper<UpdateM
 			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
 		return Material.builder()
+				.id(source.getMaterialId())
 				.name(source.getMaterialName())
 				.materialType(materialType.get())
 				.build();

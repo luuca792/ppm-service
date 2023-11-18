@@ -1,14 +1,14 @@
 package com.ctu.se.oda.model11.models.commands.responses.project;
 
-import com.ctu.se.oda.model11.enums.ProjectStatus;
-import jakarta.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.ctu.se.oda.model11.enums.ProjectStatus;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
