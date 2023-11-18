@@ -2,6 +2,7 @@ package com.ctu.se.oda.model11.daos;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,11 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
+        if (Objects.nonNull(createProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(createProjectCommandRequest.getProjectEndAt())) {
+            if (createProjectCommandRequest.getProjectStartAt().isAfter(createProjectCommandRequest.getProjectEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+            }
+        }
     	projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
 
     }
@@ -47,16 +53,27 @@ public class ProjectDAO implements IProjectService {
         if (retrieveProject.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
+
+        if (Objects.nonNull(updateProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(updateProjectCommandRequest.getProjectEndAt())) {
+            if (updateProjectCommandRequest.getProjectStartAt().isAfter(updateProjectCommandRequest.getProjectEndAt())) {
+                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+            }
+        }
+
         projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest));
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return projectRepository.findAll().stream()
                 .map(project -> RetrieveProjectQueryResponse.builder()
-                        .projectId(project.getId()).projectName(project.getName())
-                        .projectDuration(project.getDuration())
-                        .projectStatus(project.getStatus())
-                        .projectCreatorId(project.getCreatorId()).build())
+                    .projectId(project.getId())
+                    .projectName(project.getName())
+                    .projectStartAt(project.getStartAt())
+                    .projectEndAt(project.getEndAt())
+                    .projectDuration(project.getDuration())
+                    .projectStatus(project.getStatus())
+                    .projectCreatorId(project.getCreatorId())
+                    .build())
                 .collect(Collectors.toList());
     }
     @Override
@@ -69,6 +86,8 @@ public class ProjectDAO implements IProjectService {
         return RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())
+                .projectStartAt(retrievedProject.getStartAt())
+                .projectEndAt(retrievedProject.getEndAt())
                 .projectDuration(retrievedProject.getDuration())
                 .projectStatus(retrievedProject.getStatus())
                 .projectCreatorId(retrievedProject.getCreatorId())

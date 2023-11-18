@@ -3,6 +3,7 @@ package com.ctu.se.oda.model11.mappers.material;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ctu.se.oda.model11.entities.Material;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 public class UpdateMaterialEntityMapper implements IInfrastructureMapper<UpdateMaterialCommandRequest, Material> {
-
+	@Autowired
 	private IMaterialTypeRepository materialTypeRepository;
 
 	@Override

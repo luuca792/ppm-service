@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -13,13 +14,17 @@ import java.util.UUID;
 public class RetrieveProjectQueryResponse {
     private UUID projectId;
     private String projectName;
+    private LocalDate projectStartAt;
+    private LocalDate projectEndAt;
     private Double projectDuration;
     private ProjectStatus projectStatus;
     private UUID projectCreatorId;
 
-    public RetrieveProjectQueryResponse(UUID projectId, String projectName, Double projectDuration, ProjectStatus projectStatus, UUID projectCreatorId) {
+    public RetrieveProjectQueryResponse(UUID projectId, String projectName, LocalDate projectStartAt, LocalDate projectEndAt, Double projectDuration, ProjectStatus projectStatus, UUID projectCreatorId) {
         this.projectId = projectId;
         this.projectName = projectName;
+        this.projectStartAt = projectStartAt;
+        this.projectEndAt = projectEndAt;
         this.projectDuration = projectDuration;
         this.projectStatus = projectStatus;
         this.projectCreatorId = projectCreatorId;
