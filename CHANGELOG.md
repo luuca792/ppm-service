@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2023-11-18
+### Added
+- Task will have a resource record automatically added and linked to it during creation.
+- Resource and material entity relation.
+- Added start date and end date for task entity.
+- Added duration for project entity.
+- Added task deletion mechanism to remove all subtasks when deleted.
+- Added project deletion mechanism to remove all tasks belong to it when deleted.
+- Added status for task entity.
+- Added status for project entity.
+
+### Changed
+- Update API for entities from PUT to PATCH.
+- Material type is now a separated entity.
+
+### Fixed
+- Update API no longer required id attribute in request body.
+
 ## [0.1.0] - 2023-10-31
 ### Added
 - Added project entity.
