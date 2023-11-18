@@ -25,7 +25,8 @@ import jakarta.validation.Valid;
 @Validated
 public class ProjectDAO implements IProjectService {
     @Autowired
-    private IProjectRepository projectRepository;@Autowired
+    private IProjectRepository projectRepository;
+    @Autowired
     private ITaskRepository taskRepository;
     @Autowired
     private IInfrastructureMapper<CreateProjectCommandRequest, Project> createProjectEntityMapper;
@@ -34,11 +35,11 @@ public class ProjectDAO implements IProjectService {
 
     @Override
     public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
-    	createProjectEntityMapper.convert(createProjectCommandRequest);
+    	projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
     }
     @Override
     public void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
-    	updateProjectEntityMapper.convert(updateProjectCommandRequest);
+    	projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest));
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
