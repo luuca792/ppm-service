@@ -17,22 +17,11 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
     @Override
     public UpdateProjectCommandRequest convert(UpdateProjectRequest source) {
         return UpdateProjectCommandRequest.builder()
-                .projectId(source.getProjectId())
+                .projectId(UUID.fromString(source.getProjectId()))
                 .projectName(Optional.ofNullable(source.getProjectName()).orElse(null))
                 .projectDuration(source.getProjectDuration())
                 .projectStatus(Optional.ofNullable(source.getProjectStatus()).map(ProjectStatus::valueOf).orElse(null))
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
-                .build();
-    }
-
-    @Override
-    public UpdateProjectRequest reverse(UpdateProjectCommandRequest destination) {
-        return UpdateProjectRequest.builder()
-                .projectId(destination.getProjectId())
-                .projectName(destination.getProjectName())
-                .projectDuration(destination.getProjectDuration())
-                .projectStatus(destination.getProjectStatus().toString())
-                .projectCreatorId(destination.getProjectCreatorId().toString())
                 .build();
     }
 }

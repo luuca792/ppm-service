@@ -1,5 +1,22 @@
 package com.ctu.se.oda.model11.api;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ctu.se.oda.model11.constants.ConstantLibrary;
 import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
@@ -9,18 +26,6 @@ import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandReq
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.models.task.CreateTaskRequest;
 import com.ctu.se.oda.model11.models.task.UpdateTaskRequest;
-import com.ctu.se.oda.model11.repositories.IMaterialRepository;
-import com.ctu.se.oda.model11.repositories.IResourceMaterialRepository;
-import com.ctu.se.oda.model11.repositories.IResourceRepository;
-import com.ctu.se.oda.model11.repositories.ITaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
@@ -35,26 +40,14 @@ public class TaskApi {
     @Autowired
     private ITaskApplication taskApplication;
 
-    @Autowired
-    private ITaskRepository taskRepository;
-
-    @Autowired
-    private IResourceRepository resourceRepository;
-
-    @Autowired
-    private IMaterialRepository materialRepository;
-
-    @Autowired
-    private IResourceMaterialRepository resourceMaterialRepository;
-
     @PostMapping()
     public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
         if (Objects.isNull(createTaskRequest.getProjectId())) {
             throw new InternalServerErrorException(ConstantLibrary.MISSING_PARAMS_WARNING);
         }
         CreateTaskCommandRequest createTaskCommandRequest = createTaskMapper.convert(createTaskRequest);
-        return new ResponseEntity<>(taskApplication.createTask(createTaskCommandRequest), HttpStatus.CREATED
-        );
+        taskApplication.createTask(createTaskCommandRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/{taskId}")
@@ -63,9 +56,8 @@ public class TaskApi {
         if (Objects.isNull(updateTaskRequest.getTaskId())) {
             throw new InternalServerErrorException(ConstantLibrary.MISSING_PARAMS_WARNING);
         }
-        return new ResponseEntity<>(
-            taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest)), HttpStatus.OK
-        );
+        taskApplication.updateTask(updateTaskMapper.convert(updateTaskRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping()
@@ -86,10 +78,8 @@ public class TaskApi {
 
     @PostMapping("/{taskId}/material/{materialId}")
     public ResponseEntity<?> addMaterialToTask(@PathVariable String taskId,
-                                               @PathVariable String materialId,
-                                               @RequestParam Double amount) {
+    		@PathVariable String materialId, @RequestParam Double amount) {
         taskApplication.addMaterialToTask(UUID.fromString(taskId), UUID.fromString(materialId), amount);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

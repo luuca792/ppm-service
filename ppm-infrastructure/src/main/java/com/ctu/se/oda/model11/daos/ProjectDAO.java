@@ -1,77 +1,69 @@
 package com.ctu.se.oda.model11.daos;
 
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.project.CreateProjectCommandResponse;
-import com.ctu.se.oda.model11.models.commands.responses.project.UpdateProjectCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
-import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import jakarta.validation.Valid;
 
 @Service
-@NoArgsConstructor
 @Validated
 public class ProjectDAO implements IProjectService {
     @Autowired
-    private IProjectRepository projectRepository;@Autowired
+    private IProjectRepository projectRepository;
+
+    @Autowired
     private ITaskRepository taskRepository;
+
     @Autowired
-    private IInfrastructureMapper<CreateProjectCommandRequest, Project, CreateProjectCommandResponse> createProjectEntityMapper;
+    private IInfrastructureMapper<CreateProjectCommandRequest, Project> createProjectEntityMapper;
+
     @Autowired
-    private IInfrastructureMapper<UpdateProjectCommandRequest, Project, UpdateProjectCommandResponse> updateProjectEntityMapper;
+    private IInfrastructureMapper<UpdateProjectCommandRequest, Project> updateProjectEntityMapper;
 
     @Override
-    public CreateProjectCommandResponse createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
-        return createProjectEntityMapper.reverse(
-                projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest))
-        );
+    public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
+    	projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
+
     }
     @Override
-    public UpdateProjectCommandResponse updateProject(@Valid UpdateProjectCommandRequest UpdateProjectCommandRequest) {
-        var retrievedProject = projectRepository.findById(UpdateProjectCommandRequest.getProjectId());
-        var mappedProject = updateProjectEntityMapper.convert(UpdateProjectCommandRequest);
-        var creatingProject = retrievedProject.get();
-        if (Objects.nonNull(mappedProject.getName())) {
-            creatingProject.setName(mappedProject.getName());
+    public void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
+        var retrieveProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
+        if (retrieveProject.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
-        if (Objects.nonNull(mappedProject.getDuration())) {
-            creatingProject.setDuration(mappedProject.getDuration());
-        }
-        if (Objects.nonNull(mappedProject.getStatus())) {
-            creatingProject.setStatus(mappedProject.getStatus());
-        }
-        if (Objects.nonNull(mappedProject.getCreatorId())) {
-            creatingProject.setCreatorId(mappedProject.getCreatorId());
-        }
-        return updateProjectEntityMapper.reverse(projectRepository.save(retrievedProject.get())
-        );
+        projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest));
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return projectRepository.findAll().stream()
-                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectStatus(project.getStatus()).projectCreatorId(project.getCreatorId()).build())
+                .map(project -> RetrieveProjectQueryResponse.builder()
+                        .projectId(project.getId()).projectName(project.getName())
+                        .projectDuration(project.getDuration())
+                        .projectStatus(project.getStatus())
+                        .projectCreatorId(project.getCreatorId()).build())
                 .collect(Collectors.toList());
     }
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
         var retrievedProjectOptional = projectRepository.findById(projectId);
         if (retrievedProjectOptional.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
         var retrievedProject = retrievedProjectOptional.get();
         return RetrieveProjectQueryResponse.builder()

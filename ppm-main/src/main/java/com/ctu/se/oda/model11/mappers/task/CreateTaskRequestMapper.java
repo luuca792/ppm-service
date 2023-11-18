@@ -25,16 +25,4 @@ public class CreateTaskRequestMapper implements IMainMapper<CreateTaskRequest, C
                 .taskParentId(Optional.ofNullable(source.getTaskParentId()).map(UUID::fromString).orElse(null))
                 .build();
     }
-
-    @Override
-    public CreateTaskRequest reverse(CreateTaskCommandRequest destination) {
-        return CreateTaskRequest.builder()
-                .taskName(destination.getTaskName())
-                .taskDescription(destination.getTaskDescription())
-                .taskStartAt(destination.getTaskStartAt())
-                .taskEndAt(destination.getTaskEndAt())
-                .taskDuration(destination.getTaskDuration())
-                .projectId(destination.getProjectId().toString())
-                .build();
-    }
 }

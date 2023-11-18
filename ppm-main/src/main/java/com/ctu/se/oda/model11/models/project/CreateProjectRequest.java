@@ -13,5 +13,5 @@ public class CreateProjectRequest {
 
     private Double projectDuration;
 
-    private UUID projectCreatorId;
+    private String projectCreatorId;
 }
