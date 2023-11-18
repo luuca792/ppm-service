@@ -18,6 +18,8 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
     public CreateProjectCommandRequest convert(CreateProjectRequest source) {
         return CreateProjectCommandRequest.builder()
                 .projectName(source.getProjectName())
+                .projectStartAt(source.getProjectStartAt())
+                .projectEndAt(source.getProjectEndAt())
                 .projectDuration(source.getProjectDuration())
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
                 .build();

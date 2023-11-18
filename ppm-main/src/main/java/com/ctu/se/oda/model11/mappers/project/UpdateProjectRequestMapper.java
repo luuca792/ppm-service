@@ -18,7 +18,9 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
     public UpdateProjectCommandRequest convert(UpdateProjectRequest source) {
         return UpdateProjectCommandRequest.builder()
                 .projectId(UUID.fromString(source.getProjectId()))
-                .projectName(Optional.ofNullable(source.getProjectName()).orElse(null))
+                .projectName(source.getProjectName())
+                .projectStartAt(source.getProjectStartAt())
+                .projectEndAt(source.getProjectEndAt())
                 .projectDuration(source.getProjectDuration())
                 .projectStatus(Optional.ofNullable(source.getProjectStatus()).map(ProjectStatus::valueOf).orElse(null))
                 .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))

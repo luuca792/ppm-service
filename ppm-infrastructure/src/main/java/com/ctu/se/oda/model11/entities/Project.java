@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +24,12 @@ public class Project {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    @Column(name = "start_at")
+    private LocalDate startAt;
+
+    @Column(name = "end_at")
+    private LocalDate endAt;
+    
     @Column(name = "duration")
     private Double duration;
 
@@ -32,19 +39,5 @@ public class Project {
 
     @Column(name = "creator_id")
     private UUID creatorId;
-
-//    public Project(String name, Double duration, ProjectStatus status, UUID creatorId) {
-//        this.name = name;
-//        this.duration = duration;
-//        this.status = ProjectStatus.PENDING;
-//        this.creatorId = creatorId;
-//    }
-//
-//    public Project(UUID id, String name, Double duration, ProjectStatus status, UUID creatorId) {
-//        this.id = id;
-//        this.name = name;
-//        this.duration = duration;
-//        this.status = status;
-//        this.creatorId = creatorId;
-//    }
+    
 }

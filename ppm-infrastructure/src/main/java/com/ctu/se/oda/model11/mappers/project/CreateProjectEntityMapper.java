@@ -20,6 +20,8 @@ public class CreateProjectEntityMapper implements IInfrastructureMapper<CreatePr
                 .duration(source.getProjectDuration())
                 .status(ProjectStatus.PENDING)
                 .creatorId(source.getProjectCreatorId())
+                .startAt(source.getProjectStartAt())
+                .endAt(source.getProjectEndAt())
                 .build();
     }
 
