@@ -1,5 +1,15 @@
 package com.ctu.se.oda.model11.daos;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
 import com.ctu.se.oda.model11.entities.Resource;
 import com.ctu.se.oda.model11.entities.ResourceMaterial;
 import com.ctu.se.oda.model11.entities.Task;
@@ -8,22 +18,15 @@ import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
-import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
-import com.ctu.se.oda.model11.repositories.*;
+import com.ctu.se.oda.model11.repositories.IMaterialRepository;
+import com.ctu.se.oda.model11.repositories.IProjectRepository;
+import com.ctu.se.oda.model11.repositories.IResourceMaterialRepository;
+import com.ctu.se.oda.model11.repositories.IResourceRepository;
+import com.ctu.se.oda.model11.repositories.ITaskRepository;
 
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -31,10 +34,10 @@ import java.util.stream.Collectors;
 public class TaskDAO implements ITaskService{
 
     @Autowired
-    private IInfrastructureMapper<CreateTaskCommandRequest, Task, CreateTaskCommandResponse> createTaskEntityMapper;
+    private IInfrastructureMapper<CreateTaskCommandRequest, Task> createTaskEntityMapper;
 
     @Autowired
-    private IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> updateTaskEntityMapper;
+    private IInfrastructureMapper<UpdateTaskCommandRequest, Task> updateTaskEntityMapper;
 
     @Autowired
     private ITaskRepository taskRepository;
@@ -52,7 +55,7 @@ public class TaskDAO implements ITaskService{
     private IResourceMaterialRepository resourceMaterialRepository;
 
     @Override
-    public CreateTaskCommandResponse createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
+    public void createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
         var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
         if (retrievedProjectId.isEmpty()) {
             throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
@@ -69,11 +72,11 @@ public class TaskDAO implements ITaskService{
         var createdResource = resourceRepository.save(resource);
         retrieveTask.setResource(createdResource);
 
-        return createTaskEntityMapper.reverse(taskRepository.save(retrieveTask));
+        taskRepository.save(retrieveTask);
     }
 
     @Override
-    public UpdateTaskCommandResponse updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
+    public void updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
         var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
         if (retrievedTask.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
@@ -103,8 +106,7 @@ public class TaskDAO implements ITaskService{
         if (Objects.nonNull(mappedTask.getStatus())) {
             creatingTask.setStatus(mappedTask.getStatus());
         }
-        return updateTaskEntityMapper.reverse(taskRepository.save(retrievedTask.get())
-        );
+        taskRepository.save(retrievedTask.get());
     }
 
     @Override

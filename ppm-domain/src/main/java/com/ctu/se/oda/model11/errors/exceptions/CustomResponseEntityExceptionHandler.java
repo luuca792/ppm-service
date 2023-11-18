@@ -1,18 +1,18 @@
 package com.ctu.se.oda.model11.errors.exceptions;
 
-import com.ctu.se.oda.model11.errors.responses.ErrorDetails;
+import java.time.LocalDateTime;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import com.ctu.se.oda.model11.errors.responses.ErrorDetails;
 
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,6 +20,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) throws Exception {
         System.out.println(ex.getMessage());
+        ex.printStackTrace();
         return new ResponseEntity(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

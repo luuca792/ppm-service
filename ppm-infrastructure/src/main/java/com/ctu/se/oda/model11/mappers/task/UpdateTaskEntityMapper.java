@@ -1,20 +1,17 @@
 package com.ctu.se.oda.model11.mappers.task;
 
-import com.ctu.se.oda.model11.entities.Task;
-import com.ctu.se.oda.model11.enums.TaskStatus;
-import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
-import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-import java.util.Objects;
+import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
+import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
+
+import lombok.NoArgsConstructor;
 
 @Component
 @NoArgsConstructor
 
-public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskCommandRequest, Task, UpdateTaskCommandResponse> {
+public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskCommandRequest, Task> {
     @Override
     public Task convert(UpdateTaskCommandRequest source) {
         Task task = new Task(
@@ -32,21 +29,5 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
         }
         return task;
     }
-    @Override
-    public UpdateTaskCommandResponse reverse(Task destination) {
-        UpdateTaskCommandResponse.UpdateTaskCommandResponseBuilder responseBuilder = UpdateTaskCommandResponse.builder()
-                .taskId(destination.getId())
-                .taskName(destination.getName())
-                .taskDescription(destination.getDescription())
-                .taskStartAt(destination.getStartAt())
-                .taskEndAt(destination.getEndAt())
-                .taskDuration(destination.getDuration())
-                .taskStatus(destination.getStatus())
-                .projectId(destination.getProjectId())
-                .taskParentId(destination.getTaskParent() != null ? destination.getTaskParent().getId() : null);
-        if (destination.getSubtasks() != null) {
-            responseBuilder.subtasks(destination.getSubtasks().stream().map(this::reverse).collect(Collectors.toList()));
-        }
-        return responseBuilder.build();
-    }
+
 }

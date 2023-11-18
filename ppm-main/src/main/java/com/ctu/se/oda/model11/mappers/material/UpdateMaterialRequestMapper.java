@@ -1,12 +1,12 @@
 package com.ctu.se.oda.model11.mappers.material;
 
+import org.springframework.stereotype.Component;
+
 import com.ctu.se.oda.model11.mappers.IMainMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.UpdateMaterialCommandRequest;
 import com.ctu.se.oda.model11.models.material.UpdateMaterialRequest;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Component
 @NoArgsConstructor
@@ -16,16 +16,7 @@ public class UpdateMaterialRequestMapper implements IMainMapper<UpdateMaterialRe
         return UpdateMaterialCommandRequest.builder()
                 .materialId(source.getMaterialId())
                 .materialName(source.getMaterialName())
-                .materialType(source.getMaterialType())
-                .build();
-    }
-
-    @Override
-    public UpdateMaterialRequest reverse(UpdateMaterialCommandRequest destination) {
-        return UpdateMaterialRequest.builder()
-                .materialId(destination.getMaterialId())
-                .materialName(destination.getMaterialName())
-                .materialType(destination.getMaterialType())
+                .materialType(source.getMaterialId())
                 .build();
     }
 }

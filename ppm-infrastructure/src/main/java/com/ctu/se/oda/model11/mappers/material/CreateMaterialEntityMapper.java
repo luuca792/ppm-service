@@ -1,30 +1,22 @@
 package com.ctu.se.oda.model11.mappers.material;
 
+import org.springframework.stereotype.Component;
+
 import com.ctu.se.oda.model11.entities.Material;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.material.CreateMaterialCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.material.CreateMaterialCommandResponse;
+
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class CreateMaterialEntityMapper implements IInfrastructureMapper<CreateMaterialCommandRequest, Material, CreateMaterialCommandResponse>{
+public class CreateMaterialEntityMapper implements IInfrastructureMapper<CreateMaterialCommandRequest, Material>{
 
     @Override
     public Material convert(CreateMaterialCommandRequest source) {
-        return new Material(
-                source.getMaterialName(),
-                source.getMaterialType()
-        );
+    	return Material.builder()
+    			.name(source.getMaterialName())
+    			.build();
     }
 
-    @Override
-    public CreateMaterialCommandResponse reverse(Material destination) {
-        return new CreateMaterialCommandResponse(
-                destination.getId(),
-                destination.getName(),
-                destination.getType()
-        );
-    }
 }

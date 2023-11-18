@@ -11,7 +11,7 @@ import java.util.UUID;
 @Table(name = "projects")
 @Data
 @NoArgsConstructor
-public class Project implements IEntity{
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

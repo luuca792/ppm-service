@@ -1,18 +1,18 @@
 package com.ctu.se.oda.model11;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.ctu.se.oda.model11.daos.ITaskService;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
-import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.UUID;
+import lombok.NoArgsConstructor;
 
 @Component
 @NoArgsConstructor
@@ -21,13 +21,13 @@ public class TaskApplication implements ITaskApplication {
     private ITaskService taskService;
 
     @Override
-    public CreateTaskCommandResponse createTask(CreateTaskCommandRequest createTaskCommandRequest) {
-        return taskService.createTask(createTaskCommandRequest);
+    public void createTask(CreateTaskCommandRequest createTaskCommandRequest) {
+        taskService.createTask(createTaskCommandRequest);
     }
 
     @Override
-    public UpdateTaskCommandResponse updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
-        return taskService.updateTask(updateTaskCommandRequest);
+    public void updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
+        taskService.updateTask(updateTaskCommandRequest);
     }
 
     @Override
