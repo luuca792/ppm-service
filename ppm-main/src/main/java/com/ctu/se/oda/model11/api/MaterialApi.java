@@ -43,7 +43,7 @@ public class MaterialApi {
     }
 
     @PatchMapping("/{materialId}")
-    public ResponseEntity<?> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable UUID materialId) {
+    public ResponseEntity<?> updateMaterial(@RequestBody UpdateMaterialRequest updateMaterialRequest, @PathVariable String materialId) {
         updateMaterialRequest.setMaterialId(materialId);
         materialApplication.updateMaterial(updateMaterialMapper.convert(updateMaterialRequest));
         return ResponseEntity.status(HttpStatus.CREATED).build();

@@ -3,6 +3,7 @@ package com.ctu.se.oda.model11.mappers.project;
 import org.springframework.stereotype.Component;
 
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.enums.ProjectStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 
@@ -14,11 +15,12 @@ public class CreateProjectEntityMapper implements IInfrastructureMapper<CreatePr
 
     @Override
     public Project convert(CreateProjectCommandRequest source) {
-        return new Project(
-                source.getProjectName(),
-                source.getProjectDuration(),
-                source.getProjectCreatorId()
-        );
+        return Project.builder()
+                .name(source.getProjectName())
+                .duration(source.getProjectDuration())
+                .status(ProjectStatus.PENDING)
+                .creatorId(source.getProjectCreatorId())
+                .build();
     }
 
 }

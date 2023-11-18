@@ -15,12 +15,13 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
 
     @Override
     public Project convert(UpdateProjectCommandRequest source) {
-        return new Project(
-                source.getProjectId(),
-                source.getProjectName(),
-                source.getProjectDuration(),
-                source.getProjectCreatorId()
-        );
+        return Project.builder()
+                .id(source.getProjectId())
+                .name(source.getProjectName())
+                .duration(source.getProjectDuration())
+                .status(source.getProjectStatus())
+                .creatorId(source.getProjectCreatorId())
+                .build();
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +22,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "materials")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Material {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,7 +34,8 @@ public class Material {
     
     @ManyToOne
     private MaterialType materialType;
-    
+
+    @JsonIgnore
     @OneToMany(mappedBy = "material")
     List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 }

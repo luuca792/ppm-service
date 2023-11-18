@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.daos;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,7 +50,7 @@ public class MaterialDAO implements IMaterialService{
     public void updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
         var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
         if (retrieveMaterial.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
         }
         materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest));
     }
@@ -60,7 +61,7 @@ public class MaterialDAO implements IMaterialService{
                 .map(material -> RetrieveMaterialQueryResponse.builder()
                         .materialId(material.getId())
                         .materialName(material.getName())
-                        .materialTypeName(String.valueOf(material.getMaterialType()))
+                        .materialTypeName(material.getMaterialType().getId())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -71,7 +72,7 @@ public class MaterialDAO implements IMaterialService{
         return RetrieveMaterialQueryResponse.builder()
                 .materialId(retrieveMaterial.getId())
                 .materialName(retrieveMaterial.getName())
-                .materialTypeName(String.valueOf(retrieveMaterial.getMaterialType()))
+                .materialTypeName(retrieveMaterial.getMaterialType().getId())
                 .build();
     }
 

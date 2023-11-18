@@ -12,7 +12,7 @@ public class CreateMaterialTypeEntityMapper implements IInfrastructureMapper<Cre
 	@Override
 	public MaterialType convert(CreateMaterialTypeCommandRequest source) {
 		return MaterialType.builder()
-				.name(source.getMaterialName())
+				.name(source.getMaterialTypeName())
 				.build();
 	}
 }

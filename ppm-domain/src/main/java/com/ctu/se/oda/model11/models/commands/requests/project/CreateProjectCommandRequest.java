@@ -14,9 +14,11 @@ public class CreateProjectCommandRequest {
     @NotBlank
     @Size(max = 250)
     private String projectName;
+
     @NotNull
     @Positive
     private Double projectDuration;
+
     @NotNull
     private UUID projectCreatorId;
 

@@ -15,12 +15,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
 @Table(name = "material_types")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class MaterialType {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,10 +30,7 @@ public class MaterialType {
  
     @Column(name = "name", nullable = false)
     private String name;
-    
-    @JsonIgnore
+
     @OneToMany(mappedBy = "materialType")
     private List<Material> materials;
-    
-    public MaterialType() {}
 }

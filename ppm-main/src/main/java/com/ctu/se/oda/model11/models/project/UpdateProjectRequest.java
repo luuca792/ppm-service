@@ -9,11 +9,13 @@ import java.util.UUID;
 @Builder
 public class UpdateProjectRequest {
 
-    private UUID projectId;
+    private String projectId;
 
     private String projectName;
 
     private Double projectDuration;
+
+    private String projectStatus;
 
     private String projectCreatorId;
 }

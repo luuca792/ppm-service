@@ -25,38 +25,52 @@ import jakarta.validation.Valid;
 @Validated
 public class ProjectDAO implements IProjectService {
     @Autowired
-    private IProjectRepository projectRepository;@Autowired
+    private IProjectRepository projectRepository;
+
+    @Autowired
     private ITaskRepository taskRepository;
+
     @Autowired
     private IInfrastructureMapper<CreateProjectCommandRequest, Project> createProjectEntityMapper;
+
     @Autowired
     private IInfrastructureMapper<UpdateProjectCommandRequest, Project> updateProjectEntityMapper;
 
     @Override
     public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
-    	createProjectEntityMapper.convert(createProjectCommandRequest);
+    	projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
+
     }
     @Override
     public void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
-    	updateProjectEntityMapper.convert(updateProjectCommandRequest);
+        var retrieveProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
+        if (retrieveProject.isEmpty()) {
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+        }
+        projectRepository.save(updateProjectEntityMapper.convert(updateProjectCommandRequest));
     }
     @Override
     public List<RetrieveProjectQueryResponse> listProject() {
         return projectRepository.findAll().stream()
-                .map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId()).projectName(project.getName()).projectDuration(project.getDuration()).projectCreatorId(project.getCreatorId()).build())
+                .map(project -> RetrieveProjectQueryResponse.builder()
+                        .projectId(project.getId()).projectName(project.getName())
+                        .projectDuration(project.getDuration())
+                        .projectStatus(project.getStatus())
+                        .projectCreatorId(project.getCreatorId()).build())
                 .collect(Collectors.toList());
     }
     @Override
     public RetrieveProjectQueryResponse detailProject(UUID projectId) {
         var retrievedProjectOptional = projectRepository.findById(projectId);
         if (retrievedProjectOptional.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.NOT_FOUND_BY_ID);
+            throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
         }
         var retrievedProject = retrievedProjectOptional.get();
         return RetrieveProjectQueryResponse.builder()
                 .projectId(retrievedProject.getId())
                 .projectName(retrievedProject.getName())
                 .projectDuration(retrievedProject.getDuration())
+                .projectStatus(retrievedProject.getStatus())
                 .projectCreatorId(retrievedProject.getCreatorId())
                 .build();
     }

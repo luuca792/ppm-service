@@ -9,6 +9,11 @@ import lombok.Data;
 public class CreateMaterialTypeCommandRequest {
 	
 	@NotNull
-	private String materialName;
+	private String materialTypeName;
 
+	@Override
+	public String toString() {
+		return "CreateMaterialTypeCommandRequest{" +
+				"materialType"+ this.materialTypeName +"}";
+	}
 }

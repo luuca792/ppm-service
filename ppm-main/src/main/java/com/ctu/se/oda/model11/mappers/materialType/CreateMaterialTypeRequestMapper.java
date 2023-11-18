@@ -12,7 +12,7 @@ public class CreateMaterialTypeRequestMapper implements IMainMapper<CreateMateri
 	@Override
 	public CreateMaterialTypeCommandRequest convert(CreateMaterialTypeRequest source) {
 		return CreateMaterialTypeCommandRequest.builder()
-				.materialName(source.getMaterialTypeName())
+				.materialTypeName(source.getMaterialTypeName())
 				.build();
 	}
 }

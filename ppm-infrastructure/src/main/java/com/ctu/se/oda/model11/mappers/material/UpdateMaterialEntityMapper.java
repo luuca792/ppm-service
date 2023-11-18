@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.mappers.material;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -16,19 +17,19 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 public class UpdateMaterialEntityMapper implements IInfrastructureMapper<UpdateMaterialCommandRequest, Material> {
-    
+
 	private IMaterialTypeRepository materialTypeRepository;
-	
+
 	@Override
-    public Material convert(UpdateMaterialCommandRequest source) {
+	public Material convert(UpdateMaterialCommandRequest source) {
 		Optional<MaterialType> materialType = materialTypeRepository.findById(source.getMaterialType());
 		if (!materialType.isPresent() ) {
 			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
-    	return Material.builder()
-    			.name(source.getMaterialName())
-    			.materialType(materialType.get())
-    			.build();
-    }
+		return Material.builder()
+				.name(source.getMaterialName())
+				.materialType(materialType.get())
+				.build();
+	}
 
 }

@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class UpdateMaterialRequest {
-    private UUID materialId;
+    private String materialId;
     private String materialName;
     private String materialTypeName;
 }

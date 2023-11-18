@@ -17,7 +17,7 @@ public class CreateMaterialRequestMapper implements IMainMapper<CreateMaterialRe
     public CreateMaterialCommandRequest convert(CreateMaterialRequest source) {
         return CreateMaterialCommandRequest.builder()
                 .materialName(source.getMaterialName())
-                .materialType(UUID.fromString(source.getMaterialTypeName()))
+                .materialType(UUID.fromString(source.getMaterialType()))
                 .build();
     }
 }

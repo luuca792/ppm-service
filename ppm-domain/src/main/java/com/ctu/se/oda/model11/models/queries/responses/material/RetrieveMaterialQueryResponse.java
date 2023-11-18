@@ -12,9 +12,9 @@ import java.util.UUID;
 public class RetrieveMaterialQueryResponse {
     private UUID materialId;
     private String materialName;
-    private String materialTypeName;
+    private UUID materialTypeName;
 
-    public RetrieveMaterialQueryResponse(UUID materialId, String materialName, String materialTypeName) {
+    public RetrieveMaterialQueryResponse(UUID materialId, String materialName, UUID materialTypeName) {
         this.materialId = materialId;
         this.materialName = materialName;
         this.materialTypeName = materialTypeName;

@@ -8,6 +8,8 @@ import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
 
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Component
 @NoArgsConstructor
 public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> {
@@ -17,7 +19,7 @@ public class CreateProjectRequestMapper implements IMainMapper<CreateProjectRequ
         return CreateProjectCommandRequest.builder()
                 .projectName(source.getProjectName())
                 .projectDuration(source.getProjectDuration())
-                .projectCreatorId(source.getProjectCreatorId())
+                .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
                 .build();
     }
 }

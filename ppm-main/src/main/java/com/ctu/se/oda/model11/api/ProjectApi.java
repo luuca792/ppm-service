@@ -3,6 +3,7 @@ package com.ctu.se.oda.model11.api;
 import java.util.List;
 import java.util.UUID;
 
+import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class ProjectApi {
     private IMainMapper<CreateProjectRequest, CreateProjectCommandRequest> createProjectMapper;
 
     @Autowired
+    private IMainMapper<UpdateProjectRequest, UpdateProjectCommandRequest> updateProjectMapper;
+
+    @Autowired
     private IProjectApplication projectApplication;
 
     @PostMapping()
@@ -39,8 +43,9 @@ public class ProjectApi {
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<?> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable UUID projectId) {
+    public ResponseEntity<?> updateProject(@RequestBody UpdateProjectRequest updateProjectRequest, @PathVariable String projectId) {
         updateProjectRequest.setProjectId(projectId);
+        projectApplication.updateProject(updateProjectMapper.convert(updateProjectRequest));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
