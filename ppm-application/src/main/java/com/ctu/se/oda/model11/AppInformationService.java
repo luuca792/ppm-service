@@ -8,12 +8,12 @@ import java.util.Objects;
 @Service
 public class AppInformationService {
 
-    private static AppInfo appInfo;
+	private static AppInfo appInfo;
 
-    public static AppInfo getAppInfo() {
-        if (Objects.isNull(appInfo)) {
-            appInfo = new AppInfo("Production Process Management Service", "0.1.0");
-        }
-        return appInfo;
-    }
+	public static AppInfo getAppInfo() {
+		if (Objects.isNull(appInfo)) {
+			appInfo = new AppInfo("Production Process Management Service", "0.2.0");
+		}
+		return appInfo;
+	}
 }
