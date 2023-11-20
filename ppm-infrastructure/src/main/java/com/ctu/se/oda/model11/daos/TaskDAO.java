@@ -17,6 +17,9 @@ import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
+import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
+import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
+import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 import com.ctu.se.oda.model11.repositories.IMaterialRepository;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
@@ -151,5 +154,21 @@ public class TaskDAO implements ITaskService{
             throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
         taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public List<TaskDTO> getTasksOfProject(UUID projectId) {
+        List<Task> taskList = taskRepository.findAllByProjectId(projectId);
+        List<TaskDTO> TaskListDTO = taskList.stream().map(task -> TaskDTO.builder()
+                        .taskId(task.getId())
+                        .taskName(task.getName())
+                        .taskDescription(task.getDescription())
+                        .taskStartAt(task.getStartAt())
+                        .taskEndAt(task.getEndAt())
+                        .taskDuration(task.getDuration())
+                        .projectId(task.getProjectId())
+                        .build())
+                .collect(Collectors.toList());
+        return TaskListDTO;
     }
 }

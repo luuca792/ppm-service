@@ -35,9 +35,12 @@ public class CreateTaskCommandRequest {
     private UUID taskParentId;
     @Nullable
     private List<CreateTaskCommandRequest> subtasks;
+    @Nullable
+    private List<UUID> dependentTasks;
 
     public CreateTaskCommandRequest(String taskName, String taskDescription, LocalDate taskStartAt,
-        LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks) {
+        LocalDate taskEndAt, Double taskDuration, UUID projectId, UUID taskParentId, List<CreateTaskCommandRequest> subtasks,
+        List<UUID> dependentTasks) {
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStartAt = taskStartAt;
@@ -46,6 +49,7 @@ public class CreateTaskCommandRequest {
         this.projectId = projectId;
         this.taskParentId = taskParentId;
         this.subtasks = subtasks;
+        this.dependentTasks = dependentTasks;
     }
 
     @Override

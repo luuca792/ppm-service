@@ -26,11 +26,11 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return new ResponseEntity(ErrorDetails.builder().detail(request.getDescription(false)).message(ex.getMessage()).localDateTime(LocalDateTime.now()).build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false)).message(ex.getMessage()).localDateTime(LocalDateTime.now()).build(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({InternalServerErrorException.class})
     protected ResponseEntity<Object> handleCustomException(Exception ex, WebRequest request) {
-        return new ResponseEntity(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
     }
 }

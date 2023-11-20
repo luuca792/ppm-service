@@ -18,17 +18,23 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
 @Entity
 @Data
 @Builder
 @Table(name = "tasks")
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task implements IEntity {
 
@@ -59,7 +65,7 @@ public class Task implements IEntity {
 	@JoinColumn(name = "resource_id", referencedColumnName = "id")
 	private Resource resource;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private TaskStatus status;
 

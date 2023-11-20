@@ -8,6 +8,7 @@ import com.ctu.se.oda.model11.enums.TaskStatus;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Data
