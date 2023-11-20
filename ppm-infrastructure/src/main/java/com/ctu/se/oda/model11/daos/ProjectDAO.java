@@ -41,15 +41,12 @@ public class ProjectDAO implements IProjectService {
 
 	@Override
 	public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
-		if (Objects.nonNull(createProjectCommandRequest.getProjectStartAt())
-				&& Objects.nonNull(createProjectCommandRequest.getProjectEndAt())) {
-			if (createProjectCommandRequest.getProjectStartAt()
-					.isAfter(createProjectCommandRequest.getProjectEndAt())) {
+		if (Objects.nonNull(createProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(createProjectCommandRequest.getProjectEndAt())) {
+			if (createProjectCommandRequest.getProjectStartAt().isAfter(createProjectCommandRequest.getProjectEndAt())) {
 				throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
 			}
 		}
 		projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
-
 	}
 
 	@Override
@@ -73,10 +70,12 @@ public class ProjectDAO implements IProjectService {
 	@Override
 	public List<RetrieveProjectQueryResponse> listProject() {
 		return projectRepository.findAll().stream()
-				.map(project -> RetrieveProjectQueryResponse.builder().projectId(project.getId())
-						.projectName(project.getName()).projectStartAt(project.getStartAt())
-						.projectEndAt(project.getEndAt()).projectDuration(project.getDuration())
-						.projectStatus(project.getStatus()).projectCreatorId(project.getCreatorId()).build())
+				.map(project -> RetrieveProjectQueryResponse.builder()
+				.projectId(project.getId())
+				.projectName(project.getName()).projectStartAt(project.getStartAt())
+				.projectEndAt(project.getEndAt()).projectDuration(project.getDuration())
+				.projectStatus(project.getStatus()).projectCreatorId(project.getCreatorId())
+				.build())
 				.collect(Collectors.toList());
 	}
 
@@ -87,10 +86,12 @@ public class ProjectDAO implements IProjectService {
 			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
 		}
 		var retrievedProject = retrievedProjectOptional.get();
-		return RetrieveProjectQueryResponse.builder().projectId(retrievedProject.getId())
+		return RetrieveProjectQueryResponse.builder()
+				.projectId(retrievedProject.getId())
 				.projectName(retrievedProject.getName()).projectStartAt(retrievedProject.getStartAt())
 				.projectEndAt(retrievedProject.getEndAt()).projectDuration(retrievedProject.getDuration())
-				.projectStatus(retrievedProject.getStatus()).projectCreatorId(retrievedProject.getCreatorId()).build();
+				.projectStatus(retrievedProject.getStatus()).projectCreatorId(retrievedProject.getCreatorId())
+				.build();
 	}
 
 	@Override

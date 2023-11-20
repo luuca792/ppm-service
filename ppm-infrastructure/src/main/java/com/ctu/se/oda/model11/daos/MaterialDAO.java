@@ -39,8 +39,7 @@ public class MaterialDAO implements IMaterialService {
 
 	@Override
 	public void createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest) {
-		Optional<MaterialType> materialType = materialTypeRepository
-				.findById(createMaterialCommandRequest.getMaterialType());
+		Optional<MaterialType> materialType = materialTypeRepository.findById(createMaterialCommandRequest.getMaterialType());
 		if (!materialType.isPresent()) {
 			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
@@ -63,16 +62,21 @@ public class MaterialDAO implements IMaterialService {
 	@Override
 	public List<RetrieveMaterialQueryResponse> listMaterial() {
 		return materialRepository.findAll().stream()
-				.map(material -> RetrieveMaterialQueryResponse.builder().materialId(material.getId())
-						.materialName(material.getName()).materialTypeName(material.getMaterialType().getId()).build())
+				.map(material -> RetrieveMaterialQueryResponse.builder()
+				.materialId(material.getId())
+				.materialName(material.getName())
+				.materialTypeName(material.getMaterialType().getId())
+				.build())
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
 		var retrieveMaterial = materialRepository.findById(materialId).get();
-		return RetrieveMaterialQueryResponse.builder().materialId(retrieveMaterial.getId())
-				.materialName(retrieveMaterial.getName()).materialTypeName(retrieveMaterial.getMaterialType().getId())
+		return RetrieveMaterialQueryResponse.builder()
+				.materialId(retrieveMaterial.getId())
+				.materialName(retrieveMaterial.getName())
+				.materialTypeName(retrieveMaterial.getMaterialType().getId())
 				.build();
 	}
 
