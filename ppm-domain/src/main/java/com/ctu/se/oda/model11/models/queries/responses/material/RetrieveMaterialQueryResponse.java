@@ -1,22 +1,16 @@
 package com.ctu.se.oda.model11.models.queries.responses.material;
 
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RetrieveMaterialQueryResponse {
     private UUID materialId;
     private String materialName;
     private UUID materialTypeName;
-
-    public RetrieveMaterialQueryResponse(UUID materialId, String materialName, UUID materialTypeName) {
-        this.materialId = materialId;
-        this.materialName = materialName;
-        this.materialTypeName = materialTypeName;
-    }
 }

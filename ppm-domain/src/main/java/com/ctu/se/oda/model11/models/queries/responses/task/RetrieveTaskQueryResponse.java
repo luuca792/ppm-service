@@ -1,18 +1,17 @@
 package com.ctu.se.oda.model11.models.queries.responses.task;
 
+import java.time.LocalDate;
+import java.util.UUID;
 
 import com.ctu.se.oda.model11.enums.TaskStatus;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RetrieveTaskQueryResponse {
     private UUID taskId;
     private String taskName;
@@ -22,19 +21,4 @@ public class RetrieveTaskQueryResponse {
     private Double taskDuration;
     private TaskStatus taskStatus;
     private UUID projectId;
-    private UUID taskParentId;
-    private List<RetrieveTaskQueryResponse> subtasks;
-
-    public RetrieveTaskQueryResponse(UUID taskId, String taskName, String taskDescription, LocalDate taskStartAt, LocalDate taskEndAt, Double taskDuration, TaskStatus taskStatus, UUID projectId, UUID taskParentId, List<RetrieveTaskQueryResponse> subtasks) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        this.taskStartAt = taskStartAt;
-        this.taskEndAt = taskEndAt;
-        this.taskDuration = taskDuration;
-        this.taskStatus = taskStatus;
-        this.projectId = projectId;
-        this.taskParentId = taskParentId;
-        this.subtasks = subtasks;
-    }
 }

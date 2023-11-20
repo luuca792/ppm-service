@@ -32,7 +32,7 @@ public class TaskApplication implements ITaskApplication {
 
     @Override
     public List<RetrieveTaskQueryResponse> listTask() {
-        return taskService.listTask();
+        return taskService.getAllTasks();
     }
 
     @Override
