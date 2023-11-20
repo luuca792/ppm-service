@@ -30,6 +30,7 @@ public class UpdateTaskEntityMapper implements IInfrastructureMapper<UpdateTaskC
     			.description(source.getTaskDescription())
     			.startAt(source.getTaskStartAt())
     			.endAt(source.getTaskEndAt())
+    			.duration(source.getTaskDuration())
     			.status(TaskStatus.OPEN)
     			.projectId(Optional.ofNullable(project).map(Optional::get).orElse(null))
     			.build();

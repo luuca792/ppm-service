@@ -41,7 +41,7 @@ public class Project {
     @Column(name = "creator_id")
     private UUID creatorId;
     
-    @OneToMany(mappedBy = "projectId")
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
 }
