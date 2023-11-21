@@ -7,6 +7,7 @@ import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.taskDependency.CreateTaskDependencyCommandRequest;
 import com.ctu.se.oda.model11.models.dtos.TaskDependencyDTO;
+import com.ctu.se.oda.model11.models.queries.responses.taskDependency.RetrieveTaskDependencyQueryResponse;
 import com.ctu.se.oda.model11.repositories.ITaskDependencyRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,11 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 	}
 
 	@Override
-	public void deleteDependencyById(UUID dependencyId) {
+	public void deleteTaskDependencyById(UUID dependencyId) {
+		Optional<TaskDependency> dependency = taskDependencyRepository.findById(dependencyId);
+		if (!dependency.isPresent()) {
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_DEPENDENCY_ID_NOT_FOUND);
+		}
 		taskDependencyRepository.deleteById(dependencyId);
 	}
 
@@ -61,5 +66,17 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 					.dependentTaskId(dependency.getDependentTaskId().getId())
 					.dependencyType(dependency.getDependencyType()).build())
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependences() {
+		List<TaskDependency> taskDependencies = taskDependencyRepository.findAll();
+		return taskDependencies.stream().map(dependency -> RetrieveTaskDependencyQueryResponse.builder()
+				.id(dependency.getId())
+				.taskId(dependency.getTaskId().getId())
+				.taskDependentId(dependency.getDependentTaskId().getId())
+				.dependencyType(dependency.getDependencyType())
+				.build())
+		.collect(Collectors.toList());
 	}
 }

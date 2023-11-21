@@ -13,12 +13,12 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class RetrieveTaskQueryResponse {
-    private UUID taskId;
-    private String taskName;
-    private String taskDescription;
-    private LocalDate taskStartAt;
-    private LocalDate taskEndAt;
-    private Double taskDuration;
-    private TaskStatus taskStatus;
-    private UUID projectId;
+	private UUID taskId;
+	private String taskName;
+	private String taskDescription;
+	private LocalDate taskStartAt;
+	private LocalDate taskEndAt;
+	private Double taskDuration;
+	private TaskStatus taskStatus;
+	private UUID projectId;
 }
