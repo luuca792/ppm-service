@@ -14,5 +14,4 @@ public class CreateTaskRequest {
     private LocalDate taskEndAt;
     private Double taskDuration;
     private String projectId;
-    private String taskParentId;
 }

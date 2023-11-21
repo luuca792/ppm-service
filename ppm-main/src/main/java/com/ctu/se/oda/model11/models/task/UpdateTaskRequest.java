@@ -16,5 +16,4 @@ public class UpdateTaskRequest {
     private Double taskDuration;
     private String taskStatus;
     private String projectId;
-    private String taskParentId;
 }

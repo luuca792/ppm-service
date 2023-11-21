@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ctu.se.oda.model11.daos.IProjectService;
+import com.ctu.se.oda.model11.helpers.TaskDateCalculationHelper;
 import com.ctu.se.oda.model11.interfaces.IProjectApplication;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
@@ -17,29 +18,41 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 public class ProjectApplication implements IProjectApplication {
-    @Autowired
-    private IProjectService projectService;
-    @Override
-    public void createProject(CreateProjectCommandRequest createProjectCommandRequest) {
-        projectService.createProject(createProjectCommandRequest);
-    }
-    @Override
-    public void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest) {
-        projectService.updateProject(updateProjectCommandRequest);
-    }
-    @Override
-    public List<RetrieveProjectQueryResponse> listProject() {
-        return projectService.listProject();
-    }
 
-    @Override
-    public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        return projectService.detailProject(projectId);
-    }
+	@Autowired
+	private IProjectService projectService;
 
-    @Override
-    public void deleteProject(UUID projectId) {
-        projectService.deleteProject(projectId);
-    }
+	@Autowired
+	private TaskDateCalculationHelper taskDateCalculationHelper;
 
+	@Override
+	public void createProject(CreateProjectCommandRequest createProjectCommandRequest) {
+		projectService.createProject(createProjectCommandRequest);
+	}
+
+	@Override
+	public void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest) {
+
+		projectService.updateProject(updateProjectCommandRequest);
+	}
+
+	@Override
+	public List<RetrieveProjectQueryResponse> listProject() {
+		return projectService.listProject();
+	}
+
+	@Override
+	public RetrieveProjectQueryResponse detailProject(UUID projectId) {
+		return projectService.detailProject(projectId);
+	}
+
+	@Override
+	public void deleteProject(UUID projectId) {
+		projectService.deleteProject(projectId);
+	}
+
+	@Override
+	public void scheduleProject(UUID projectId) {
+		taskDateCalculationHelper.dateScheduler(projectId);
+	}
 }
