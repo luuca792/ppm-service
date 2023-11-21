@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class TaskDependencyDTO {
-    private UUID taskId;
-    private UUID dependentTaskId;
-    private DependencyType dependencyType;
+	private UUID taskId;
+	private UUID dependentTaskId;
+	private DependencyType dependencyType;
 }

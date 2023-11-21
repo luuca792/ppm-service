@@ -17,20 +17,24 @@ import com.ctu.se.oda.model11.errors.responses.ErrorDetails;
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({Exception.class})
-    protected ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) throws Exception {
-        System.out.println(ex.getMessage());
-        ex.printStackTrace();
-        return new ResponseEntity<ErrorDetails>(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+	@ExceptionHandler({ Exception.class })
+	protected ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest request) throws Exception {
+		System.out.println(ex.getMessage());
+		ex.printStackTrace();
+		return new ResponseEntity<ErrorDetails>(ErrorDetails.builder().detail(request.getDescription(false))
+				.localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false)).message(ex.getMessage()).localDateTime(LocalDateTime.now()).build(), HttpStatus.BAD_REQUEST);
-    }
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+		return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false))
+				.message(ex.getMessage()).localDateTime(LocalDateTime.now()).build(), HttpStatus.BAD_REQUEST);
+	}
 
-    @ExceptionHandler({InternalServerErrorException.class})
-    protected ResponseEntity<Object> handleCustomException(Exception ex, WebRequest request) {
-        return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false)).localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
-    }
+	@ExceptionHandler({ InternalServerErrorException.class })
+	protected ResponseEntity<Object> handleCustomException(Exception ex, WebRequest request) {
+		return new ResponseEntity<Object>(ErrorDetails.builder().detail(request.getDescription(false))
+				.localDateTime(LocalDateTime.now()).message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+	}
 }

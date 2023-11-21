@@ -8,15 +8,15 @@ import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectComm
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 
 public interface IProjectApplication {
-    void createProject(CreateProjectCommandRequest createProjectCommandRequest);
+	void createProject(CreateProjectCommandRequest createProjectCommandRequest);
 
-    void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest);
+	void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest);
 
-    List<RetrieveProjectQueryResponse> listProject();
+	List<RetrieveProjectQueryResponse> listProject();
 
-    RetrieveProjectQueryResponse detailProject(UUID projectId);
+	RetrieveProjectQueryResponse detailProject(UUID projectId);
 
-    void deleteProject(UUID projectId);
+	void deleteProject(UUID projectId);
 
-    void scheduleProject(UUID project);
+	void scheduleProject(UUID project);
 }

@@ -19,37 +19,40 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectApplication implements IProjectApplication {
 
-    @Autowired
-    private IProjectService projectService;
+	@Autowired
+	private IProjectService projectService;
 
-    @Autowired
-    private TaskDateCalculationHelper taskDateCalculationHelper;
+	@Autowired
+	private TaskDateCalculationHelper taskDateCalculationHelper;
 
-    @Override
-    public void createProject(CreateProjectCommandRequest createProjectCommandRequest) {
-        projectService.createProject(createProjectCommandRequest);
-    }
-    @Override
-    public void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest) {
-        projectService.updateProject(updateProjectCommandRequest);
-    }
-    @Override
-    public List<RetrieveProjectQueryResponse> listProject() {
-        return projectService.listProject();
-    }
+	@Override
+	public void createProject(CreateProjectCommandRequest createProjectCommandRequest) {
+		projectService.createProject(createProjectCommandRequest);
+	}
 
-    @Override
-    public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-        return projectService.detailProject(projectId);
-    }
+	@Override
+	public void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest) {
 
-    @Override
-    public void deleteProject(UUID projectId) {
-        projectService.deleteProject(projectId);
-    }
+		projectService.updateProject(updateProjectCommandRequest);
+	}
 
-    @Override
-    public void scheduleProject(UUID projectId) {
-        taskDateCalculationHelper.dateScheduler(projectId);
-    }
+	@Override
+	public List<RetrieveProjectQueryResponse> listProject() {
+		return projectService.listProject();
+	}
+
+	@Override
+	public RetrieveProjectQueryResponse detailProject(UUID projectId) {
+		return projectService.detailProject(projectId);
+	}
+
+	@Override
+	public void deleteProject(UUID projectId) {
+		projectService.deleteProject(projectId);
+	}
+
+	@Override
+	public void scheduleProject(UUID projectId) {
+		taskDateCalculationHelper.dateScheduler(projectId);
+	}
 }

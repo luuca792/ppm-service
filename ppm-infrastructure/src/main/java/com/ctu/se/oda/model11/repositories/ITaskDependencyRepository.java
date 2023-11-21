@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITaskDependencyRepository extends JpaRepository<TaskDependency, UUID> {
-    List<TaskDependency> findAllByTaskId(Task taskId);
+	List<TaskDependency> findAllByTaskId(Task taskId);
 }

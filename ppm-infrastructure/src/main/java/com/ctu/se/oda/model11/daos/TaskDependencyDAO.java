@@ -22,46 +22,44 @@ import java.util.stream.Collectors;
 @Service
 @NoArgsConstructor
 @Validated
-public class TaskDependencyDAO implements ITaskDependencyService{
+public class TaskDependencyDAO implements ITaskDependencyService {
 
-    @Autowired
-    private ITaskDependencyRepository taskDependencyRepository;
+	@Autowired
+	private ITaskDependencyRepository taskDependencyRepository;
 
-    @Autowired
-    private ITaskRepository taskRepository;
+	@Autowired
+	private ITaskRepository taskRepository;
 
-    @Autowired
-    private IInfrastructureMapper<CreateTaskDependencyCommandRequest, TaskDependency> mapper;
+	@Autowired
+	private IInfrastructureMapper<CreateTaskDependencyCommandRequest, TaskDependency> mapper;
 
-    @Override
-    public void addDependency(CreateTaskDependencyCommandRequest request) {
-        var task = taskRepository.findById(request.getTaskId());
-        var dependentTask = taskRepository.findById(request.getDependentTaskId());
-        if (task.isEmpty() || dependentTask.isEmpty()) {
-            throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
-        }
-        taskDependencyRepository.save(mapper.convert(request));
-    }
+	@Override
+	public void addDependency(CreateTaskDependencyCommandRequest request) {
+		var task = taskRepository.findById(request.getTaskId());
+		var dependentTask = taskRepository.findById(request.getDependentTaskId());
+		if (task.isEmpty() || dependentTask.isEmpty()) {
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+		}
+		taskDependencyRepository.save(mapper.convert(request));
+	}
 
-    @Override
-    public void deleteDependencyById(UUID dependencyId) {
-        taskDependencyRepository.deleteById(dependencyId);
-    }
+	@Override
+	public void deleteDependencyById(UUID dependencyId) {
+		taskDependencyRepository.deleteById(dependencyId);
+	}
 
-    @Override
-    public List<TaskDependencyDTO> getDependentTasks(UUID taskId) {
-    	Optional<Task> task = taskRepository.findById(taskId);
-    	if (!task.isPresent()) {
-    		throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
-    	}
-        List<TaskDependency> dependencies = taskDependencyRepository.findAllByTaskId(task.get());
-        return dependencies.stream()
-                .map(dependency -> TaskDependencyDTO.builder()
-                        .taskId(dependency.getTaskId().getId())
-                        .dependentTaskId(dependency.getDependentTaskId().getId())
-                        .dependencyType(dependency.getDependencyType())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
+	@Override
+	public List<TaskDependencyDTO> getDependentTasks(UUID taskId) {
+		Optional<Task> task = taskRepository.findById(taskId);
+		if (!task.isPresent()) {
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+		}
+		List<TaskDependency> dependencies = taskDependencyRepository.findAllByTaskId(task.get());
+		return dependencies.stream()
+				.map(dependency -> TaskDependencyDTO.builder()
+					.taskId(dependency.getTaskId().getId())
+					.dependentTaskId(dependency.getDependentTaskId().getId())
+					.dependencyType(dependency.getDependencyType()).build())
+				.collect(Collectors.toList());
+	}
 }

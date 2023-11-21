@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TaskDependencyApplication implements ITaskDependencyApplication {
 
-    @Autowired
-    private ITaskDependencyService taskDependencyService;
+	@Autowired
+	private ITaskDependencyService taskDependencyService;
 
-    @Override
-    public void createTaskDependency(CreateTaskDependencyCommandRequest request) {
-        taskDependencyService.addDependency(request);
-    }
+	@Override
+	public void createTaskDependency(CreateTaskDependencyCommandRequest request) {
+		taskDependencyService.addDependency(request);
+	}
 }

@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ITaskDependencyService {
+	void addDependency(CreateTaskDependencyCommandRequest createTaskDependencyCommandRequest);
 
-    void addDependency(CreateTaskDependencyCommandRequest createTaskDependencyCommandRequest);
+	void deleteDependencyById(UUID dependencyId);
 
-    void deleteDependencyById(UUID dependencyId);
-
-    List<TaskDependencyDTO> getDependentTasks(UUID taskId);
+	List<TaskDependencyDTO> getDependentTasks(UUID taskId);
 }

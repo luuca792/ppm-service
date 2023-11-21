@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task implements IEntity {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;

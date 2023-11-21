@@ -11,13 +11,13 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class   TaskDTO {
-    private UUID taskId;
-    private String taskName;
-    private String taskDescription;
-    private LocalDate taskStartAt;
-    private LocalDate taskEndAt;
-    private Double taskDuration;
-    private TaskStatus taskStatus;
-    private UUID projectId;
+public class TaskDTO {
+	private UUID taskId;
+	private String taskName;
+	private String taskDescription;
+	private LocalDate taskStartAt;
+	private LocalDate taskEndAt;
+	private Double taskDuration;
+	private TaskStatus taskStatus;
+	private UUID projectId;
 }

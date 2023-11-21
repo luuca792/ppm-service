@@ -9,19 +9,19 @@ import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 
 public interface ITaskApplication {
-    void createTask(CreateTaskCommandRequest createTaskCommandRequest);
+	void createTask(CreateTaskCommandRequest createTaskCommandRequest);
 
-    void updateTask(UpdateTaskCommandRequest updateTaskCommandRequest);
+	void updateTask(UpdateTaskCommandRequest updateTaskCommandRequest);
 
-    List<RetrieveTaskQueryResponse> listTask();
+	List<RetrieveTaskQueryResponse> listTask();
 
-    RetrieveTaskQueryResponse detailTask(UUID taskId);
+	RetrieveTaskQueryResponse detailTask(UUID taskId);
 
-    TaskDTO getTaskById(UUID taskId);
+	TaskDTO getTaskById(UUID taskId);
 
-    void addMaterialToTask(UUID taskId, UUID materialId, Double amount);
+	void addMaterialToTask(UUID taskId, UUID materialId, Double amount);
 
-    void deleteTask(UUID taskId);
+	void deleteTask(UUID taskId);
 
-    List<TaskDTO> getTasksOfProject(UUID projectId);
+	List<TaskDTO> getTasksOfProject(UUID projectId);
 }
