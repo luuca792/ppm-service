@@ -22,9 +22,6 @@ import com.ctu.se.oda.model11.utils.ModelMapperUtil;
 
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor

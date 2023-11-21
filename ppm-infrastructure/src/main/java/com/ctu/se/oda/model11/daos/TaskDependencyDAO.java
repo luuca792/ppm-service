@@ -5,7 +5,6 @@ import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.taskDependency.CreateTaskDependencyCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.taskDependency.CreateTaskDependencyCommandResponse;
 import com.ctu.se.oda.model11.models.dtos.TaskDependencyDTO;
 import com.ctu.se.oda.model11.repositories.ITaskDependencyRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
@@ -30,7 +29,7 @@ public class TaskDependencyDAO implements ITaskDependencyService{
     private ITaskRepository taskRepository;
 
     @Autowired
-    private IInfrastructureMapper<CreateTaskDependencyCommandRequest, TaskDependency, CreateTaskDependencyCommandResponse> mapper;
+    private IInfrastructureMapper<CreateTaskDependencyCommandRequest, TaskDependency> mapper;
 
     @Override
     public void addDependency(CreateTaskDependencyCommandRequest request) {

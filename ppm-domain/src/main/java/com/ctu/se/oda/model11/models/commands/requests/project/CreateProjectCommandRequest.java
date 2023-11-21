@@ -1,15 +1,9 @@
 package com.ctu.se.oda.model11.models.commands.requests.project;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.UUID;
-import java.util.UUID;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

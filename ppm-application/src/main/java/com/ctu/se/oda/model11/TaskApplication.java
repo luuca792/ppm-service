@@ -6,13 +6,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ctu.se.oda.model11.daos.ITaskDependencyService;
 import com.ctu.se.oda.model11.daos.ITaskService;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
-import com.ctu.se.oda.model11.models.commands.responses.task.CreateTaskCommandResponse;
-import com.ctu.se.oda.model11.models.commands.responses.task.UpdateTaskCommandResponse;
 import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 
@@ -24,9 +21,6 @@ public class TaskApplication implements ITaskApplication {
 
     @Autowired
     private ITaskService taskService;
-
-    @Autowired
-    private ITaskDependencyService taskDependencyService;
 
     @Override
     public void createTask(CreateTaskCommandRequest createTaskCommandRequest) {

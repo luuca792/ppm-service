@@ -20,5 +20,4 @@ public class   TaskDTO {
     private Double taskDuration;
     private TaskStatus taskStatus;
     private UUID projectId;
-    private UUID taskParentId;
 }

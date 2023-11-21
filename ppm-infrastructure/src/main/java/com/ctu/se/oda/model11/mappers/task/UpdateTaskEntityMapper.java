@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;

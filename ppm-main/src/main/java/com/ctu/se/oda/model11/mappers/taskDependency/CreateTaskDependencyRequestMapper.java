@@ -20,9 +20,4 @@ public class CreateTaskDependencyRequestMapper implements IMainMapper<CreateTask
                 .dependencyType(DependencyType.valueOf(source.getDependencyType()))
                 .build();
     }
-
-    @Override
-    public CreateTaskDependencyRequest reverse(CreateTaskDependencyCommandRequest destination) {
-        return null;
-    }
 }
