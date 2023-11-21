@@ -1,16 +1,15 @@
-package com.ctu.se.oda.model11.entities;
+package com.ctu.se.oda.model11.models.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatusCode;
 
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserDTO {
     private UUID userId;
-    private UserInfo userInfo;
+    private UserInfoDTO userInfo;
 }
