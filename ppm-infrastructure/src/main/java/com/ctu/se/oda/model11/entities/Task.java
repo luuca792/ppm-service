@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import com.ctu.se.oda.model11.enums.TaskStatus;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -62,5 +64,8 @@ public class Task implements IEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private TaskStatus status;
+	
+	@OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TaskDependency> dependencies;
 
 }
