@@ -1,6 +1,5 @@
 package com.ctu.se.oda.model11.daos;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,6 +23,7 @@ import com.ctu.se.oda.model11.repositories.IProjectRepository;
 import com.ctu.se.oda.model11.repositories.IResourceMaterialRepository;
 import com.ctu.se.oda.model11.repositories.IResourceRepository;
 import com.ctu.se.oda.model11.repositories.ITaskRepository;
+import com.ctu.se.oda.model11.utils.ModelMapperUtil;
 
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
@@ -81,65 +81,24 @@ public class TaskDAO implements ITaskService{
         if (retrievedTask.isEmpty()) {
             throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
         }
-        var mappedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
-        var creatingTask = retrievedTask.get();
-        if (Objects.nonNull(mappedTask.getName())) {
-            creatingTask.setName(mappedTask.getName());
-        }
-        if (Objects.nonNull(mappedTask.getDescription())) {
-            creatingTask.setDescription(mappedTask.getDescription());
-        }
-        if (Objects.nonNull(mappedTask.getStartAt()) && Objects.nonNull(mappedTask.getEndAt())) {
-            if (mappedTask.getStartAt().isAfter(mappedTask.getEndAt())) {
-                throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
-            }
-        }
-        if (Objects.nonNull(mappedTask.getStartAt())) {
-            creatingTask.setStartAt(mappedTask.getStartAt());
-        }
-        if (Objects.nonNull(mappedTask.getEndAt())) {
-            creatingTask.setEndAt(mappedTask.getEndAt());
-        }
-        if (Objects.nonNull(mappedTask.getDuration())) {
-            creatingTask.setDuration(mappedTask.getDuration());
-        }
-        if (Objects.nonNull(mappedTask.getStatus())) {
-            creatingTask.setStatus(mappedTask.getStatus());
-        }
+        Task updatedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
+        ModelMapperUtil.copy(updatedTask, retrievedTask.get());
         taskRepository.save(retrievedTask.get());
     }
 
     @Override
-    public List<RetrieveTaskQueryResponse> listTask() {
-        return this.taskRepository.findAll().stream().map(
-                task -> {
-                    List<RetrieveTaskQueryResponse> subtasks = task.getSubtasks().stream().map(
-                            subtask -> RetrieveTaskQueryResponse.builder()
-                                    .taskId(subtask.getId())
-                                    .taskName(subtask.getName())
-                                    .taskDescription(subtask.getDescription())
-                                    .taskStartAt(subtask.getStartAt())
-                                    .taskEndAt(subtask.getEndAt())
-                                    .taskDuration(subtask.getDuration())
-                                    .taskStatus(subtask.getStatus())
-                                    .projectId(subtask.getProjectId())
-                                    .taskParentId(subtask.getTaskParent().getId())
-                                    .build()
-                    ).collect(Collectors.toList());
-                    return RetrieveTaskQueryResponse.builder()
-                            .taskId(task.getId())
-                            .taskName(task.getName())
-                            .taskDescription(task.getDescription())
-                            .taskStartAt(task.getStartAt())
-                            .taskEndAt(task.getEndAt())
-                            .taskDuration(task.getDuration())
-                            .projectId(task.getProjectId())
-                            .taskStatus(task.getStatus())
-                            .taskParentId(task.getTaskParent() != null ? task.getTaskParent().getId() : null)
-                            .subtasks(subtasks)
-                            .build();
-                }
-        ).collect(Collectors.toList());
+    public List<RetrieveTaskQueryResponse> getAllTasks() {
+        return taskRepository.findAll().stream().map(
+        		task -> RetrieveTaskQueryResponse.builder()
+                .taskId(task.getId())
+                .taskName(task.getName())
+                .taskDescription(task.getDescription())
+                .taskStartAt(task.getStartAt())
+                .taskEndAt(task.getEndAt())
+                .taskDuration(task.getDuration())
+                .taskStatus(task.getStatus())
+                .projectId(task.getProjectId().getId())
+                .build()).collect(Collectors.toList());
     }
 
     @Override
@@ -150,8 +109,6 @@ public class TaskDAO implements ITaskService{
         }
         var retrievedTask = retrievedTaskOptional.get();
 
-        List<RetrieveTaskQueryResponse> subtasks = getSubtasksRecursively(retrievedTask);
-
         return RetrieveTaskQueryResponse.builder()
                 .taskId(retrievedTask.getId())
                 .taskName(retrievedTask.getName())
@@ -160,9 +117,7 @@ public class TaskDAO implements ITaskService{
                 .taskEndAt(retrievedTask.getEndAt())
                 .taskDuration(retrievedTask.getDuration())
                 .taskStatus(retrievedTask.getStatus())
-                .projectId(retrievedTask.getProjectId())
-                .taskParentId(retrievedTask.getTaskParent() != null ? retrievedTask.getTaskParent().getId() : null)
-                .subtasks(subtasks)
+                .projectId(retrievedTask.getProjectId().getId())
                 .build();
     }
 
@@ -189,29 +144,12 @@ public class TaskDAO implements ITaskService{
         resourceMaterialRepository.save(resourceMaterial);
     }
 
-    private List<RetrieveTaskQueryResponse> getSubtasksRecursively(Task task) {
-        if (task.getSubtasks().isEmpty()) {
-            return Collections.emptyList();
-        }
-        return task.getSubtasks().stream().map(subtask -> {
-            List<RetrieveTaskQueryResponse> subtasksOfSubtask = getSubtasksRecursively(subtask);
-
-            return RetrieveTaskQueryResponse.builder()
-                    .taskId(subtask.getId())
-                    .taskName(subtask.getName())
-                    .taskDescription(subtask.getDescription())
-                    .taskStartAt(subtask.getStartAt())
-                    .taskEndAt(subtask.getEndAt())
-                    .taskDuration(subtask.getDuration())
-                    .projectId(subtask.getProjectId())
-                    .taskParentId(subtask.getTaskParent() != null ? subtask.getTaskParent().getId() : null)
-                    .subtasks(subtasksOfSubtask)
-                    .build();
-        }).collect(Collectors.toList());
-    }
-
     @Override
     public void deleteTask(UUID taskId) {
+    	var retrieveTask = taskRepository.findById(taskId);
+        if(retrieveTask.isEmpty()) {
+            throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+        }
         taskRepository.deleteById(taskId);
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +22,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "start_at")
@@ -33,11 +34,14 @@ public class Project {
     @Column(name = "duration")
     private Double duration;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="status")
-    private ProjectStatus status = ProjectStatus.PENDING;
+    private ProjectStatus status;
 
     @Column(name = "creator_id")
     private UUID creatorId;
     
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
 }

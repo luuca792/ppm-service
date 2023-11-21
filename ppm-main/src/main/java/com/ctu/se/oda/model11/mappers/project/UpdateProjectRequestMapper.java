@@ -23,7 +23,7 @@ public class UpdateProjectRequestMapper implements IMainMapper<UpdateProjectRequ
                 .projectEndAt(source.getProjectEndAt())
                 .projectDuration(source.getProjectDuration())
                 .projectStatus(Optional.ofNullable(source.getProjectStatus()).map(ProjectStatus::valueOf).orElse(null))
-                .projectCreatorId(UUID.fromString(source.getProjectCreatorId()))
+                .projectCreatorId(Optional.ofNullable(source.getProjectCreatorId()).map(UUID::fromString).orElse(null))
                 .build();
     }
 }

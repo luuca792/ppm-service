@@ -1,111 +1,66 @@
 package com.ctu.se.oda.model11.entities;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import com.ctu.se.oda.model11.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 @Entity
 @Data
+@Builder
 @Table(name = "tasks")
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Task implements IEntity{
+public class Task implements IEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "description", nullable = true)
-    private String description;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "start_at")
-    private LocalDate startAt;
+	@Column(name = "start_at")
+	private LocalDate startAt;
 
-    @Column(name = "end_at")
-    private LocalDate endAt;
+	@Column(name = "end_at")
+	private LocalDate endAt;
 
-    @Column(name = "duration")
-    private Double duration;
+	@Column(name = "duration")
+	private Double duration;
 
-    @Column(name = "project_id")
-    private UUID projectId;
+	@ManyToOne
+	@JoinColumn(name = "project_id")
+	private Project projectId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_parent_id")
-    private Task taskParent;
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "resource_id", referencedColumnName = "id")
+	private Resource resource;
 
-    @OneToMany(mappedBy = "taskParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Task> subtasks = new ArrayList<>();
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "status")
+	private TaskStatus status;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "resource_id", referencedColumnName = "id")
-    private Resource resource;
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name="status")
-    private TaskStatus status = TaskStatus.OPEN;
-
-    public Task(String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
-        this.name = name;
-        this.description = description;
-        this.startAt = startAt;
-        this.endAt = endAt;
-        this.duration = duration;
-        this.status = TaskStatus.OPEN;
-        this.projectId = projectId;
-    }
-
-    public Task(UUID id, String name, String description, LocalDate startAt, LocalDate endAt, Double duration, TaskStatus taskStatus, UUID projectId) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.startAt = startAt;
-        this.endAt = endAt;
-        this.duration = duration;
-        this.status = taskStatus;
-        this.projectId = projectId;
-    }
-
-    public Task getTaskParent() {
-        return taskParent;
-    }
-    public void setTaskParent(UUID taskParentId) {
-        if(this.taskParent == null) {
-            this.taskParent = new Task();
-        }
-        this.taskParent.setId(taskParentId);
-    }
-
-    public void setTaskParent(Task taskParent) {
-        this.taskParent = taskParent;
-    }
-
-    public List<Task> getSubtasks() {
-        if (subtasks == null) {
-            subtasks = new ArrayList<>();
-        }
-        return subtasks;
-    }
-
-    public void setSubtasks(List<Task> subtasks) {
-        this.subtasks = subtasks;
-        for (Task subtask : this.subtasks) {
-            subtask.setTaskParent(this);
-        }
-    }
-
-    public void addSubtask(Task subtask) {
-        subtasks.add(subtask);
-        subtask.setTaskParent(this);
-    }
 }

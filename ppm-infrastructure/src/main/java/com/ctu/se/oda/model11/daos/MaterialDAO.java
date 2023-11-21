@@ -18,65 +18,70 @@ import com.ctu.se.oda.model11.models.commands.requests.material.UpdateMaterialCo
 import com.ctu.se.oda.model11.models.queries.responses.material.RetrieveMaterialQueryResponse;
 import com.ctu.se.oda.model11.repositories.IMaterialRepository;
 import com.ctu.se.oda.model11.repositories.IMaterialTypeRepository;
+import com.ctu.se.oda.model11.utils.ModelMapperUtil;
 
 import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
+
 @Service
 @NoArgsConstructor
 @Validated
-public class MaterialDAO implements IMaterialService{
-    @Autowired
-    private IMaterialRepository materialRepository;
-    @Autowired
-    private IMaterialTypeRepository materialTypeRepository;
-    @Autowired
-    private IInfrastructureMapper<CreateMaterialCommandRequest, Material> createMaterialEntityMapper;
-    @Autowired
-    private IInfrastructureMapper<UpdateMaterialCommandRequest, Material> updateMaterialEntityMapper;
+public class MaterialDAO implements IMaterialService {
+	
+	@Autowired
+	private IMaterialRepository materialRepository;
+	@Autowired
+	private IMaterialTypeRepository materialTypeRepository;
+	@Autowired
+	private IInfrastructureMapper<CreateMaterialCommandRequest, Material> createMaterialEntityMapper;
+	@Autowired
+	private IInfrastructureMapper<UpdateMaterialCommandRequest, Material> updateMaterialEntityMapper;
 
-    @Override
-    public void createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest) {
-    	Optional<MaterialType> materialType = materialTypeRepository.findById(createMaterialCommandRequest.getMaterialType());
-    	if (!materialType.isPresent()) {
-    		throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
-    	}
-    	Material material = createMaterialEntityMapper.convert(createMaterialCommandRequest);
-        material.setMaterialType(materialType.get());
+	@Override
+	public void createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest) {
+		Optional<MaterialType> materialType = materialTypeRepository.findById(createMaterialCommandRequest.getMaterialType());
+		if (!materialType.isPresent()) {
+			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
+		}
+		Material material = createMaterialEntityMapper.convert(createMaterialCommandRequest);
+		material.setMaterialType(materialType.get());
 		materialRepository.save(material);
-    }
+	}
 
-    @Override
-    public void updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
-        var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
-        if (retrieveMaterial.isEmpty()) {
-            throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
-        }
-        materialRepository.save(updateMaterialEntityMapper.convert(updateMaterialCommandRequest));
-    }
+	@Override
+	public void updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
+		var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
+		if (retrieveMaterial.isEmpty()) {
+			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
+		}
+		Material updatedMaterial = updateMaterialEntityMapper.convert(updateMaterialCommandRequest);
+		ModelMapperUtil.copy(updatedMaterial, retrieveMaterial.get());
+		materialRepository.save(retrieveMaterial.get());
+	}
 
-    @Override
-    public List<RetrieveMaterialQueryResponse> listMaterial() {
-        return materialRepository.findAll().stream()
-                .map(material -> RetrieveMaterialQueryResponse.builder()
-                        .materialId(material.getId())
-                        .materialName(material.getName())
-                        .materialTypeName(material.getMaterialType().getId())
-                        .build())
-                .collect(Collectors.toList());
-    }
+	@Override
+	public List<RetrieveMaterialQueryResponse> listMaterial() {
+		return materialRepository.findAll().stream()
+				.map(material -> RetrieveMaterialQueryResponse.builder()
+				.materialId(material.getId())
+				.materialName(material.getName())
+				.materialTypeName(material.getMaterialType().getId())
+				.build())
+				.collect(Collectors.toList());
+	}
 
-    @Override
-    public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
-        var retrieveMaterial = materialRepository.findById(materialId).get();
-        return RetrieveMaterialQueryResponse.builder()
-                .materialId(retrieveMaterial.getId())
-                .materialName(retrieveMaterial.getName())
-                .materialTypeName(retrieveMaterial.getMaterialType().getId())
-                .build();
-    }
+	@Override
+	public RetrieveMaterialQueryResponse detailMaterial(UUID materialId) {
+		var retrieveMaterial = materialRepository.findById(materialId).get();
+		return RetrieveMaterialQueryResponse.builder()
+				.materialId(retrieveMaterial.getId())
+				.materialName(retrieveMaterial.getName())
+				.materialTypeName(retrieveMaterial.getMaterialType().getId())
+				.build();
+	}
 
-    @Override
-    public void deleteMaterial(UUID material) {
-        materialRepository.deleteById(material);
-    }
+	@Override
+	public void deleteMaterial(UUID material) {
+		materialRepository.deleteById(material);
+	}
 }

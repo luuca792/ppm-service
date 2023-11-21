@@ -15,7 +15,7 @@ public interface ITaskService {
 
     void updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest);
 
-    List<RetrieveTaskQueryResponse> listTask();
+    List<RetrieveTaskQueryResponse> getAllTasks();
 
     RetrieveTaskQueryResponse detailTask(UUID taskId);
 
