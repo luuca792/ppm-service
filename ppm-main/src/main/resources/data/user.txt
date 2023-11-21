@@ -1,0 +1,23 @@
+[
+    {
+        "userId": "90bfe5b6-9a2d-4356-ac18-9a4fbcfe06dc",
+        "userInfo": {
+            "username": "minhbang",
+            "role": "WORKER"
+        }
+    },
+    {
+        "userId": "b7dd5790-32e7-4eae-810a-d8938963d73f",
+        "userInfo": {
+            "username": "kimanh",
+            "role": "COOPERATION"
+        }
+    },
+    {
+         "userId": "c6cf53fd-8795-4eb6-bdf4-d8e171af51dd",
+         "userInfo": {
+             "username": "nhuthao",
+             "role": "WORKER"
+         }
+    }
+]
