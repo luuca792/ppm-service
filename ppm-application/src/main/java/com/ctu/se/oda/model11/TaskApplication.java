@@ -10,6 +10,7 @@ import com.ctu.se.oda.model11.daos.ITaskService;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
+import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
 
 import lombok.NoArgsConstructor;
@@ -17,36 +18,47 @@ import lombok.NoArgsConstructor;
 @Component
 @NoArgsConstructor
 public class TaskApplication implements ITaskApplication {
-    @Autowired
-    private ITaskService taskService;
 
-    @Override
-    public void createTask(CreateTaskCommandRequest createTaskCommandRequest) {
-        taskService.createTask(createTaskCommandRequest);
-    }
+	@Autowired
+	private ITaskService taskService;
 
-    @Override
-    public void updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
-        taskService.updateTask(updateTaskCommandRequest);
-    }
+	@Override
+	public void createTask(CreateTaskCommandRequest createTaskCommandRequest) {
+		taskService.createTask(createTaskCommandRequest);
+	}
 
-    @Override
-    public List<RetrieveTaskQueryResponse> listTask() {
-        return taskService.getAllTasks();
-    }
+	@Override
+	public void updateTask(UpdateTaskCommandRequest updateTaskCommandRequest) {
+		taskService.updateTask(updateTaskCommandRequest);
+	}
 
-    @Override
-    public RetrieveTaskQueryResponse detailTask(UUID taskId) {
-        return taskService.detailTask(taskId);
-    }
+	@Override
+	public List<RetrieveTaskQueryResponse> listTask() {
+		return taskService.getAllTasks();
+	}
 
-    @Override
-    public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
-        taskService.addMaterialToTask(taskId, materialId, amount);
-    }
+	@Override
+	public RetrieveTaskQueryResponse detailTask(UUID taskId) {
+		return taskService.detailTask(taskId);
+	}
 
-    @Override
-    public void deleteTask(UUID taskId) {
-        this.taskService.deleteTask(taskId);
-    }
+	@Override
+	public TaskDTO getTaskById(UUID taskId) {
+		return taskService.getTaskById(taskId);
+	}
+
+	@Override
+	public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
+		taskService.addMaterialToTask(taskId, materialId, amount);
+	}
+
+	@Override
+	public void deleteTask(UUID taskId) {
+		this.taskService.deleteTask(taskId);
+	}
+
+	@Override
+	public List<TaskDTO> getTasksOfProject(UUID projectId) {
+		return this.taskService.getTasksOfProject(projectId);
+	}
 }
