@@ -11,12 +11,8 @@ import jakarta.validation.Valid;
 
 public interface IProjectService {
     void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest);
-
     void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest);
-
     List<RetrieveProjectQueryResponse> listProject();
-
     RetrieveProjectQueryResponse detailProject(UUID projectId);
-
     void deleteProject(UUID projectId);
 }

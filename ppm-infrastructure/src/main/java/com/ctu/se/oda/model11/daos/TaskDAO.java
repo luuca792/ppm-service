@@ -1,7 +1,6 @@
 package com.ctu.se.oda.model11.daos;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -61,13 +60,7 @@ public class TaskDAO implements ITaskService {
 	public void createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest) {
 		var retrievedProjectId = projectRepository.findById(createTaskCommandRequest.getProjectId());
 		if (retrievedProjectId.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
-		}
-		if (Objects.nonNull(createTaskCommandRequest.getTaskParentId())) {
-			var retrievedTaskParentId = taskRepository.findById(createTaskCommandRequest.getTaskParentId());
-			if (retrievedTaskParentId.isEmpty()) {
-				throw new InternalServerErrorException(CustomErrorMessage.PARENT_TASK_ID_DO_NOT_EXIST);
-			}
+			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		var retrieveTask = taskRepository.save(createTaskEntityMapper.convert(createTaskCommandRequest));
 
@@ -82,7 +75,7 @@ public class TaskDAO implements ITaskService {
 	public void updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
 		var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
 		if (retrievedTask.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		Task updatedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
 		ModelMapperUtil.copy(updatedTask, retrievedTask.get());
@@ -109,7 +102,7 @@ public class TaskDAO implements ITaskService {
 	public RetrieveTaskQueryResponse detailTask(UUID taskId) {
 		var retrievedTaskOptional = taskRepository.findById(taskId);
 		if (retrievedTaskOptional.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
+			throw new InternalServerErrorException(CustomErrorMessage.ENTITY_NOT_FOUND);
 		}
 		var retrievedTask = retrievedTaskOptional.get();
 
@@ -129,7 +122,7 @@ public class TaskDAO implements ITaskService {
 	public void addMaterialToTask(UUID taskId, UUID materialId, Double amount) {
 		var retrieveTask = taskRepository.findById(taskId);
 		if (retrieveTask.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 
 		var retrieveResource = retrieveTask.get().getResource();
@@ -138,7 +131,7 @@ public class TaskDAO implements ITaskService {
 
 		var materialRetrieveOptional = materialRepository.findById(materialId);
 		if (materialRetrieveOptional.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
 		}
 
 		var materialRetrieve = materialRetrieveOptional.get();
@@ -152,7 +145,7 @@ public class TaskDAO implements ITaskService {
 	public void deleteTask(UUID taskId) {
 		var retrieveTask = taskRepository.findById(taskId);
 		if (retrieveTask.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		taskRepository.deleteById(taskId);
 	}
@@ -161,7 +154,7 @@ public class TaskDAO implements ITaskService {
 	public List<TaskDTO> getTasksOfProject(UUID projectId) {
 		Optional<Project> project = projectRepository.findById(projectId);
 		if (!project.isPresent()) {
-			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		List<Task> taskList = taskRepository.findAllByProjectId(project.get());
 		List<TaskDTO> TaskListDTO = taskList.stream()
@@ -183,7 +176,7 @@ public class TaskDAO implements ITaskService {
 	public TaskDTO getTaskById(UUID taskId) {
 		var retrievedTask = taskRepository.findById(taskId);
 		if (retrievedTask.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.NOT_FOUND_BY_ID);
+			throw new InternalServerErrorException(CustomErrorMessage.ENTITY_NOT_FOUND);
 		}
 		var task = retrievedTask.get();
 

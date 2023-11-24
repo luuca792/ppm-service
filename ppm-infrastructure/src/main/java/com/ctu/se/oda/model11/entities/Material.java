@@ -26,18 +26,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Material {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    
-    @Column(name = "name")
-    private String name;
-    
-    @ManyToOne
-    @JoinColumn(name = "material_type_id")
-    private MaterialType materialType;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "material")
-    List<ResourceMaterial> resourceMaterials;
+	@Column(name = "name")
+	private String name;
+
+	@ManyToOne
+	@JoinColumn(name = "material_type_id")
+	private MaterialType materialType;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "material")
+	List<ResourceMaterial> resourceMaterials;
 }
