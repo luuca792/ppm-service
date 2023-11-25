@@ -36,7 +36,7 @@ public class UserApi {
             List<UserDTO> users = Arrays.asList(objectMapper.readValue(inputStream, UserDTO[].class));
 
             Optional<UserDTO> authenticatedUser = users.stream()
-                    .filter(user -> user.getUserInfo().getUsername().equals(username))
+                    .filter(user -> user.getUsername().equals(username))
                     .findFirst();
 
             return authenticatedUser.map(user -> new ResponseEntity<>(user, HttpStatus.OK))
