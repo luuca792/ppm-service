@@ -48,7 +48,7 @@ public class ProjectDAO implements IProjectService {
 	public void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
 		var retrieveProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
 		if (retrieveProject.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 
 		if (Objects.nonNull(updateProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(updateProjectCommandRequest.getProjectEndAt())) {
@@ -78,7 +78,7 @@ public class ProjectDAO implements IProjectService {
 	public RetrieveProjectQueryResponse detailProject(UUID projectId) {
 		var retrievedProjectOptional = projectRepository.findById(projectId);
 		if (retrievedProjectOptional.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		var retrievedProject = retrievedProjectOptional.get();
 		return RetrieveProjectQueryResponse.builder()
@@ -93,7 +93,7 @@ public class ProjectDAO implements IProjectService {
 	public void deleteProject(UUID projectId) {
 		Optional<Project> retrievedProject = projectRepository.findById(projectId);
 		if (retrievedProject.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_DO_NOT_EXIST);
+			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		projectRepository.deleteById(projectId);
 	}

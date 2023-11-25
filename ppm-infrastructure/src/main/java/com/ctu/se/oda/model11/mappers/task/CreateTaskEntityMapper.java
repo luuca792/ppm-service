@@ -28,6 +28,7 @@ public class CreateTaskEntityMapper implements IInfrastructureMapper<CreateTaskC
     			.description(source.getTaskDescription())
     			.startAt(source.getTaskStartAt())
     			.endAt(source.getTaskEndAt())
+    			.duration(source.getTaskDuration())
     			.status(TaskStatus.OPEN)
     			.projectId(project.get())
     			.build();

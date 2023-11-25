@@ -52,7 +52,7 @@ public class MaterialDAO implements IMaterialService {
 	public void updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
 		var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
 		if (retrieveMaterial.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_DO_NOT_EXIST);
+			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
 		}
 		Material updatedMaterial = updateMaterialEntityMapper.convert(updateMaterialCommandRequest);
 		ModelMapperUtil.copy(updatedMaterial, retrieveMaterial.get());

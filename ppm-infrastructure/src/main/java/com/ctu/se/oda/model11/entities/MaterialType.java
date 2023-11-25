@@ -22,13 +22,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MaterialType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
- 
-    @Column(name = "name", nullable = false)
-    private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
-    @OneToMany(mappedBy = "materialType")
-    private List<Material> materials;
+	@Column(name = "name")
+	private String name;
+
+	@OneToMany(mappedBy = "materialType")
+	private List<Material> materials;
 }

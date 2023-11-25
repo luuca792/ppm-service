@@ -28,7 +28,7 @@ public class CreateTaskDependencyEntityMapper
 		Optional<Task> task = taskRepository.findById(source.getTaskId());
 		Optional<Task> dependentTask = taskRepository.findById(source.getDependentTaskId());
 		if (!task.isPresent() || !dependentTask.isPresent()) {
-			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		return TaskDependency.builder()
 				.taskId(task.get())
