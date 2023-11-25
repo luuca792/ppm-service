@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "resource_material")
 @Data
 @NoArgsConstructor
-public class ResourceMaterial implements IEntity{
+public class ResourceMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

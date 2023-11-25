@@ -39,7 +39,7 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 		var task = taskRepository.findById(request.getTaskId());
 		var dependentTask = taskRepository.findById(request.getDependentTaskId());
 		if (task.isEmpty() || dependentTask.isEmpty()) {
-			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		taskDependencyRepository.save(mapper.convert(request));
 	}
@@ -57,7 +57,7 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 	public List<TaskDependencyDTO> getDependentTasks(UUID taskId) {
 		Optional<Task> task = taskRepository.findById(taskId);
 		if (!task.isPresent()) {
-			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_DO_NOT_EXIST);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		List<TaskDependency> dependencies = taskDependencyRepository.findAllByTaskId(task.get());
 		return dependencies.stream()

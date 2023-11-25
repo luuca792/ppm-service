@@ -32,7 +32,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Task implements IEntity {
+public class Task {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -67,5 +67,8 @@ public class Task implements IEntity {
 	
 	@OneToMany(mappedBy = "taskId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TaskDependency> dependencies;
+	
+	@OneToMany(mappedBy = "taskParentId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<SubTask> subtasks;
 
 }

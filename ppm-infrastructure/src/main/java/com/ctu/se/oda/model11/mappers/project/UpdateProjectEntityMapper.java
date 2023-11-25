@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Component
 @NoArgsConstructor
-
 public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdateProjectCommandRequest, Project> {
 
     @Override

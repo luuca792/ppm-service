@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.ctu.se.oda.model11.interfaces.ISubTaskApplication;
+import com.ctu.se.oda.model11.models.queries.responses.subTask.RetrieveSubTaskQueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,9 @@ public class TaskApi {
     @Autowired
     private ITaskApplication taskApplication;
 
+    @Autowired
+    private ISubTaskApplication subTaskApplication;
+
     @PostMapping()
     public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest createTaskRequest) {
         if (Objects.isNull(createTaskRequest.getProjectId())) {
@@ -68,6 +73,11 @@ public class TaskApi {
     @GetMapping("/{taskId}")
     public ResponseEntity<RetrieveTaskQueryResponse> detailTask(@PathVariable String taskId) {
         return new ResponseEntity<>(taskApplication.detailTask(UUID.fromString(taskId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/{taskId}/subtasks")
+    public ResponseEntity<List<RetrieveSubTaskQueryResponse>> getAllSubTaskOfTask(@PathVariable String taskId) {
+        return new ResponseEntity<List<RetrieveSubTaskQueryResponse>>(subTaskApplication.getAllSubTaskOfTask(UUID.fromString(taskId)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{taskId}")
