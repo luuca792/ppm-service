@@ -38,8 +38,11 @@ public class Project {
     @Column(name="status")
     private ProjectStatus status;
 
-    @Column(name = "creator_id")
-    private UUID creatorId;
+    @Column(name = "is_template")
+    private Boolean isTemplate;
+
+    @Column(name = "user_id")
+    private UUID userId;
     
     @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
     private List<Task> tasks;
