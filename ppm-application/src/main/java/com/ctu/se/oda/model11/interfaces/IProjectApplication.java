@@ -9,14 +9,9 @@ import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQu
 
 public interface IProjectApplication {
 	void createProject(CreateProjectCommandRequest createProjectCommandRequest);
-
 	void updateProject(UpdateProjectCommandRequest updateProjectCommandRequest);
-
-	List<RetrieveProjectQueryResponse> listProject();
-
-	RetrieveProjectQueryResponse detailProject(UUID projectId);
-
+	List<RetrieveProjectQueryResponse> getAllProjects(String userId, Boolean isTemplate);
+	RetrieveProjectQueryResponse getProjectById(UUID projectId);
 	void deleteProject(UUID projectId);
-
 	void scheduleProject(UUID project);
 }

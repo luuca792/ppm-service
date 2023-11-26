@@ -1,22 +1,5 @@
 package com.ctu.se.oda.model11.api;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.ctu.se.oda.model11.interfaces.IProjectApplication;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
@@ -27,6 +10,15 @@ import com.ctu.se.oda.model11.models.project.CreateProjectRequest;
 import com.ctu.se.oda.model11.models.project.UpdateProjectRequest;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.models.task.TaskScheduleResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/projects")
@@ -58,17 +50,16 @@ public class ProjectApi {
     }
 
     @GetMapping()
-    public ResponseEntity<List<RetrieveProjectQueryResponse>> listProject() {
-        return new ResponseEntity<>(
-            projectApplication.listProject(),
-                HttpStatus.OK
-        );
+    public ResponseEntity<List<RetrieveProjectQueryResponse>> getAllProjects(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) Boolean isTemplate) {
+        return new ResponseEntity<>(projectApplication.getAllProjects(userId, isTemplate), HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<RetrieveProjectQueryResponse> detailProject(@PathVariable UUID projectId) {
+    public ResponseEntity<RetrieveProjectQueryResponse> getProjectById(@PathVariable UUID projectId) {
         return new ResponseEntity<>(
-                projectApplication.detailProject(projectId),
+                projectApplication.getProjectById(projectId),
                 HttpStatus.OK
         );
     }

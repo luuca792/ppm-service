@@ -1,8 +1,12 @@
 package com.ctu.se.oda.model11;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
+import com.ctu.se.oda.model11.models.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,13 +41,13 @@ public class ProjectApplication implements IProjectApplication {
 	}
 
 	@Override
-	public List<RetrieveProjectQueryResponse> listProject() {
-		return projectService.listProject();
+	public List<RetrieveProjectQueryResponse> getAllProjects(String userId, Boolean isTemplate) {
+		return projectService.getAllProjects(Optional.ofNullable(userId).map(UUID::fromString).orElse(null), isTemplate);
 	}
 
 	@Override
-	public RetrieveProjectQueryResponse detailProject(UUID projectId) {
-		return projectService.detailProject(projectId);
+	public RetrieveProjectQueryResponse getProjectById(UUID projectId) {
+		return projectService.getProjectById(projectId);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class UpdateProjectEntityMapper implements IInfrastructureMapper<UpdatePr
                 .startAt(source.getProjectStartAt())
                 .endAt(source.getProjectEndAt())
                 .status(source.getProjectStatus())
-                .creatorId(source.getProjectCreatorId())
+                .userId(source.getProjectCreatorId())
                 .build();
     }
 

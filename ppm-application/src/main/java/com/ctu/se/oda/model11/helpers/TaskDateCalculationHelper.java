@@ -46,7 +46,7 @@ public class TaskDateCalculationHelper {
 	 * @param projectId the project ID of project to schedule
 	 */
 	public void dateScheduler(UUID projectId) {
-		RetrieveProjectQueryResponse projectQueryResponse = projectService.detailProject(projectId);
+		RetrieveProjectQueryResponse projectQueryResponse = projectService.getProjectById(projectId);
 		if (Objects.isNull(projectQueryResponse.getProjectStartAt())) {
 			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_START_DATE_NOT_FOUND);
 		}
