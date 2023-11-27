@@ -16,4 +16,5 @@ public interface IProjectService {
     List<RetrieveProjectQueryResponse> getAllProjects(UUID userId, Boolean isTemplate);
     RetrieveProjectQueryResponse getProjectById(UUID projectId);
     void deleteProject(UUID projectId);
+    void cloneProject(UUID projectId, UUID userId);
 }

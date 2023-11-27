@@ -14,4 +14,5 @@ public interface IProjectApplication {
 	RetrieveProjectQueryResponse getProjectById(UUID projectId);
 	void deleteProject(UUID projectId);
 	void scheduleProject(UUID project);
+	void cloneProject(String projectId, String userId);
 }

@@ -66,8 +66,8 @@ public class TaskApi {
     }
 
     @GetMapping()
-    public ResponseEntity<List<RetrieveTaskQueryResponse>> listTask() {
-        return new ResponseEntity<>(taskApplication.listTask(), HttpStatus.OK);
+    public ResponseEntity<List<RetrieveTaskQueryResponse>> getAllTasks(@RequestParam (required = false) String projectId) {
+        return new ResponseEntity<>(taskApplication.listTask(projectId), HttpStatus.OK);
     }
 
     @GetMapping("/{taskId}")

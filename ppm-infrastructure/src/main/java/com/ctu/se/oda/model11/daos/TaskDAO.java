@@ -1,12 +1,14 @@
 package com.ctu.se.oda.model11.daos;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import com.ctu.se.oda.model11.entities.Project;
@@ -83,8 +85,9 @@ public class TaskDAO implements ITaskService {
 	}
 
 	@Override
-	public List<RetrieveTaskQueryResponse> getAllTasks() {
+	public List<RetrieveTaskQueryResponse> getAllTasks(UUID projectId) {
 		return taskRepository.findAll().stream()
+				.filter(task -> Objects.isNull(projectId) || task.getProjectId().getId().equals(projectId))
 				.map(task -> RetrieveTaskQueryResponse.builder()
 						.taskId(task.getId())
 						.taskName(task.getName())

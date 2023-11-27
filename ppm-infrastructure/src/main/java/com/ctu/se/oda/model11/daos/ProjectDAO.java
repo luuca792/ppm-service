@@ -1,6 +1,9 @@
 package com.ctu.se.oda.model11.daos;
 
 import com.ctu.se.oda.model11.entities.Project;
+import com.ctu.se.oda.model11.entities.Task;
+import com.ctu.se.oda.model11.entities.TaskDependency;
+import com.ctu.se.oda.model11.enums.DependencyType;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -8,8 +11,13 @@ import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectComm
 import com.ctu.se.oda.model11.models.dtos.UserDTO;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
 import com.ctu.se.oda.model11.repositories.IProjectRepository;
+import com.ctu.se.oda.model11.repositories.ITaskDependencyRepository;
+import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import com.ctu.se.oda.model11.utils.ModelMapperUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -28,10 +36,19 @@ public class ProjectDAO implements IProjectService {
 	private IProjectRepository projectRepository;
 
 	@Autowired
+	private ITaskRepository taskRepository;
+
+	@Autowired
+	private ITaskDependencyRepository taskDependencyRepository;
+
+	@Autowired
 	private IInfrastructureMapper<CreateProjectCommandRequest, Project> createProjectEntityMapper;
 
 	@Autowired
 	private IInfrastructureMapper<UpdateProjectCommandRequest, Project> updateProjectEntityMapper;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Override
 	public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
@@ -104,5 +121,71 @@ public class ProjectDAO implements IProjectService {
 			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		projectRepository.deleteById(projectId);
+	}
+
+	@Override
+	public void cloneProject(UUID projectId, UUID userId) {
+		Project retrievedProject = projectRepository.findById(projectId)
+				.orElseThrow(() -> new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND));
+		Project clonedProject = Project.builder()
+				.name(retrievedProject.getName())
+				.startAt(retrievedProject.getStartAt())
+				.endAt(retrievedProject.getEndAt())
+				.duration(retrievedProject.getDuration())
+				.status(retrievedProject.getStatus())
+				.isTemplate(false)
+				.userId(userId)
+				.build();
+
+		projectRepository.save(clonedProject);
+
+		List<Task> originalTasks = retrievedProject.getTasks();
+		List<Task> clonedTasks = originalTasks.stream()
+				.map(originalTask -> {
+					Task clonedTask = new Task();
+					BeanUtils.copyProperties(originalTask, clonedTask);
+					clonedTask.setId(null);
+					clonedTask.setProjectId(clonedProject);
+					return clonedTask;
+				})
+				.collect(Collectors.toList());
+
+		clonedProject.setTasks(clonedTasks);
+		projectRepository.save(clonedProject);
+		cloneTaskDependencies(retrievedProject, clonedProject);
+	}
+
+	private void cloneTaskDependencies(Project originalProject, Project clonedProject) {
+		List<TaskDependency> originalTaskDependencies = originalProject.getTasks().stream()
+				.flatMap(task -> taskDependencyRepository.findAllByTaskId(task).stream())
+				.collect(Collectors.toList());
+
+		List<TaskDependency> clonedTaskDependencies = originalTaskDependencies.stream()
+				.map(originalDependency -> {
+					TaskDependency clonedDependency = new TaskDependency();
+					BeanUtils.copyProperties(originalDependency, clonedDependency);
+					clonedDependency.setId(null);  // Set ID to null for database to generate a new one
+
+					// Update the task and dependentTask references to point to the cloned tasks
+					Task clonedTask = findClonedTask(originalDependency.getTaskId(), clonedProject.getTasks());
+					Task clonedDependentTask = findClonedTask(originalDependency.getDependentTaskId(), clonedProject.getTasks());
+
+					clonedDependency.setTaskId(clonedTask);
+					clonedDependency.setDependentTaskId(clonedDependentTask);
+
+					return clonedDependency;
+				})
+				.collect(Collectors.toList());
+
+		taskDependencyRepository.saveAll(clonedTaskDependencies);
+	}
+
+	private Task findClonedTask(Task originalTask, List<Task> clonedTasks) {
+		// Find the corresponding cloned task based on some criteria (e.g., task name, ID, etc.)
+		// This depends on your specific logic for identifying corresponding tasks.
+		return clonedTasks.stream()
+				.filter(clonedTask -> clonedTask.getName().equals(originalTask.getName()))
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("Corresponding cloned task not found"));
 	}
 }
