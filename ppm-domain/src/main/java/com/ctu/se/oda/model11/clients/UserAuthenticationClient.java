@@ -4,15 +4,14 @@ import com.ctu.se.oda.model11.models.dtos.UserDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 @Service
-public class UserAuthenicationClient {
+public class UserAuthenticationClient {
     private final WebClient webClient;
 
-    public UserAuthenicationClient(WebClient.Builder webClientBuilder) {
+    public UserAuthenticationClient(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl("http://103.221.220.183:8082").build();
     }
 

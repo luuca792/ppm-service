@@ -59,4 +59,9 @@ public class ProjectApplication implements IProjectApplication {
 	public void scheduleProject(UUID projectId) {
 		taskDateCalculationHelper.dateScheduler(projectId);
 	}
+
+	@Override
+	public void cloneProject(String projectId, String userId) {
+		projectService.cloneProject(UUID.fromString(projectId), UUID.fromString(userId));
+	}
 }

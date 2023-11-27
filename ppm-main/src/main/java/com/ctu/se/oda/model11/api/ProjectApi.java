@@ -1,5 +1,7 @@
 package com.ctu.se.oda.model11.api;
 
+import com.ctu.se.oda.model11.constants.ConstantLibrary;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.interfaces.IProjectApplication;
 import com.ctu.se.oda.model11.interfaces.ITaskApplication;
 import com.ctu.se.oda.model11.mappers.IMainMapper;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -83,5 +86,15 @@ public class ProjectApi {
                 .sorted(Comparator.comparing(TaskScheduleResult::getTaskStartDate))
                 .collect(Collectors.toList());
         return new ResponseEntity<List<TaskScheduleResult>>(results, HttpStatus.OK);
+    }
+
+    @PostMapping("/{projectId}/clone")
+    public ResponseEntity<?> cloneProject(@PathVariable String projectId,
+                                          @RequestParam(required = true) String creatorId) {
+        if (Objects.isNull(projectId)) {
+            throw new InternalServerErrorException(ConstantLibrary.MISSING_PARAMS_WARNING);
+        }
+        projectApplication.cloneProject(projectId, creatorId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

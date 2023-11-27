@@ -12,18 +12,11 @@ import jakarta.validation.Valid;
 
 public interface ITaskService {
 	void createTask(@Valid CreateTaskCommandRequest createTaskCommandRequest);
-
 	void updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest);
-
-	List<RetrieveTaskQueryResponse> getAllTasks();
-
+	List<RetrieveTaskQueryResponse> getAllTasks(UUID projectId);
 	RetrieveTaskQueryResponse detailTask(UUID taskId);
-
 	TaskDTO getTaskById(UUID taskId);
-
 	void addMaterialToTask(UUID taskId, UUID materialId, Double amount);
-
 	void deleteTask(UUID taskId);
-
 	List<TaskDTO> getTasksOfProject(UUID projectId);
 }

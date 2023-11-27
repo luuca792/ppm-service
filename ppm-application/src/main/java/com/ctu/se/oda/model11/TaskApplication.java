@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class TaskApplication implements ITaskApplication {
 	}
 
 	@Override
-	public List<RetrieveTaskQueryResponse> listTask() {
-		return taskService.getAllTasks();
+	public List<RetrieveTaskQueryResponse> listTask(String projectId) {
+		return taskService.getAllTasks(Optional.ofNullable(projectId).map(UUID::fromString).orElse(null));
 	}
 
 	@Override
