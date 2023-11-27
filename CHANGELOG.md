@@ -5,13 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - 2023-11-21
-### Changed
-- Enhance partial update.
+## [0.4.0] - 2023-11-28
+### Added
+- Implement retrieve projects belong to a specific user.
+- Implement retrieve all template projects from cooperative.
+- Implement clone project for worker.
 
+### Changed
+- Subtasks are now a separated entity.
+
+## [0.3.0] - 2023-11-21
 ### Added
 - Add user mock service.
 - Implement task date calculation.
+
+### Changed
+- Enhance partial update.
 
 ## [0.2.0] - 2023-11-18
 ### Added
