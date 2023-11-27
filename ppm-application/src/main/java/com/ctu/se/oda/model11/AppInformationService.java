@@ -12,7 +12,7 @@ public class AppInformationService {
 
 	public static AppInfo getAppInfo() {
 		if (Objects.isNull(appInfo)) {
-			appInfo = new AppInfo("Production Process Management Service", "0.4.0-SNAPSHOT");
+			appInfo = new AppInfo("Production Process Management Service", "0.4.0");
 		}
 		return appInfo;
 	}
