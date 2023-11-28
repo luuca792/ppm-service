@@ -126,16 +126,22 @@ public class TaskDAO implements ITaskService {
 		}
 
 		var retrieveResource = retrieveTask.get().getResource();
-		ResourceMaterial resourceMaterial = new ResourceMaterial();
-		resourceMaterial.setResource(retrieveResource);
 
-		var materialRetrieveOptional = materialRepository.findById(materialId);
-		if (materialRetrieveOptional.isEmpty()) {
+
+		var materialRetrieve = materialRepository.findById(materialId);
+		if (materialRetrieve.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
 		}
 
-		var materialRetrieve = materialRetrieveOptional.get();
-		resourceMaterial.setMaterial(materialRetrieve);
+		var retrieveMaterialResource = resourceMaterialRepository.findByMaterialAndResource(materialRetrieve.get(), retrieveResource);
+
+		if(!Objects.isNull(retrieveMaterialResource)) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_EXIST);
+		}
+
+		ResourceMaterial resourceMaterial = new ResourceMaterial();
+		resourceMaterial.setResource(retrieveResource);
+		resourceMaterial.setMaterial(materialRetrieve.get());
 		resourceMaterial.setAmount(amount);
 
 		resourceMaterialRepository.save(resourceMaterial);
@@ -154,9 +160,33 @@ public class TaskDAO implements ITaskService {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
 
-        List<ResourceMaterial> resourceMaterialList = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
-		resourceMaterialRepository.deleteAll(resourceMaterialList);
+		var resourceMaterial = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
+		if (Objects.isNull(resourceMaterial)) {
+			throw new InternalServerErrorException(CustomErrorMessage.RESOURCE_MATERIAL_ID_NOT_FOUND);
+		}
+		resourceMaterialRepository.deleteById(resourceMaterial.getId());
 
+	}
+
+	@Override
+	public void updateMaterialToTask(UUID taskId, UUID materialId, Double amount) {
+		var retrieveTask = taskRepository.findById(taskId);
+		if (retrieveTask.isEmpty()) {
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
+		}
+		var retrieveResource = retrieveTask.get().getResource();
+
+		var retrieveMaterial = materialRepository.findById(materialId);
+		if (retrieveMaterial.isEmpty()) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
+		}
+
+		var resourceMaterial = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
+		if (Objects.isNull(resourceMaterial)) {
+			throw new InternalServerErrorException(CustomErrorMessage.RESOURCE_MATERIAL_ID_NOT_FOUND);
+		}
+		resourceMaterial.setAmount(amount);
+		resourceMaterialRepository.save(resourceMaterial);
 	}
 
 	@Override

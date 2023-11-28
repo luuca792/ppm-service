@@ -14,5 +14,5 @@ import java.util.UUID;
 @Repository
 public interface IResourceMaterialRepository extends JpaRepository<ResourceMaterial, UUID> {
     @Query("SELECT e FROM ResourceMaterial e WHERE e.material = :material AND e.resource = :resource")
-    List<ResourceMaterial> findByMaterialAndResource(@Param("material") Material material, @Param("resource") Resource resource);
+    ResourceMaterial findByMaterialAndResource(@Param("material") Material material, @Param("resource") Resource resource);
 }
