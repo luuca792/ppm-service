@@ -3,6 +3,7 @@ package com.ctu.se.oda.model11;
 import java.util.List;
 import java.util.UUID;
 
+import com.ctu.se.oda.model11.models.commands.requests.materialType.UpdateMaterialTypeCommandRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +34,13 @@ public class MaterialTypeApplication implements IMaterialTypeApplication{
 	}
 
 	@Override
+	public void updateMaterialType(UpdateMaterialTypeCommandRequest request) {
+		materialTypeService.updateMaterialType(request);
+	}
+
+	@Override
 	public void deleteMaterialTypeById(UUID id) {
 		materialTypeService.deleteMaterialType(id);
 	}
-	
+
 }

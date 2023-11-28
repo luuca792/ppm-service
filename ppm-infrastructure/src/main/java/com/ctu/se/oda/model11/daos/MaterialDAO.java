@@ -44,6 +44,9 @@ public class MaterialDAO implements IMaterialService {
 		if (!materialType.isPresent()) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
+		if (createMaterialCommandRequest.getMaterialName().isBlank()) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_NAME_IS_NULL);
+		}
 		Material material = createMaterialEntityMapper.convert(createMaterialCommandRequest);
 		material.setMaterialType(materialType.get());
 		materialRepository.save(material);

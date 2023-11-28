@@ -65,6 +65,6 @@ public class MaterialApi {
     @DeleteMapping("/{materialId}")
     public ResponseEntity<?> deleteMaterial(@PathVariable UUID materialId) {
         materialApplication.deleteMaterial(materialId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
