@@ -54,12 +54,17 @@ public class TaskApplication implements ITaskApplication {
 	}
 
 	@Override
+	public void deleteMaterialFromTask(UUID taskId, UUID materialId) {
+		taskService.deleteMaterailFromTask(taskId, materialId);
+	}
+
+	@Override
 	public void deleteTask(UUID taskId) {
-		this.taskService.deleteTask(taskId);
+		taskService.deleteTask(taskId);
 	}
 
 	@Override
 	public List<TaskDTO> getTasksOfProject(UUID projectId) {
-		return this.taskService.getTasksOfProject(projectId);
+		return taskService.getTasksOfProject(projectId);
 	}
 }

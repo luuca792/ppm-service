@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +42,7 @@ public class MaterialDAO implements IMaterialService {
 	public void createMaterial(@Valid CreateMaterialCommandRequest createMaterialCommandRequest) {
 		Optional<MaterialType> materialType = materialTypeRepository.findById(createMaterialCommandRequest.getMaterialType());
 		if (!materialType.isPresent()) {
-			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
 		Material material = createMaterialEntityMapper.convert(createMaterialCommandRequest);
 		material.setMaterialType(materialType.get());
@@ -52,7 +53,7 @@ public class MaterialDAO implements IMaterialService {
 	public void updateMaterial(@Valid UpdateMaterialCommandRequest updateMaterialCommandRequest) {
 		var retrieveMaterial = materialRepository.findById(updateMaterialCommandRequest.getMaterialId());
 		if (retrieveMaterial.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
 		}
 		Material updatedMaterial = updateMaterialEntityMapper.convert(updateMaterialCommandRequest);
 		ModelMapperUtil.copy(updatedMaterial, retrieveMaterial.get());

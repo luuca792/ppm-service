@@ -6,15 +6,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.ctu.se.oda.model11.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import com.ctu.se.oda.model11.entities.Project;
-import com.ctu.se.oda.model11.entities.Resource;
-import com.ctu.se.oda.model11.entities.ResourceMaterial;
-import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
@@ -77,7 +74,7 @@ public class TaskDAO implements ITaskService {
 	public void updateTask(@Valid UpdateTaskCommandRequest updateTaskCommandRequest) {
 		var retrievedTask = taskRepository.findById(updateTaskCommandRequest.getTaskId());
 		if (retrievedTask.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.TASK_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		Task updatedTask = updateTaskEntityMapper.convert(updateTaskCommandRequest);
 		ModelMapperUtil.copy(updatedTask, retrievedTask.get());
@@ -142,6 +139,24 @@ public class TaskDAO implements ITaskService {
 		resourceMaterial.setAmount(amount);
 
 		resourceMaterialRepository.save(resourceMaterial);
+	}
+
+	@Override
+	public void deleteMaterailFromTask(UUID taskId, UUID materialId) {
+		var retrieveTask = taskRepository.findById(taskId);
+		if (retrieveTask.isEmpty()) {
+			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
+		}
+		var retrieveResource = retrieveTask.get().getResource();
+
+		var retrieveMaterial = materialRepository.findById(materialId);
+		if (retrieveMaterial.isEmpty()) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
+		}
+
+        List<ResourceMaterial> resourceMaterialList = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
+		resourceMaterialRepository.deleteAll(resourceMaterialList);
+
 	}
 
 	@Override

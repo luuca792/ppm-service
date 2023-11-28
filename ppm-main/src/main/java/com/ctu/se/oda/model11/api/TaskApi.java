@@ -92,4 +92,11 @@ public class TaskApi {
         taskApplication.addMaterialToTask(UUID.fromString(taskId), UUID.fromString(materialId), amount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @DeleteMapping("/{taskId}/material/{materialId}")
+    public ResponseEntity<?> deleteMaterialFromTask(@PathVariable String taskId,
+                                               @PathVariable String materialId) {
+        taskApplication.deleteMaterialFromTask(UUID.fromString(taskId), UUID.fromString(materialId));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
