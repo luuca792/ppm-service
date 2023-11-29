@@ -10,6 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    private String accessToken;
     private UUID userId;
     private String username;
     private String role;

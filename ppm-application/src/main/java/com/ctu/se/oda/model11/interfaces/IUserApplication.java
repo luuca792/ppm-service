@@ -1,7 +1,6 @@
 package com.ctu.se.oda.model11.interfaces;
 
 import com.ctu.se.oda.model11.models.dtos.UserDTO;
-import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
