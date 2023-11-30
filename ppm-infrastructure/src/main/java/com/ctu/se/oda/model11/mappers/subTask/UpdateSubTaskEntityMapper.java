@@ -28,6 +28,8 @@ public class UpdateSubTaskEntityMapper implements IInfrastructureMapper<UpdateSu
         return SubTask.builder()
                 .id(source.getSubTaskId())
                 .name(source.getSubTaskName())
+                .description(source.getSubTaskDescription())
+                .isDone(source.getIsDone())
                 .build();
     }
 }

@@ -19,4 +19,5 @@ public interface ITaskApplication {
 	void updateMaterialToTask(UUID taskId, UUID materialId, Double amount);
 	void deleteTask(UUID taskId);
 	List<TaskDTO> getTasksOfProject(UUID projectId);
+	List<RetrieveTaskQueryResponse> getAllDependentTasks(UUID taskId);
 }

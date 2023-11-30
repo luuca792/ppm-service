@@ -55,7 +55,7 @@ public class TaskApplication implements ITaskApplication {
 
 	@Override
 	public void deleteMaterialFromTask(UUID taskId, UUID materialId) {
-		taskService.deleteMaterailFromTask(taskId, materialId);
+		taskService.deleteMaterialFromTask(taskId, materialId);
 	}
 
 	@Override
@@ -71,5 +71,10 @@ public class TaskApplication implements ITaskApplication {
 	@Override
 	public List<TaskDTO> getTasksOfProject(UUID projectId) {
 		return taskService.getTasksOfProject(projectId);
+	}
+
+	@Override
+	public List<RetrieveTaskQueryResponse> getAllDependentTasks(UUID taskId) {
+		return taskService.getAllDependentTasks(taskId);
 	}
 }

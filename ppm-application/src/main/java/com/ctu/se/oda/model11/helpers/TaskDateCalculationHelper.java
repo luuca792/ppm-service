@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.helpers;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +88,13 @@ public class TaskDateCalculationHelper {
 			}
 			taskService.updateTask(updatedTask);
 		}
+		TaskDTO lastTask = taskService.getTaskById(order.get(order.size() - 1));
+		UpdateProjectCommandRequest updateProject = UpdateProjectCommandRequest.builder()
+				.projectId(projectId)
+				.projectEndAt(lastTask.getTaskEndAt())
+				.projectDuration(Double.valueOf(ChronoUnit.DAYS.between(projectStartDate, lastTask.getTaskEndAt())))
+				.build();
+		projectService.updateProject(updateProject);
 	}
 
 	/**
