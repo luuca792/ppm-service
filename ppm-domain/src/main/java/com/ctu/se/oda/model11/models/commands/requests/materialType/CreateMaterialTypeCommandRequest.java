@@ -1,6 +1,6 @@
 package com.ctu.se.oda.model11.models.commands.requests.materialType;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 public class CreateMaterialTypeCommandRequest {
 	
-	@NotNull
+	@NotBlank
 	private String materialTypeName;
 
 	@Override
