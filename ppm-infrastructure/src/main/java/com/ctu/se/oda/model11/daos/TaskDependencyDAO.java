@@ -69,7 +69,7 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 	}
 
 	@Override
-	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependences() {
+	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies() {
 		List<TaskDependency> taskDependencies = taskDependencyRepository.findAll();
 		return taskDependencies.stream().map(dependency -> RetrieveTaskDependencyQueryResponse.builder()
 				.id(dependency.getId())

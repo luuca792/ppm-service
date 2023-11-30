@@ -26,7 +26,7 @@ public class CreateProjectCommandRequest {
 	@Nullable
 	private LocalDate projectEndAt;
 
-	@Positive
+	@Nullable
 	private Double projectDuration;
 
 	@NotNull

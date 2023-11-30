@@ -28,7 +28,9 @@ public class CreateSubTaskEntityMapper implements IInfrastructureMapper<CreateSu
         }
         return SubTask.builder()
                 .name(source.getSubTaskName())
+                .description(source.getSubTaskDescription())
                 .taskParentId(taskParent.get())
+                .isDone(Boolean.FALSE)
                 .build();
     }
 }

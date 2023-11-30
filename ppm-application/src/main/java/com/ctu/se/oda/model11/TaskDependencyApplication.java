@@ -27,7 +27,7 @@ public class TaskDependencyApplication implements ITaskDependencyApplication {
 
 	@Override
 	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies() {
-		return taskDependencyService.getAllTaskDependences();
+		return taskDependencyService.getAllTaskDependencies();
 	}
 
 	@Override

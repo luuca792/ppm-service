@@ -17,8 +17,9 @@ public interface ITaskService {
 	RetrieveTaskQueryResponse detailTask(UUID taskId);
 	TaskDTO getTaskById(UUID taskId);
 	void addMaterialToTask(UUID taskId, UUID materialId, Double amount);
-	void deleteMaterailFromTask(UUID taskId, UUID materialId);
+	void deleteMaterialFromTask(UUID taskId, UUID materialId);
 	void updateMaterialToTask(UUID taskId, UUID materialId, Double amount);
 	void deleteTask(UUID taskId);
 	List<TaskDTO> getTasksOfProject(UUID projectId);
+	List<RetrieveTaskQueryResponse> getAllDependentTasks(UUID taskId);
 }

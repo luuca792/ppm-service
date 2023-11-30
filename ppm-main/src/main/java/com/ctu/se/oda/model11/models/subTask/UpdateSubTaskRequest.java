@@ -8,4 +8,6 @@ import lombok.Data;
 public class UpdateSubTaskRequest {
     private String subTaskId;
     private String subTaskName;
+    private String description;
+    private Boolean isDone;
 }

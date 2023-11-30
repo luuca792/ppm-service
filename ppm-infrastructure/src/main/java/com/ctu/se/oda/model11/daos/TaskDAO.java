@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.ctu.se.oda.model11.entities.*;
+import com.ctu.se.oda.model11.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,11 +20,6 @@ import com.ctu.se.oda.model11.models.commands.requests.task.CreateTaskCommandReq
 import com.ctu.se.oda.model11.models.commands.requests.task.UpdateTaskCommandRequest;
 import com.ctu.se.oda.model11.models.dtos.TaskDTO;
 import com.ctu.se.oda.model11.models.queries.responses.task.RetrieveTaskQueryResponse;
-import com.ctu.se.oda.model11.repositories.IMaterialRepository;
-import com.ctu.se.oda.model11.repositories.IProjectRepository;
-import com.ctu.se.oda.model11.repositories.IResourceMaterialRepository;
-import com.ctu.se.oda.model11.repositories.IResourceRepository;
-import com.ctu.se.oda.model11.repositories.ITaskRepository;
 import com.ctu.se.oda.model11.utils.ModelMapperUtil;
 
 import jakarta.validation.Valid;
@@ -51,6 +47,9 @@ public class TaskDAO implements ITaskService {
 
 	@Autowired
 	private IMaterialRepository materialRepository;
+
+	@Autowired
+	private ITaskDependencyRepository taskDependencyRepository;
 
 	@Autowired
 	private IResourceMaterialRepository resourceMaterialRepository;
@@ -124,42 +123,33 @@ public class TaskDAO implements ITaskService {
 		if (retrieveTask.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
-
 		var retrieveResource = retrieveTask.get().getResource();
-
-
 		var materialRetrieve = materialRepository.findById(materialId);
 		if (materialRetrieve.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_ID_NOT_FOUND);
 		}
-
 		var retrieveMaterialResource = resourceMaterialRepository.findByMaterialAndResource(materialRetrieve.get(), retrieveResource);
-
 		if(!Objects.isNull(retrieveMaterialResource)) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_EXIST);
 		}
-
 		ResourceMaterial resourceMaterial = new ResourceMaterial();
 		resourceMaterial.setResource(retrieveResource);
 		resourceMaterial.setMaterial(materialRetrieve.get());
 		resourceMaterial.setAmount(amount);
-
 		resourceMaterialRepository.save(resourceMaterial);
 	}
 
 	@Override
-	public void deleteMaterailFromTask(UUID taskId, UUID materialId) {
+	public void deleteMaterialFromTask(UUID taskId, UUID materialId) {
 		var retrieveTask = taskRepository.findById(taskId);
 		if (retrieveTask.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		var retrieveResource = retrieveTask.get().getResource();
-
 		var retrieveMaterial = materialRepository.findById(materialId);
 		if (retrieveMaterial.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
-
 		var resourceMaterial = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
 		if (Objects.isNull(resourceMaterial)) {
 			throw new InternalServerErrorException(CustomErrorMessage.RESOURCE_MATERIAL_ID_NOT_FOUND);
@@ -175,12 +165,10 @@ public class TaskDAO implements ITaskService {
 			throw new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND);
 		}
 		var retrieveResource = retrieveTask.get().getResource();
-
 		var retrieveMaterial = materialRepository.findById(materialId);
 		if (retrieveMaterial.isEmpty()) {
 			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
 		}
-
 		var resourceMaterial = resourceMaterialRepository.findByMaterialAndResource(retrieveMaterial.get(), retrieveResource);
 		if (Objects.isNull(resourceMaterial)) {
 			throw new InternalServerErrorException(CustomErrorMessage.RESOURCE_MATERIAL_ID_NOT_FOUND);
@@ -227,7 +215,6 @@ public class TaskDAO implements ITaskService {
 			throw new InternalServerErrorException(CustomErrorMessage.ENTITY_NOT_FOUND);
 		}
 		var task = retrievedTask.get();
-
 		return TaskDTO.builder()
 				.taskId(task.getId())
 				.taskName(task.getName())
@@ -238,5 +225,30 @@ public class TaskDAO implements ITaskService {
 				.taskStatus(task.getStatus())
 				.projectId(task.getProjectId().getId())
 				.build();
+	}
+
+	@Override
+	public List<RetrieveTaskQueryResponse> getAllDependentTasks(UUID taskId) {
+		Task retrievedTask = taskRepository.findById(taskId)
+				.orElseThrow(() -> new InternalServerErrorException(CustomErrorMessage.TASK_ID_NOT_FOUND));
+		List<TaskDependency> dependencies = taskDependencyRepository.findAllByTaskId(retrievedTask);
+		List<Task> dependentTasks = dependencies.stream()
+				.map(TaskDependency::getDependentTaskId)
+				.map(dependentTaskId -> taskRepository.findById(dependentTaskId.getId()))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.collect(Collectors.toList());
+		return dependentTasks.stream()
+				.map(task -> RetrieveTaskQueryResponse.builder()
+						.taskId(task.getId())
+						.taskName(task.getName())
+						.taskDescription(task.getDescription())
+						.taskStartAt(task.getStartAt())
+						.taskEndAt(task.getEndAt())
+						.taskDuration(task.getDuration())
+						.taskStatus(task.getStatus())
+						.projectId(task.getProjectId().getId())
+						.build())
+				.collect(Collectors.toList());
 	}
 }
