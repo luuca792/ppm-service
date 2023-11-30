@@ -4,6 +4,7 @@ import com.ctu.se.oda.model11.entities.Project;
 import com.ctu.se.oda.model11.entities.Task;
 import com.ctu.se.oda.model11.entities.TaskDependency;
 import com.ctu.se.oda.model11.enums.DependencyType;
+import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
@@ -54,7 +55,7 @@ public class ProjectDAO implements IProjectService {
 	public void createProject(@Valid CreateProjectCommandRequest createProjectCommandRequest) {
 		if (Objects.nonNull(createProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(createProjectCommandRequest.getProjectEndAt())) {
 			if (createProjectCommandRequest.getProjectStartAt().isAfter(createProjectCommandRequest.getProjectEndAt())) {
-				throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+				throw new InternalServerErrorException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
 			}
 		}
 		projectRepository.save(createProjectEntityMapper.convert(createProjectCommandRequest));
@@ -64,12 +65,12 @@ public class ProjectDAO implements IProjectService {
 	public void updateProject(@Valid UpdateProjectCommandRequest updateProjectCommandRequest) {
 		var retrieveProject = projectRepository.findById(updateProjectCommandRequest.getProjectId());
 		if (retrieveProject.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 
 		if (Objects.nonNull(updateProjectCommandRequest.getProjectStartAt()) && Objects.nonNull(updateProjectCommandRequest.getProjectEndAt())) {
 			if (updateProjectCommandRequest.getProjectStartAt() .isAfter(updateProjectCommandRequest.getProjectEndAt())) {
-				throw new IllegalArgumentException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
+				throw new InternalServerErrorException(CustomErrorMessage.START_DATE_AFTER_END_DATE);
 			}
 		}
 
@@ -103,7 +104,7 @@ public class ProjectDAO implements IProjectService {
 	public RetrieveProjectQueryResponse getProjectById(UUID projectId) {
 		var retrievedProjectOptional = projectRepository.findById(projectId);
 		if (retrievedProjectOptional.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		var retrievedProject = retrievedProjectOptional.get();
 		return RetrieveProjectQueryResponse.builder()
@@ -118,7 +119,7 @@ public class ProjectDAO implements IProjectService {
 	public void deleteProject(UUID projectId) {
 		Optional<Project> retrievedProject = projectRepository.findById(projectId);
 		if (retrievedProject.isEmpty()) {
-			throw new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
+			throw new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND);
 		}
 		projectRepository.deleteById(projectId);
 	}
@@ -126,7 +127,7 @@ public class ProjectDAO implements IProjectService {
 	@Override
 	public void cloneProject(UUID projectId, UUID userId) {
 		Project retrievedProject = projectRepository.findById(projectId)
-				.orElseThrow(() -> new IllegalArgumentException(CustomErrorMessage.PROJECT_ID_NOT_FOUND));
+				.orElseThrow(() -> new InternalServerErrorException(CustomErrorMessage.PROJECT_ID_NOT_FOUND));
 		Project clonedProject = Project.builder()
 				.name(retrievedProject.getName())
 				.startAt(retrievedProject.getStartAt())

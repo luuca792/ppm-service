@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.ctu.se.oda.model11.models.commands.requests.materialType.UpdateMaterialTypeCommandRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +26,28 @@ public class MaterialTypeDAO implements IMaterialTypeService{
 	private IMaterialTypeRepository materialTypeRepository;
 	
 	@Autowired
-	private IInfrastructureMapper<CreateMaterialTypeCommandRequest, MaterialType> mapper;
+	private IInfrastructureMapper<CreateMaterialTypeCommandRequest, MaterialType> createMapper;
+
+	@Autowired
+	private IInfrastructureMapper<UpdateMaterialTypeCommandRequest, MaterialType> updateMapper;
 	
 	@Override
 	public void createMaterialType(@Valid CreateMaterialTypeCommandRequest request) {
-		materialTypeRepository.save(mapper.convert(request));
+		if (request.getMaterialTypeName().isBlank()) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_NAME_IS_NULL);
+		}
+		materialTypeRepository.save(createMapper.convert(request));
+	}
+
+	@Override
+	public void updateMaterialType(@Valid UpdateMaterialTypeCommandRequest request) {
+
+		Optional<MaterialType> materialType = materialTypeRepository.findById(request.getMaterialTypeId());
+		if (!materialType.isPresent()) {
+			throw new InternalServerErrorException(CustomErrorMessage.MATERIAL_TYPE_ID_NOT_FOUND);
+		}
+
+		materialTypeRepository.save(updateMapper.convert(request));
 	}
 
 	@Override
