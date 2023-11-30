@@ -11,5 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UpdateSubTaskCommandRequest {
     private UUID subTaskId;
+    private String subTaskDescription;
     private String subTaskName;
+    private Boolean isDone;
 }

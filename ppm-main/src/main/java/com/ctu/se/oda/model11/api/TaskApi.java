@@ -67,6 +67,11 @@ public class TaskApi {
         return new ResponseEntity<>(taskApplication.detailTask(UUID.fromString(taskId)), HttpStatus.OK);
     }
 
+    @GetMapping("/{taskId}/dependencies")
+    public ResponseEntity<List<RetrieveTaskQueryResponse>> getAllDependentTasks(@PathVariable String taskId) {
+        return new ResponseEntity<>(taskApplication.getAllDependentTasks(UUID.fromString(taskId)), HttpStatus.OK);
+    }
+
     @GetMapping("/{taskId}/subtasks")
     public ResponseEntity<List<RetrieveSubTaskQueryResponse>> getAllSubTaskOfTask(@PathVariable String taskId) {
         return new ResponseEntity<List<RetrieveSubTaskQueryResponse>>(subTaskApplication.getAllSubTaskOfTask(UUID.fromString(taskId)), HttpStatus.OK);

@@ -6,6 +6,7 @@ import com.ctu.se.oda.model11.models.subTask.CreateSubTaskRequest;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -15,6 +16,7 @@ public class CreateSubTaskRequestMapper implements IMainMapper<CreateSubTaskRequ
     public CreateSubTaskCommandRequest convert(CreateSubTaskRequest source) {
         return CreateSubTaskCommandRequest.builder()
                 .subTaskName(source.getSubTaskName())
+                .subTaskDescription(Optional.ofNullable(source.getDescription()).orElse(null))
                 .taskParentId(UUID.fromString(source.getTaskParentId()))
                 .build();
     }

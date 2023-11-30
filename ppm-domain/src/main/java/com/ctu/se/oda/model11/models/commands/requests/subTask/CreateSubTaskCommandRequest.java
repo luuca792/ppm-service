@@ -12,5 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateSubTaskCommandRequest {
     private String subTaskName;
+    private String subTaskDescription;
     private UUID taskParentId;
 }

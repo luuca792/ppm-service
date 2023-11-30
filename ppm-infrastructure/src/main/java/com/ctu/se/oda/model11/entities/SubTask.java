@@ -27,7 +27,9 @@ public class SubTask {
 	@Column(name = "name")
 	private String name;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status")
-	private TaskStatus status;
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "is_done")
+	private Boolean isDone;
 }

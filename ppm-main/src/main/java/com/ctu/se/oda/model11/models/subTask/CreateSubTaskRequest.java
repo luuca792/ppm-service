@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class CreateSubTaskRequest {
     private String subTaskName;
+    private String description;
     private String taskParentId;
 }
