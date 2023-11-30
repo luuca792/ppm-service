@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.clients;
 
 import com.ctu.se.oda.model11.models.dtos.UserDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,8 +12,8 @@ import java.util.UUID;
 public class UserAuthenticationClient {
     private final WebClient webClient;
 
-    public UserAuthenticationClient(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://103.221.220.183:8082").build();
+    public UserAuthenticationClient(WebClient.Builder webClientBuilder, @Value("${user.auth.server.url}") String authServerUrl) {
+        this.webClient = webClientBuilder.baseUrl(authServerUrl).build();
     }
 
     public UserDTO login(String basicAuth) {
