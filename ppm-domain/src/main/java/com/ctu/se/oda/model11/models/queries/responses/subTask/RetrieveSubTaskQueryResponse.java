@@ -14,4 +14,6 @@ public class RetrieveSubTaskQueryResponse {
     private UUID subTaskId;
     private String subTaskName;
     private UUID taskParentId;
+    private String subTaskDescription;
+    private Boolean isDone;
 }

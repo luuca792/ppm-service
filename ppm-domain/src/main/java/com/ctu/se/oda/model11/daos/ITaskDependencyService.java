@@ -14,5 +14,6 @@ public interface ITaskDependencyService {
 
 	List<TaskDependencyDTO> getDependentTasks(UUID taskId);
 	
-	List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies();
+	List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies(UUID taskId);
+
 }

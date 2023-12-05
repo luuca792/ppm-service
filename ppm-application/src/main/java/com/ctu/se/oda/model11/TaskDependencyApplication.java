@@ -26,12 +26,13 @@ public class TaskDependencyApplication implements ITaskDependencyApplication {
 	}
 
 	@Override
-	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies() {
-		return taskDependencyService.getAllTaskDependencies();
+	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies(UUID taskId) {
+		return taskDependencyService.getAllTaskDependencies(taskId);
 	}
 
 	@Override
 	public void deleteTaskDependency(UUID id) {
 		taskDependencyService.deleteTaskDependencyById(id);
 	}
+
 }

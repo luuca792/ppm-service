@@ -9,7 +9,8 @@ import com.ctu.se.oda.model11.models.queries.responses.taskDependency.RetrieveTa
 public interface ITaskDependencyApplication {
 	void createTaskDependency(CreateTaskDependencyCommandRequest request);
 	
-	List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies();
+	List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies(UUID taskId);
 	
 	void deleteTaskDependency(UUID id);
+
 }
