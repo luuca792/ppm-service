@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.ctu.se.oda.model11</groupId>
         <artifactId>ppm-service</artifactId>
-        <version>0.4.0</version>
+        <version>1.0.0</version>
     </parent>
     <packaging>jar</packaging>
     <artifactId>ppm-main</artifactId>
@@ -14,17 +14,17 @@
         <dependency>
             <groupId>com.ctu.se.oda.model11</groupId>
             <artifactId>ppm-application</artifactId>
-            <version>0.4.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.ctu.se.oda.model11</groupId>
             <artifactId>ppm-infrastructure</artifactId>
-            <version>0.4.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.ctu.se.oda.model11</groupId>
             <artifactId>ppm-domain</artifactId>
-            <version>0.4.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -45,5 +45,4 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
 </project>
