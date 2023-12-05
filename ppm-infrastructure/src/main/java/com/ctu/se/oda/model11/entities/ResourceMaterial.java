@@ -1,6 +1,8 @@
 package com.ctu.se.oda.model11.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Table(name = "resource_material")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ResourceMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

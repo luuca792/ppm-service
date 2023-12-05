@@ -20,4 +20,6 @@ public class CustomErrorMessage {
 	public static String RESOURCE_MATERIAL_ID_NOT_FOUND = "ResourceMaterial does not found";
 	public static String MATERIAL_TYPE_NAME_IS_NULL = "MaterialType name must not be null";
 	public static String MATERIAL_NAME_IS_NULL = "Material name must not be null";
+	public static String RESOURCE_MATERIAL_RECORD_NOT_FOUND = "Resource_material record not found";
+	public static String RESOURCE_NOT_FOUND = "Resource not found";
 }

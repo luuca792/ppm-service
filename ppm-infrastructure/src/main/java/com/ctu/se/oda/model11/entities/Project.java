@@ -46,5 +46,4 @@ public class Project {
     
     @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL)
     private List<Task> tasks;
-
 }

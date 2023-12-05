@@ -1,19 +1,13 @@
 package com.ctu.se.oda.model11.daos;
 
-import com.ctu.se.oda.model11.entities.Project;
-import com.ctu.se.oda.model11.entities.Task;
-import com.ctu.se.oda.model11.entities.TaskDependency;
-import com.ctu.se.oda.model11.enums.DependencyType;
+import com.ctu.se.oda.model11.entities.*;
 import com.ctu.se.oda.model11.errors.exceptions.InternalServerErrorException;
 import com.ctu.se.oda.model11.errors.messages.CustomErrorMessage;
 import com.ctu.se.oda.model11.mappers.IInfrastructureMapper;
 import com.ctu.se.oda.model11.models.commands.requests.project.CreateProjectCommandRequest;
 import com.ctu.se.oda.model11.models.commands.requests.project.UpdateProjectCommandRequest;
-import com.ctu.se.oda.model11.models.dtos.UserDTO;
 import com.ctu.se.oda.model11.models.queries.responses.project.RetrieveProjectQueryResponse;
-import com.ctu.se.oda.model11.repositories.IProjectRepository;
-import com.ctu.se.oda.model11.repositories.ITaskDependencyRepository;
-import com.ctu.se.oda.model11.repositories.ITaskRepository;
+import com.ctu.se.oda.model11.repositories.*;
 import com.ctu.se.oda.model11.utils.ModelMapperUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -23,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +32,12 @@ public class ProjectDAO implements IProjectService {
 
 	@Autowired
 	private ITaskDependencyRepository taskDependencyRepository;
+
+	@Autowired
+	private IResourceRepository resourceRepository;
+
+	@Autowired
+	private IResourceMaterialRepository resourceMaterialRepository;
 
 	@Autowired
 	private IInfrastructureMapper<CreateProjectCommandRequest, Project> createProjectEntityMapper;
@@ -139,21 +136,42 @@ public class ProjectDAO implements IProjectService {
 				.build();
 
 		projectRepository.save(clonedProject);
+		cloneTask(retrievedProject, clonedProject);
+	}
 
-		List<Task> originalTasks = retrievedProject.getTasks();
-		List<Task> clonedTasks = originalTasks.stream()
-				.map(originalTask -> {
-					Task clonedTask = new Task();
-					BeanUtils.copyProperties(originalTask, clonedTask);
-					clonedTask.setId(null);
-					clonedTask.setProjectId(clonedProject);
-					return clonedTask;
-				})
-				.collect(Collectors.toList());
+	private void cloneTask(Project originalProject, Project clonedProject) {
+		List<Task> originalTasks = originalProject.getTasks();
+
+		List<Task> clonedTasks = new ArrayList<>();
+		for (Task task: originalTasks) {
+			//Clone current original task
+			Resource clonedResource = new Resource();
+			resourceRepository.save(clonedResource);
+
+			Task clonedTask = new Task();
+			BeanUtils.copyProperties(task, clonedTask);
+			clonedTask.setId(null);
+			clonedTask.setProjectId(clonedProject);
+			clonedTask.setResource(clonedResource);
+
+			//Retrieve all resource_material for the current original task
+			Resource resource = task.getResource();
+			List<ResourceMaterial> resourceMaterials = resourceMaterialRepository.findByResource(resource);
+			for (ResourceMaterial item : resourceMaterials) {
+				ResourceMaterial clonedResourceMaterial = ResourceMaterial.builder()
+						.resource(clonedResource)
+						.material(item.getMaterial())
+						.amount(item.getAmount())
+						.build();
+				resourceMaterialRepository.save(clonedResourceMaterial);
+			}
+			//Add clone tasks to list
+			clonedTasks.add(clonedTask);
+		}
 
 		clonedProject.setTasks(clonedTasks);
 		projectRepository.save(clonedProject);
-		cloneTaskDependencies(retrievedProject, clonedProject);
+		cloneTaskDependencies(originalProject, clonedProject);
 	}
 
 	private void cloneTaskDependencies(Project originalProject, Project clonedProject) {
@@ -165,9 +183,8 @@ public class ProjectDAO implements IProjectService {
 				.map(originalDependency -> {
 					TaskDependency clonedDependency = new TaskDependency();
 					BeanUtils.copyProperties(originalDependency, clonedDependency);
-					clonedDependency.setId(null);  // Set ID to null for database to generate a new one
+					clonedDependency.setId(null);
 
-					// Update the task and dependentTask references to point to the cloned tasks
 					Task clonedTask = findClonedTask(originalDependency.getTaskId(), clonedProject.getTasks());
 					Task clonedDependentTask = findClonedTask(originalDependency.getDependentTaskId(), clonedProject.getTasks());
 
