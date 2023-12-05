@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -69,14 +70,17 @@ public class TaskDependencyDAO implements ITaskDependencyService {
 	}
 
 	@Override
-	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies() {
-		List<TaskDependency> taskDependencies = taskDependencyRepository.findAll();
-		return taskDependencies.stream().map(dependency -> RetrieveTaskDependencyQueryResponse.builder()
-				.id(dependency.getId())
-				.taskId(dependency.getTaskId().getId())
-				.taskDependentId(dependency.getDependentTaskId().getId())
-				.dependencyType(dependency.getDependencyType())
-				.build())
-		.collect(Collectors.toList());
+	public List<RetrieveTaskDependencyQueryResponse> getAllTaskDependencies(UUID taskId) {
+
+		return taskDependencyRepository.findAll().stream()
+				.filter(dependency -> Objects.isNull(taskId) || dependency.getTaskId().getId().equals(taskId))
+				.map(dependency -> RetrieveTaskDependencyQueryResponse.builder()
+								.id(dependency.getId())
+								.taskId(dependency.getTaskId().getId())
+								.taskDependentId(dependency.getDependentTaskId().getId())
+								.dependencyType(dependency.getDependencyType())
+								.build())
+				.collect(Collectors.toList());
 	}
+
 }

@@ -49,6 +49,8 @@ public class SubTaskDAO implements ISubTaskService{
                 .subTaskId(subtask.getId())
                 .subTaskName(subtask.getName())
                 .taskParentId(subtask.getTaskParentId().getId())
+                .subTaskDescription(subtask.getDescription())
+                .isDone(subtask.getIsDone())
                 .build()).collect(Collectors.toList());
     }
 
@@ -63,6 +65,8 @@ public class SubTaskDAO implements ISubTaskService{
                 .subTaskId(subtask.getId())
                 .subTaskName(subtask.getName())
                 .taskParentId(subtask.getTaskParentId().getId())
+                .subTaskDescription(subtask.getDescription())
+                .isDone(subtask.getIsDone())
                 .build();
     }
 
