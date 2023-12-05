@@ -1,6 +1,7 @@
 package com.ctu.se.oda.model11.api;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TaskDependencyApi {
 
     @GetMapping
     public ResponseEntity<List<RetrieveTaskDependencyQueryResponse>> getAllTaskDependency(@RequestParam (required = false) String taskId) {
-        return new ResponseEntity<List<RetrieveTaskDependencyQueryResponse>>(taskDependencyApplication.getAllTaskDependencies(UUID.fromString(taskId)), HttpStatus.OK);
+        return new ResponseEntity<List<RetrieveTaskDependencyQueryResponse>>(taskDependencyApplication.getAllTaskDependencies(Optional.ofNullable(taskId).map(UUID::fromString).orElse(null)), HttpStatus.OK);
     }
 
     @PostMapping
